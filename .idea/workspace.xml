@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="20e2ed61-3924-4f74-8fdf-bc422a01505b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/utils/EncryptorUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/utils/WebUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ooc/squishtable/doa/AppUserDoa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/dao/AppUserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ooc/squishtable/doa/RoleUserDoa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/dao/RoleUserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ooc/squishtable/doa/TaskUserDoa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/dao/TaskUserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ooc/squishtable/model/AppRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/model/AppRole.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ooc/squishtable/model/AppTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/model/AppTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ooc/squishtable/model/AppUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/model/AppUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ooc/squishtable/security/CustomWebSecurity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/security/CustomWebSecurity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ooc/squishtable/service/IAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/service/IAdminService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ooc/squishtable/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ooc/squishtable/service/IUserService.java" afterDir="false" />
-    </list>
+    <list default="true" id="20e2ed61-3924-4f74-8fdf-bc422a01505b" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -342,16 +329,15 @@
       <workItem from="1593095307245" duration="1364000" />
       <workItem from="1593159989257" duration="625000" />
       <workItem from="1593430489142" duration="436000" />
-      <workItem from="1594302303004" duration="2757000" />
+      <workItem from="1594302303004" duration="2951000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6709000" />
+    <option name="totallyTimeSpent" value="6903000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="0" width="1920" height="1080" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Web" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2628205" />
@@ -366,7 +352,7 @@
       <window_info anchor="bottom" id="Java Enterprise" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32908705" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32908705" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
