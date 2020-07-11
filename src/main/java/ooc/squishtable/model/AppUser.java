@@ -1,11 +1,10 @@
 package ooc.squishtable.model;
 
+import java.util.List;
+
 public class AppUser {
-    /*
-    string username
-    string password
-    string tasktable
-    string name
-    list<string> friends
-     */
+    String username;
+    String password;
+    String taskTable;
+    List<String> friends;
 }

@@ -1,10 +1,10 @@
 package ooc.squishtable.model;
 
+import java.util.Date;
+
 public class AppTask {
-    /*
-    string data
-    date dateStart
-    date dateEnd
-    string ownBy (user)
-     */
+    String data;
+    Date dateStart;
+    Date dateEnd;
+    String ownBy;
 }
