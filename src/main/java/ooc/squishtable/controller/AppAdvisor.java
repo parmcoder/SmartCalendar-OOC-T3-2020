@@ -28,7 +28,7 @@ public class AppAdvisor implements WebMvcConfigurer {
     }
 
     @Bean
-    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> userCustomize404() {
+    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> userCustomize500() {
         return container -> {
             container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR,"/"));
         };
