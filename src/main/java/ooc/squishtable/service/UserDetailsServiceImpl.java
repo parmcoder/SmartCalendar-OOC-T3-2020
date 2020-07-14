@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("Found AppUser: " + appUser);
 
         // [ROLE_USER, ROLE_ADMIN,..]
-        List<String> roleNames = this.roleUserDao.getRoleNames(appUser.getUserId());
+        List<String> roleNames = this.roleUserDao.getRoleNames(appUser.getId());
 
         List<GrantedAuthority> grantList = new ArrayList<>();
         if (roleNames != null) {
@@ -47,8 +47,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
         }
 
-        UserDetails userDetails = new User(appUser.getUserName(), //
-                appUser.getEncryptedPassword(), grantList);
+        UserDetails userDetails = new User(appUser.getUsername(), //
+                appUser.getPassword(), grantList);
 
         return userDetails;
     }
