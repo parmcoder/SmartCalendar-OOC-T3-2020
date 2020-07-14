@@ -6,6 +6,7 @@ public class AppUser {
     String username;
     String password;
     String taskTable;
+    long id;
     List<String> friends;
 
     public String getUsername() {
@@ -24,6 +25,10 @@ public class AppUser {
         return friends;
     }
 
+    public long getId() {
+        return id;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -38,5 +43,9 @@ public class AppUser {
 
     public void setFriends(List<String> friends) {
         this.friends = friends;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
