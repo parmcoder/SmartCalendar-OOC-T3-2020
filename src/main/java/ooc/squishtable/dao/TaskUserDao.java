@@ -1,6 +1,8 @@
 package ooc.squishtable.dao;
 
+import ooc.squishtable.mapper.TaskMapper;
 import ooc.squishtable.mapper.UserMapper;
+import ooc.squishtable.model.AppTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -13,22 +15,25 @@ import java.util.List;
 @Repository
 public class TaskUserDao extends JdbcDaoSupport {
 
-    private UserMapper mapper = new UserMapper();
+    private TaskMapper mapper = new TaskMapper();
 
     @Autowired
     public DataSource dataSource;
 
-//    public AppUser findUserAccount(String userName) {
-//        String sql = UserMapper.BASE_SQL + " where u.User_Name = ? ";
-//
-//        Object[] params = new Object[] { userName };
-//        try {
-//            AppUser appUserInfo = getJdbcTemplate().queryForObject(sql, params, mapper);
-//            return appUserInfo;
-//        } catch (EmptyResultDataAccessException e) {
-//            return null;
-//        }
-//    }
+    /*
+    ! Make sure this method can retrieve all tasks
+     */
+    public List<AppTask> findAllUserTasks(long uid) {
+        String sql = TaskMapper.BASE_SQL + " where u.User_Name = ? ";
+
+        Object[] params = new Object[] { uid };
+        try {
+            List<AppTask> appUserInfo = getJdbcTemplate().query(sql, params, mapper);
+            return appUserInfo;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 //
 //    public List<AppUser> getAllUsers() {
 //        String sql = UserMapper.BASE_SQL;

@@ -5,9 +5,7 @@ import java.util.List;
 public class AppUser {
     String username;
     String password;
-    String taskTable;
     long id;
-    List<String> friends;
 
     public String getUsername() {
         return username;
@@ -15,14 +13,6 @@ public class AppUser {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getTaskTable() {
-        return taskTable;
-    }
-
-    public List<String> getFriends() {
-        return friends;
     }
 
     public long getId() {
@@ -35,14 +25,6 @@ public class AppUser {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setTaskTable(String taskTable) {
-        this.taskTable = taskTable;
-    }
-
-    public void setFriends(List<String> friends) {
-        this.friends = friends;
     }
 
     public void setId(long id) {
