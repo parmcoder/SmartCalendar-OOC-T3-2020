@@ -1,0 +1,55 @@
+create table APP_TASKS
+(
+    TID int auto_increment,
+    TITLE varchar(100),
+    DESCRIPTION varchar(300) not null,
+    START_DATE datetime,
+    END_DATE datetime,
+    UID bigint,
+    constraint APP_TASKS_pk
+        primary key (TID),
+    constraint UID__fk
+        foreign key (UID) references APP_USER (USER_ID)
+            on update cascade on delete cascade
+);
+
+create table APP_ROLE
+(
+    ROLE_ID   bigint      not null
+        primary key,
+    ROLE_NAME varchar(30) not null,
+    constraint APP_ROLE_UK
+        unique (ROLE_NAME)
+);
+
+create table APP_ROLE
+(
+    ROLE_ID   bigint      not null
+        primary key,
+    ROLE_NAME varchar(30) not null,
+    constraint APP_ROLE_UK
+        unique (ROLE_NAME)
+);
+
+create table USER_ROLE
+(
+    ID      bigint not null
+        primary key,
+    USER_ID bigint not null,
+    ROLE_ID bigint not null,
+    constraint USER_ROLE_UK
+        unique (USER_ID, ROLE_ID),
+    constraint USER_ROLE_FK1
+        foreign key (USER_ID) references oocdb.APP_USER (USER_ID),
+    constraint USER_ROLE_FK2
+        foreign key (ROLE_ID) references oocdb.APP_ROLE (ROLE_ID)
+);
+
+insert into APP_TASKS(TID, TITLE, DESCRIPTION, START_DATE, END_DATE, UID)
+value (0,'bl','bsdf','2020-07-17T02:56','2020-07-17T02:56', 1);
+
+delete from APP_TASKS where TID = ?;
+
+update APP_TASKS
+set TITLE = 'lol'
+where tid = 0;
