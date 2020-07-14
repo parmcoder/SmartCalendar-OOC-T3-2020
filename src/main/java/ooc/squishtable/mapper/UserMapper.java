@@ -14,6 +14,9 @@ public class UserMapper implements RowMapper<AppUser> {
     @Override
     public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
         AppUser appUser = new AppUser();
+        appUser.setId( rs.getLong("USER_ID"));
+        appUser.setUsername(rs.getString("USER_NAME"));
+        appUser.setPassword(rs.getString("ENCRYPTED_PASSWORD"));
 
         return appUser;
     }

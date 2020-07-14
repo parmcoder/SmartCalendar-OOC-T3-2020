@@ -95,20 +95,4 @@ public class AppUserDao extends JdbcDaoSupport {
             System.out.println("Null!");
         }
     }
-
-    public void updateUser(AppUser user){
-        /*
-        ? Update
-         */
-
-        String sqlForUpdate = "update APP_USER set USER_NAME = ?, USER_STATUS = ? where USER_ID = ?";
-//        String sqlForRemove2 = "delete from USER_ROLE where USER_ID = ?;";
-        try{
-            Object[] params = new Object[]{ user.getUsername(), user.getStatus()  ,user.getId() };
-            getJdbcTemplate().update(sqlForUpdate, params);
-//            getJdbcTemplate().update(sqlForRemove1, params);
-        }catch(EmptyResultDataAccessException e){
-            System.out.println("Null!");
-        }
-    }
 }
