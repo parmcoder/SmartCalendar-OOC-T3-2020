@@ -1,15 +1,65 @@
 package ooc.squishtable.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class AppTask {
-    String data;
-    Date dateStart;
-    Date dateEnd;
-    String ownBy;
 
-    public String getData() {
-        return data;
+    String title;
+    String description;
+    Timestamp dateStart;
+    Timestamp dateEnd;
+    long uid;
+    long tid;
+
+    public AppTask() {
+
+    }
+
+    public AppTask(String title,
+                   String description,
+                   Timestamp dateStart,
+                   Timestamp dateEnd,
+                   long uid,
+                   long tid) {
+        this.tid = tid;
+        this.uid = uid;
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.title = title;
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    public long getTid() {
+        return tid;
+    }
+
+    public void setTid(long tid) {
+        this.tid = tid;
     }
 
     public Date getDateStart() {
@@ -20,23 +70,11 @@ public class AppTask {
         return dateEnd;
     }
 
-    public String getOwnBy() {
-        return ownBy;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(Timestamp dateStart) {
         this.dateStart = dateStart;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(Timestamp dateEnd) {
         this.dateEnd = dateEnd;
-    }
-
-    public void setOwnBy(String ownBy) {
-        this.ownBy = ownBy;
     }
 }

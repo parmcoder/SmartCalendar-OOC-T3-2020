@@ -36,6 +36,36 @@ public class MainController  {
         return "welcomePage";
     }
 
+    /*
+    * TODO: We need to make log-in page
+     */
 
+    /*
+     * TODO: We need to make calendar page
+     */
+
+    /*
+     * TODO: We need to make registration page
+     */
+
+    /*
+     * TODO: We need to make admin page
+     */
+
+    /*
+     * TODO: We need to make user page for adding task
+     */
+
+    /*
+     * TODO: We need to handle 403 page
+     */
+
+    /*
+     * TODO: We need to manage menu bar
+     */
+
+    /*
+     ? We need to make about page (Optional)
+     */
 
 }
