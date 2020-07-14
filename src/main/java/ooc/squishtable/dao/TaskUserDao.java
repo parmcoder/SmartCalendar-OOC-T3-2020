@@ -23,6 +23,7 @@ public class TaskUserDao extends JdbcDaoSupport {
     /*
     ! Make sure this method can retrieve all tasks
      */
+
     public List<AppTask> findAllUserTasks(long uid) {
         String sql = TaskMapper.BASE_SQL + " where u.User_Name = ? ";
 

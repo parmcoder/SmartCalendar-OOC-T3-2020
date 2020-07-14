@@ -26,6 +26,9 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/", "/login", "/logout")
                 .permitAll();
 
+        /*
+        TODO: Manage accesses for each pages according to requests
+         */
         http.authorizeRequests().antMatchers("/userInfo")
                 .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
