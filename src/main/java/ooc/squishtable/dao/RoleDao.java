@@ -8,10 +8,10 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class RoleUserDao extends JdbcDaoSupport {
+public class RoleDao extends JdbcDaoSupport {
 
     @Autowired
-    public RoleUserDao(DataSource dataSource) {
+    public RoleDao(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
 

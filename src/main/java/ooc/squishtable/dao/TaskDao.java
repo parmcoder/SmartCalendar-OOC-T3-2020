@@ -13,12 +13,17 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class TaskUserDao extends JdbcDaoSupport {
+public class TaskDao extends JdbcDaoSupport {
 
     private TaskMapper mapper = new TaskMapper();
 
     @Autowired
     public DataSource dataSource;
+
+    @PostConstruct
+    public void init(){
+        setDataSource(dataSource);
+    }
 
     /*
     ! Make sure this method can retrieve all tasks

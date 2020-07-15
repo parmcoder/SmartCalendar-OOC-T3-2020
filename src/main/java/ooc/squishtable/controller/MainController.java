@@ -1,6 +1,10 @@
 package ooc.squishtable.controller;
 
 import lombok.var;
+import ooc.squishtable.model.AppUser;
+import ooc.squishtable.service.IAdminService;
+import ooc.squishtable.service.UserDetailsServiceImpl;
+import ooc.squishtable.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,13 +25,13 @@ public class MainController  {
      Just good services
      */
 //
-//    @Autowired
-//    IAdminService adminService;
+    @Autowired
+    IAdminService adminService;
 //
-//    @Autowired
-//    UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
 
-    private Boolean success=true;
+    private Boolean success = true;
 
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcomePage(Model model) {
@@ -39,6 +43,18 @@ public class MainController  {
     /*
     * TODO: We need to make log-in page
      */
+    @RequestMapping(value = { "/", "/login"}, method = RequestMethod.GET)
+    public String loginPage(Model model, Principal principal){
+        model.addAttribute("title", "Welcome");
+
+        if (principal != null) {
+            User loggedinUser = (User) ((Authentication) principal).getPrincipal();
+            if(loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:admin";
+            else return "redirect:userInfo";
+        }
+        System.out.println("Hello");
+        return "loginPage";
+    }
 
     /*
      * TODO: We need to make calendar page
@@ -51,10 +67,44 @@ public class MainController  {
     /*
      * TODO: We need to make admin page
      */
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public String adminPage(Model model, Principal principal) {
+
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        //only admin can log in here
+
+        String userInfo = WebUtils.toString(loginedUser);
+        model.addAttribute("userInfo", userInfo);
+        var users = adminService.findAll();
+        model.addAttribute("appUserList", users);
+        model.addAttribute("userRow", new AppUser());
+
+        return "adminPage";
+    }
 
     /*
      * TODO: We need to make user page for adding task
      */
+    @RequestMapping(value = "/user")
+    public String showUserInfo(Model model, Principal principal){
+        // After user login successfully.
+        String userName = principal.getName();
+
+        System.out.println("AppUser Name: " + userName);
+
+        User loggedinUser = (User) ((Authentication) principal).getPrincipal();
+
+        String userInfo = WebUtils.toString(loggedinUser);
+        model.addAttribute("userInfo", userInfo);
+
+        AppUser editUser = new AppUser();
+        model.addAttribute("newUserData", editUser);
+
+        AppUser currentUser = adminService.getCurrentInfo(userName);
+        model.addAttribute("currentUser", currentUser);
+
+        return "userInfoPage";
+    }
 
     /*
      * TODO: We need to handle 403 page

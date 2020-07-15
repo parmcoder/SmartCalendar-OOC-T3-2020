@@ -4,9 +4,11 @@ import ooc.squishtable.dao.AppUserDao;
 import ooc.squishtable.model.AppUser;
 import ooc.squishtable.utils.EncryptorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AdminService implements IAdminService {
 
     @Autowired

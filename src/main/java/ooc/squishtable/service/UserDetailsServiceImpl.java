@@ -1,7 +1,7 @@
 package ooc.squishtable.service;
 
 import ooc.squishtable.dao.AppUserDao;
-import ooc.squishtable.dao.RoleUserDao;
+import ooc.squishtable.dao.RoleDao;
 import ooc.squishtable.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private AppUserDao appUserDAO;
 
     @Autowired
-    private RoleUserDao roleUserDao;
+    private RoleDao roleDao;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("Found AppUser: " + appUser);
 
         // [ROLE_USER, ROLE_ADMIN,..]
-        List<String> roleNames = this.roleUserDao.getRoleNames(appUser.getId());
+        List<String> roleNames = this.roleDao.getRoleNames(appUser.getId());
 
         List<GrantedAuthority> grantList = new ArrayList<>();
         if (roleNames != null) {
