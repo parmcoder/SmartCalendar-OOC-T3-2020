@@ -5,8 +5,16 @@ import java.util.List;
 public class AppUser {
     String username;
     String password;
+    String confirmPassword;
     long id;
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
     public String getUsername() {
         return username;
     }

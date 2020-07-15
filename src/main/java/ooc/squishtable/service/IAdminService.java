@@ -18,4 +18,6 @@ public interface IAdminService {
     Boolean updateUserInfo(String userName, AppUser user);
 
     AppUser getCurrentInfo(String username);
+
+    Boolean checkMatching(AppUser user);
 }

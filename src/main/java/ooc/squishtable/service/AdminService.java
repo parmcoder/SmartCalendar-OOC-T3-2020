@@ -56,6 +56,11 @@ public class AdminService implements IAdminService {
     }
 
     @Override
+    public Boolean checkMatching(AppUser user) {
+        return user.getPassword().contentEquals(user.getConfirmPassword());
+    }
+
+    @Override
     public Boolean removeUser(AppUser user) {
         if(checkExistedUser(user)){
             this.appUserDao.removeUser(user);

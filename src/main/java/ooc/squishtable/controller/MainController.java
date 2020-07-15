@@ -24,52 +24,71 @@ public class MainController  {
     /*
      Just good services
      */
-//
+
     @Autowired
     IAdminService adminService;
-//
+
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
     private Boolean success = true;
+    private ErrorType error = ErrorType.NO_ERROR;
 
-    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
-    public String welcomePage(Model model) {
-        model.addAttribute("title", "Welcome");
-        model.addAttribute("message", "This website is made by Parmcoder!");
-        return "welcomePage";
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String showFirstPage(Principal principal){
+        if (principal != null) {
+            return "redirect:login";
+        }
+        return "index";
     }
 
-    /*
-    * TODO: We need to make log-in page
-     */
-    @RequestMapping(value = { "/", "/login"}, method = RequestMethod.GET)
-    public String loginPage(Model model, Principal principal){
-        model.addAttribute("title", "Welcome");
-
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String loginPage(Principal principal){
         if (principal != null) {
             User loggedinUser = (User) ((Authentication) principal).getPrincipal();
             if(loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:admin";
             else return "redirect:user";
         }
-        System.out.println("Hello");
         return "loginPage";
     }
 
-    /*
-     * TODO: We need to make calendar page
-     */
+    @RequestMapping(value = "/registration")
+    public String showRegistration(Model model, Principal principal){
+        // After user login successfully.
+        if (principal != null) {
+            User loggedinUser = (User) ((Authentication) principal).getPrincipal();
+            if(loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:admin";
+            else return "redirect:user";
+        }
+        model.addAttribute("userToAdd", new AppUser());
+        return "registration";
+    }
 
-    /*
-     * TODO: We need to make registration page
-     */
+    @RequestMapping(value = "/registration/failed")
+    public String showRegistrationFailed(Model model, Principal principal){
+        if(error.equals(ErrorType.PASSWORD_MISMATCH)) model.addAttribute("errorMsg", "Registration Failed! Passwords do not match.");
+        if(error.equals(ErrorType.USERNAME_TAKEN)) model.addAttribute("errorMsg", "Registration Failed! Username is already taken.");
+        error = ErrorType.NO_ERROR;
+        return showRegistration( model ,principal);
+    }
 
-    /*
-     * TODO: We need to make admin page
-     */
+    @PostMapping(value = "/registration")
+    public String submitRegistration(@ModelAttribute AppUser user,
+                                     Model model){
+        if(adminService.checkMatching(user)){
+            success = adminService.addNewUser(user);
+            if(success){
+                return "redirect:";
+            }
+            error = ErrorType.USERNAME_TAKEN;
+        }
+        error = ErrorType.PASSWORD_MISMATCH;
+        return "forward:registration/failed";
+    }
+
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model, Principal principal) {
-
+        model.addAttribute("title", "Admin Page");
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
         //only admin can log in here
 
@@ -82,9 +101,6 @@ public class MainController  {
         return "adminpage";
     }
 
-    /*
-     * TODO: We need to make user page for adding task
-     */
     @RequestMapping(value = "/user")
     public String showUserInfo(Model model, Principal principal){
         // After user login successfully.
@@ -106,9 +122,29 @@ public class MainController  {
         return "userInfoPage";
     }
 
-    /*
-     * TODO: We need to handle 403 page
-     */
+    @RequestMapping(value = "/user/failed", method = RequestMethod.GET)
+    public String userInfoFailed(Model model, Principal principal) {
+        // After user login successfully.
+        showUserInfo(model,principal);
+        if(!success){
+            model.addAttribute("errorMsg", "Try again! Your username is not available.");
+        }
+        success = true;
+        return "userInfoPage";
+    }
+
+    @PostMapping(value = "/user")
+    public String updateUserInfo(@ModelAttribute("newUserData") AppUser user, Principal principal, Model model) {
+        success = adminService.updateUserInfo(principal.getName(), user);
+        if(user.getUsername().isEmpty()){
+            return "redirect:user";
+        }
+        if(!success){
+            return "redirect:user/failed";
+        }
+        return "redirect:logout";
+    }
+
     @RequestMapping(value = {"/403"}, method = RequestMethod.GET)
     public String accessDenied(Model model, Principal principal) {
 
@@ -127,13 +163,36 @@ public class MainController  {
         return "welcomePage";
     }
 
+    @RequestMapping(value = "/remove", method = RequestMethod.GET)
+    public String remove(@ModelAttribute("userRow") AppUser user, Model model){
+        return "removeConfirm";
+    }
+
+    @PostMapping(value = "/remove")
+    public String confirmRemoveClicked(@ModelAttribute("userRow") AppUser user, Model model){
+        success = adminService.removeUser(user);
+
+        if(!success){
+            model.addAttribute("errorMsg", "Try again! That user is not existed.");
+        }
+
+        return "redirect:admin";
+    }
+
 
     /*
-     * TODO: We need to manage menu bar
+     * TODO: We need to make calendar page
      */
+
+
 
     /*
      ? We need to make about page (Optional)
      */
-
+    @RequestMapping(value = "/about", method = RequestMethod.GET)
+    public String showAbout(Model model) {
+        model.addAttribute("title", "Welcome");
+        model.addAttribute("message", "This website is made by Parmcoder!");
+        return "welcomePage";
+    }
 }
