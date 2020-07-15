@@ -3,11 +3,15 @@ package ooc.squishtable.security;
 import ooc.squishtable.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@Configuration
+@EnableWebSecurity
 public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -33,13 +37,10 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
         /*
         TODO: Manage accesses for each pages according to requests
          */
-        http.authorizeRequests().antMatchers("/userInfo")
+        http.authorizeRequests().antMatchers("/user")
                 .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
         http.authorizeRequests().antMatchers("/admin")
-                .access("hasRole('ROLE_ADMIN')");
-
-        http.authorizeRequests().antMatchers("/registration")
                 .access("hasRole('ROLE_ADMIN')");
 
         http.authorizeRequests()
@@ -48,11 +49,12 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().and().formLogin()//
                 // Submit URL of login page.
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
-                .loginPage("/login")//
-                .defaultSuccessUrl("/userInfo")//
-                .failureUrl("/login?error=true")//
-                .usernameParameter("username")//
+                .loginPage("/login")
+                .defaultSuccessUrl("/user")
+                .failureUrl("/login?error=true")
+                .usernameParameter("username")
                 .passwordParameter("password")
+
                 // Config for Logout Page
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
     }

@@ -2,14 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Index</title>
+    <title>Welcome to squishtable.com</title>
 </head>
 <body>
-<div>
-    <h3>Welcome <span th:text="${#authentication.name}"/></h3>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Logout"/>
-    </form>
-</div>
+<h1>Welcome to our website!</h1>
+<a href='/registration'><button>Sign Up</button></a>
+<a href='/login'><button>Sign In</button></a>
+
 </body>
 </html>
