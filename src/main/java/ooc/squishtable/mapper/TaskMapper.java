@@ -19,11 +19,9 @@ public class TaskMapper implements RowMapper<AppTask> {
         appTask.setTid(rs.getLong("TID"));
         appTask.setTitle(rs.getString("TITLE"));
         appTask.setDescription(rs.getString("DESCRIPTION"));
-
         /*
         ! Still need to test how this work
         */
-
         appTask.setDateStart(rs.getTimestamp("START_DATE"));
         appTask.setDateEnd(rs.getTimestamp("END_DATE"));
 
