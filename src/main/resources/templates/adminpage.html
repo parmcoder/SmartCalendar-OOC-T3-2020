@@ -19,14 +19,14 @@
         <th>USERNAME</th>
     </tr>
     <tr th:each="appUser : ${appUserList}">
-        <td th:text="${appUser.getUserId()}"></td>
-        <td th:text="${appUser.getUserName()}"></td>
+        <td th:text="${appUser.getId()}"></td>
+        <td th:text="${appUser.getUsername()}"></td>
 
         <td>
             <form action="#" th:action="@{/remove}" th:object="${userRow}" method="get">
-                <input type="hidden" name="userId" th:value="${appUser.getUserId()}">
-                <input type="hidden" name="userName" th:value="${appUser.getUserName()}">
-                <button th:if="${appUser.getUserName() != #request.userPrincipal.name}" type="submit">
+                <input type="hidden" name="userId" th:value="${appUser.getId()}">
+                <input type="hidden" name="userName" th:value="${appUser.getUsername()}">
+                <button th:if="${appUser.getUsername() != #request.userPrincipal.name}" type="submit">
                     <i>Remove</i>
                 </button>
             </form>

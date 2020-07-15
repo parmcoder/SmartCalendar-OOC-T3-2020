@@ -50,7 +50,7 @@ public class MainController  {
         if (principal != null) {
             User loggedinUser = (User) ((Authentication) principal).getPrincipal();
             if(loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:admin";
-            else return "redirect:userInfo";
+            else return "redirect:user";
         }
         System.out.println("Hello");
         return "loginPage";
@@ -79,7 +79,7 @@ public class MainController  {
         model.addAttribute("appUserList", users);
         model.addAttribute("userRow", new AppUser());
 
-        return "adminPage";
+        return "adminpage";
     }
 
     /*
@@ -109,6 +109,24 @@ public class MainController  {
     /*
      * TODO: We need to handle 403 page
      */
+    @RequestMapping(value = {"/403"}, method = RequestMethod.GET)
+    public String accessDenied(Model model, Principal principal) {
+
+        if (principal != null) {
+
+            User loggedinUser = (User) ((Authentication) principal).getPrincipal();
+            String userInfo = WebUtils.toString(loggedinUser);
+            model.addAttribute("userInfo", userInfo);
+
+            String message = "Hi " + principal.getName() //
+                    + "<br> You do not have permission to access this page!";
+            model.addAttribute("message", message);
+
+        }
+
+        return "welcomePage";
+    }
+
 
     /*
      * TODO: We need to manage menu bar
