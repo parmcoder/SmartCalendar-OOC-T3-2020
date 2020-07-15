@@ -62,6 +62,8 @@ public class AdminService implements IAdminService {
 
     @Override
     public Boolean removeUser(AppUser user) {
+        System.out.println(user);
+
         if(checkExistedUser(user)){
             this.appUserDao.removeUser(user);
             return true;

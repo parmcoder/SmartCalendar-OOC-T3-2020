@@ -164,12 +164,12 @@ public class MainController  {
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.GET)
-    public String remove(@ModelAttribute("userRow") AppUser user, Model model){
+    public String remove(@ModelAttribute(value = "userRow") AppUser user, Model model){
         return "removeConfirm";
     }
 
     @PostMapping(value = "/remove")
-    public String confirmRemoveClicked(@ModelAttribute("userRow") AppUser user, Model model){
+    public String confirmRemoveClicked(@ModelAttribute(value = "userRow") AppUser user, Model model){
         success = adminService.removeUser(user);
 
         if(!success){
