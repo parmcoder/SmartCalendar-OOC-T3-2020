@@ -1,8 +1,10 @@
 package ooc.squishtable.controller;
 
 import lombok.var;
+import ooc.squishtable.model.AppTask;
 import ooc.squishtable.model.AppUser;
 import ooc.squishtable.service.IAdminService;
+import ooc.squishtable.service.IUserService;
 import ooc.squishtable.service.UserDetailsServiceImpl;
 import ooc.squishtable.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class MainController  {
@@ -24,6 +27,8 @@ public class MainController  {
     /*
      Just good services
      */
+    @Autowired
+    IUserService userService;
 
     @Autowired
     IAdminService adminService;
@@ -96,7 +101,6 @@ public class MainController  {
         model.addAttribute("userInfo", userInfo);
         var users = adminService.findAll();
         model.addAttribute("appUserList", users);
-        model.addAttribute("userRow", new AppUser());
 
         return "adminpage";
     }
@@ -160,7 +164,7 @@ public class MainController  {
 
         }
 
-        return "welcomePage";
+        return "403Page";
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.GET)
@@ -183,6 +187,34 @@ public class MainController  {
     /*
      * TODO: We need to make calendar page
      */
+    @RequestMapping(value = {"/calendar"}, method = RequestMethod.GET)
+    public String showCalendar(Model model, Principal principal) {
+
+        User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        var allTask = userService.getAllTasks(loginedUser.getUsername());
+        model.addAttribute("userTasksList", allTask);
+
+        return "calendarpage";
+    }
+
+    /*
+     ? We could use a modal component to show dialog box (Frontend stuff)
+     */
+    @RequestMapping(value = {"/calendar/add"}, method = RequestMethod.GET)
+    public String showAddTask(Model model, Principal principal) {
+
+        return "addingInfoPage";
+    }
+    @RequestMapping(value = {"/calendar/remove"}, method = RequestMethod.GET)
+    public String showRemoveTask(Model model, Principal principal) {
+
+        return "calendarpage";
+    }
+    @RequestMapping(value = {"/calendar/edit"}, method = RequestMethod.GET)
+    public String showEditTask(Model model, Principal principal) {
+
+        return "calendarpage";
+    }
 
 
 

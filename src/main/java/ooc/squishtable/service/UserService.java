@@ -7,29 +7,38 @@ import ooc.squishtable.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements IUserService {
 
     @Autowired
     private TaskDao taskDao;
 
+    @Autowired
+    private AppUserDao userDao;
+
     @Override
     public Boolean addTask(AppTask task) {
-        return null;
+        taskDao.insertTask(task);
+        return true;
     }
 
     @Override
     public Boolean removeTask(AppTask task) {
-        return null;
+        taskDao.removeTask(task);
+        return true;
     }
 
     @Override
     public Boolean updateTask(AppTask task) {
-        return null;
+        taskDao.updateTask(task);
+        return true;
     }
 
     @Override
-    public Boolean getAllTasks(AppUser user) {
-        return null;
+    public List<AppTask> getAllTasks(String username) {
+        AppUser user = userDao.findUserAccount(username);
+        return taskDao.findAllUserTasks(user.getId());
     }
 }
