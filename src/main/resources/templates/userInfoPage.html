@@ -22,13 +22,29 @@
     <p>Surname: <input type="text" th:field="*{surname}"></p>
 
     <p>Please write your password to confirm.</p>
-    <p>Your Password: <input type="text" th:field="*{confirmPassword}"></p>
+    <p>Your Password: <input type="password" th:field="*{confirmPassword}"></p>
 
     <button type="submit">
         <i>Update info</i>
     </button>
 </form>
-<br/><br/>
+
+<!--<h4>Change your password</h4>-->
+<!--<form action="#" th:action="@{/user}" th:object="${newUserData}" method="post">-->
+<!--    <p>Old password: <input type="text" th:field="*{username}" ></p>-->
+<!--    <p>Name: <input type="text" th:field="*{name}"></p>-->
+<!--    <p>Surname: <input type="text" th:field="*{surname}"></p>-->
+
+<!--    <p>Please write your password to confirm.</p>-->
+<!--    <p>Your Password: <input type="password" th:field="*{confirmPassword}"></p>-->
+
+<!--    <button type="submit">-->
+<!--        <i>Change Password</i>-->
+<!--    </button>-->
+<!--</form>-->
+
+<br/>
+<br/>
 
 <b>Note: You will automatically logout if you change your username!</b>
 

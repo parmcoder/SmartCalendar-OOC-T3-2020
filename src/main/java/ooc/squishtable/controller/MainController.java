@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.security.Principal;
 
 @Controller
-public class MainController  {
+public class MainController {
 
     /*
      Just good services
@@ -38,7 +38,7 @@ public class MainController  {
     private ErrorType error = ErrorType.NO_ERROR;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String showFirstPage(Principal principal){
+    public String showFirstPage(Principal principal) {
         if (principal != null) {
             return "redirect:login";
         }
@@ -46,21 +46,23 @@ public class MainController  {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(Principal principal){
+    public String loginPage(Principal principal) {
         if (principal != null) {
             User loggedinUser = (User) ((Authentication) principal).getPrincipal();
-            if(loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:admin";
+            if (loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                return "redirect:admin";
             else return "redirect:user";
         }
         return "newLoginPage";
     }
 
     @RequestMapping(value = "/registration")
-    public String showRegistration(Model model, Principal principal){
+    public String showRegistration(Model model, Principal principal) {
         // After user login successfully.
         if (principal != null) {
             User loggedinUser = (User) ((Authentication) principal).getPrincipal();
-            if(loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:admin";
+            if (loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")))
+                return "redirect:admin";
             else return "redirect:user";
         }
         model.addAttribute("userToAdd", new AppUser());
@@ -68,19 +70,21 @@ public class MainController  {
     }
 
     @RequestMapping(value = "/registration/failed")
-    public String showRegistrationFailed(Model model, Principal principal){
-        if(error.equals(ErrorType.PASSWORD_MISMATCH)) model.addAttribute("errorMsg", "Registration Failed! Passwords do not match.");
-        if(error.equals(ErrorType.USERNAME_TAKEN)) model.addAttribute("errorMsg", "Registration Failed! Username is already taken.");
+    public String showRegistrationFailed(Model model, Principal principal) {
+        if (error.equals(ErrorType.PASSWORD_MISMATCH))
+            model.addAttribute("errorMsg", "Registration Failed! Passwords do not match.");
+        if (error.equals(ErrorType.USERNAME_TAKEN))
+            model.addAttribute("errorMsg", "Registration Failed! Username is already taken.");
         error = ErrorType.NO_ERROR;
-        return showRegistration( model ,principal);
+        return showRegistration(model, principal);
     }
 
     @PostMapping(value = "/registration")
     public String submitRegistration(@ModelAttribute AppUser user,
-                                     Model model){
-        if(adminService.checkMatching(user)){
+                                     Model model) {
+        if (adminService.checkMatching(user)) {
             success = adminService.addNewUser(user);
-            if(success){
+            if (success) {
                 return "redirect:";
             }
             error = ErrorType.USERNAME_TAKEN;
@@ -104,7 +108,7 @@ public class MainController  {
     }
 
     @RequestMapping(value = "/user")
-    public String showUserInfo(Model model, Principal principal){
+    public String showUserInfo(Model model, Principal principal) {
         // After user login successfully.
         String userName = principal.getName();
 
@@ -127,8 +131,8 @@ public class MainController  {
     @RequestMapping(value = "/user/failed", method = RequestMethod.GET)
     public String userInfoFailed(Model model, Principal principal) {
         // After user login successfully.
-        showUserInfo(model,principal);
-        if(!success){
+        showUserInfo(model, principal);
+        if (!success) {
             model.addAttribute("errorMsg", "Try again! Your username is not available.");
         }
         success = true;
@@ -138,10 +142,10 @@ public class MainController  {
     @PostMapping(value = "/user")
     public String updateUserInfo(@ModelAttribute("newUserData") AppUser user, Principal principal, Model model) {
         success = adminService.updateUserInfo(principal.getName(), user);
-        if(user.getUsername().isEmpty()){
+        if (user.getUsername().isEmpty()) {
             return "redirect:user";
         }
-        if(!success){
+        if (!success) {
             return "redirect:user/failed";
         }
         return "redirect:logout";
@@ -166,21 +170,20 @@ public class MainController  {
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.GET)
-    public String remove(@ModelAttribute(value = "userRow") AppUser user, Model model){
+    public String remove(@ModelAttribute(value = "userRow") AppUser user, Model model) {
         return "removeConfirm";
     }
 
     @PostMapping(value = "/remove")
-    public String confirmRemoveClicked(@ModelAttribute(value = "userRow") AppUser user, Model model){
+    public String confirmRemoveClicked(@ModelAttribute(value = "userRow") AppUser user, Model model) {
         success = adminService.removeUser(user);
 
-        if(!success){
+        if (!success) {
             model.addAttribute("errorMsg", "Try again! That user is not existed.");
         }
 
         return "redirect:admin";
     }
-
 
     /*
      * TODO: We need to make calendar page
@@ -201,19 +204,19 @@ public class MainController  {
     @RequestMapping(value = {"/calendar/add"}, method = RequestMethod.GET)
     public String showAddTask(Model model, Principal principal) {
 
-        return "addingInfoPage";
+        return "addTask";
     }
 
     @RequestMapping(value = {"/calendar/remove"}, method = RequestMethod.GET)
     public String showRemoveTask(Model model, Principal principal) {
 
-        return "calendarpage";
+        return "removeTask";
     }
 
     @RequestMapping(value = {"/calendar/edit"}, method = RequestMethod.GET)
     public String showEditTask(Model model, Principal principal) {
 
-        return "calendarpage";
+        return "editTask";
     }
 
     /*
