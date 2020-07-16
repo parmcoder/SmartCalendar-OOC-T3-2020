@@ -15,8 +15,8 @@
 <form action="#" th:action="@{/calendar/add}" th:object="${newTaskData}" method="post">
     <p>Title : <input type="text" th:field="*{title}"></p>
     <p>Description : <input type="text" th:field="*{description}"></p>
-    <p>Start* : <input type="date" th:field="*{dateStart}" ></p>
-    <p>End : <input type="date" th:field="*{dateEnd}" ></p>
+    <p>Start* : <input type="date" th:field="*{inputDateStart}" ></p>
+    <p>End : <input type="date" th:field="*{inputDateEnd}" ></p>
     <button type="submit">
         <i>Confirm</i>
     </button>

@@ -7,19 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class TaskDao extends JdbcDaoSupport {
+@Transactional
+public class TaskDao extends JdbcDaoSupport implements ITaskDao{
 
     private TaskMapper mapper = new TaskMapper();
 
     @Autowired
     public DataSource dataSource;
 
+    @Override
     @PostConstruct
     public void init(){
         setDataSource(dataSource);
@@ -29,6 +32,7 @@ public class TaskDao extends JdbcDaoSupport {
     ! Make sure this method can retrieve all tasks
      */
 
+    @Override
     public List<AppTask> findAllUserTasks(long uid) {
         String sql = TaskMapper.BASE_SQL + " where u.UID = ? ";
 
@@ -41,6 +45,7 @@ public class TaskDao extends JdbcDaoSupport {
         }
     }
 
+    @Override
     public void insertTask(AppTask task){
         /*
         ? find total count and then insert to every table
@@ -56,6 +61,7 @@ public class TaskDao extends JdbcDaoSupport {
         }
     }
 
+    @Override
     public void removeTask(AppTask task){
         /*
         ? find total count and then insert to every table
@@ -69,6 +75,7 @@ public class TaskDao extends JdbcDaoSupport {
         }
     }
 
+    @Override
     public void updateTask(AppTask task){
         /*
         ? Update

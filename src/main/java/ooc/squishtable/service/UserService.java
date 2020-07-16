@@ -8,6 +8,8 @@ import ooc.squishtable.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -21,16 +23,30 @@ public class UserService implements IUserService {
 
     @Override
     public Boolean addTask(AppTask task, String username) {
-        Boolean success = true;
+        Boolean success = false;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         AppUser user = userDao.findUserAccount(username);
         task.setUid(user.getId());
-//        taskDao.insertTask(task);
-//
-        if(WebUtils.isValidDateRange(task.getDateEnd().toString(), task.getDateStart().toString())){
-            taskDao.insertTask(task);
-        }else{
-            success = false;
+        java.util.Date utilDateStart, utilDateEnd;
+        try {
+            utilDateStart = format.parse(task.getInputDateStart());
+            task.setDateStart(new java.sql.Date(utilDateStart.getTime()));
+            utilDateEnd = format.parse(task.getInputDateEnd());
+            task.setDateEnd(new java.sql.Date(utilDateEnd.getTime()));
+
+            if(utilDateEnd.after(utilDateStart)){
+                success = true;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e){
+            e.printStackTrace();
         }
+        finally {
+            if(success) taskDao.insertTask(task);
+        }
+
         return success;
     }
 

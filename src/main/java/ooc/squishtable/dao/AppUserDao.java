@@ -6,24 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class AppUserDao extends JdbcDaoSupport {
+@Transactional
+public class AppUserDao extends JdbcDaoSupport implements IAppUserDao {
 
     private UserMapper mapper = new UserMapper();
 
     @Autowired
     public DataSource dataSource;
 
+    @Override
     @PostConstruct
     public void init(){
         setDataSource(dataSource);
     }
 
+    @Override
     public AppUser findUserAccount(String userName) {
         String sql = UserMapper.BASE_SQL + " where u.User_Name = ? ";
 
@@ -36,6 +40,7 @@ public class AppUserDao extends JdbcDaoSupport {
         }
     }
 
+    @Override
     public List<AppUser> getAllUsers() {
         String sql = UserMapper.BASE_SQL;
         List<AppUser> resultList;
@@ -49,6 +54,7 @@ public class AppUserDao extends JdbcDaoSupport {
         return resultList;
     }
 
+    @Override
     public void insertUser(AppUser user, int authority){
         /*
         * find total count and then insert to every table
@@ -82,6 +88,7 @@ public class AppUserDao extends JdbcDaoSupport {
         }
     }
 
+    @Override
     public void removeUser(AppUser user){
         /*
         * Remove user from both tables
@@ -98,6 +105,7 @@ public class AppUserDao extends JdbcDaoSupport {
         }
     }
 
+    @Override
     public void updateUser(AppUser user){
         /*
         * Update user info

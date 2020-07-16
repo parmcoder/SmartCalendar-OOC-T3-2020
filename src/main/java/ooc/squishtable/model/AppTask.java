@@ -4,6 +4,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @Entity
 @Table(name = "APP_TASKS")
@@ -20,6 +22,9 @@ public class AppTask {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date dateEnd;
+
+    String inputDateStart;
+    String inputDateEnd;
 
     public AppTask() {
 
@@ -86,14 +91,20 @@ public class AppTask {
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
-
-    public void setDateStart(String dateStart) {
-
-        this.dateStart = dateStart;
+    public String getInputDateStart() {
+        return inputDateStart;
     }
 
-    public void setDateEnd(String dateEnd) {
-
-        this.dateEnd = dateEnd;
+    public void setInputDateStart(String inputDateStart) {
+        this.inputDateStart = inputDateStart;
     }
+
+    public String getInputDateEnd() {
+        return inputDateEnd;
+    }
+
+    public void setInputDateEnd(String inputDateEnd) {
+        this.inputDateEnd = inputDateEnd;
+    }
+
 }

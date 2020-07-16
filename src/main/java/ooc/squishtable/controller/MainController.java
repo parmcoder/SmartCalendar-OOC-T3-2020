@@ -218,13 +218,13 @@ public class MainController {
     @PostMapping(value = "/calendar/add")
     public String addingTask(@ModelAttribute("newTaskData") AppTask newTask, Principal principal){
         User loggedInUser = (User) ((Authentication) principal).getPrincipal();
-        System.out.println(newTask.getDateStart());
-        System.out.println(newTask.getDateEnd());
+        System.out.println(newTask.getInputDateStart());
+        System.out.println(newTask.getInputDateEnd());
         success = userService.addTask(newTask, loggedInUser.getUsername());
         if(success){
-            return "redirect:calendar";
+            return "redirect:";
         }else{
-            return "forward:calendar/add/failed";
+            return "forward:add/failed";
         }
     }
 

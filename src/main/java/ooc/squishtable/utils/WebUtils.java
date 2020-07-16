@@ -30,16 +30,12 @@ public class WebUtils {
         }
         return sb.toString();
     }
-    public static boolean isValidDateRange(String startDate, String endDate) {
+    public static boolean isValidDateRange(Date startDate, Date endDate) {
         // false if either value is null
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD");
-
         if (startDate == null || endDate == null) { return false; }
-        Date start = (Date) formatter.parse(startDate);
-        Date end = (Date) formatter.parse(endDate);
 
         // true if endDate after startDate
-        if (end.after(start)) { return true; }
+        if (endDate.after(startDate)) { return true; }
 
         return false;
     }
