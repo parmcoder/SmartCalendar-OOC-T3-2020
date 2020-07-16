@@ -1,6 +1,7 @@
 package ooc.squishtable.controller;
 
 import lombok.var;
+import ooc.squishtable.model.AppTask;
 import ooc.squishtable.model.AppUser;
 import ooc.squishtable.service.IAdminService;
 import ooc.squishtable.service.IUserService;
@@ -202,9 +203,29 @@ public class MainController {
      ? We could use a modal component to show dialog box (Frontend stuff)
      */
     @RequestMapping(value = {"/calendar/add"}, method = RequestMethod.GET)
-    public String showAddTask(Model model, Principal principal) {
-
+    public String showAddTask(Model model) {
+        AppTask newTask = new AppTask();
+        model.addAttribute("newTaskData", newTask);
         return "addTask";
+    }
+
+    @RequestMapping(value = {"/calendar/add/failed"}, method = RequestMethod.GET)
+    public String failedAddTask(Model model) {
+        model.addAttribute("errorMsg", "Try again! The timestamps are not valid.");
+        return showAddTask(model);
+    }
+
+    @PostMapping(value = "/calendar/add")
+    public String addingTask(@ModelAttribute("newTaskData") AppTask newTask, Principal principal){
+        User loggedInUser = (User) ((Authentication) principal).getPrincipal();
+        System.out.println(newTask.getInputDateStart());
+        System.out.println(newTask.getInputDateEnd());
+        success = userService.addTask(newTask, loggedInUser.getUsername());
+        if(success){
+            return "redirect:";
+        }else{
+            return "forward:add/failed";
+        }
     }
 
     @RequestMapping(value = {"/calendar/remove"}, method = RequestMethod.GET)

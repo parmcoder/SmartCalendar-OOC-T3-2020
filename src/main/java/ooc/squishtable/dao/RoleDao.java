@@ -3,18 +3,21 @@ package ooc.squishtable.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class RoleDao extends JdbcDaoSupport {
+@Transactional
+public class RoleDao extends JdbcDaoSupport implements IRoleDao {
 
     @Autowired
     public RoleDao(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
 
+    @Override
     public List<String> getRoleNames(Long userId) {
         String sql = "Select r.Role_Name " //
                 + " from USER_ROLE ur, APP_ROLE r " //

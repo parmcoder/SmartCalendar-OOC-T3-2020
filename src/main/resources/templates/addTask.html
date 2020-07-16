@@ -8,21 +8,23 @@
 <th:block th:include="/_menu"></th:block>
 
 
-<h2>Adding Information</h2>
+<h2>New Task</h2>
 
 <h3 th:if="${errorMsg}!=null" th:utext="${errorMsg}" style="color: red;"></h3>
 
-<form action="#" th:action="@{/userInfo}" th:object="${newUserData}" method="post">
-    <p>Time : <input type="text" th:field="*{userName}" ></p>
-    <p>Head : <input type="text" th:field="*{userName}" ></p>
-    <p>Detail : <input type="text" th:field="*{status}"></p>
+<form action="#" th:action="@{/calendar/add}" th:object="${newTaskData}" method="post">
+    <p>Title : <input type="text" th:field="*{title}"></p>
+    <p>Description : <input type="text" th:field="*{description}"></p>
+    <p>Start* : <input type="date" th:field="*{inputDateStart}" ></p>
+    <p>End : <input type="date" th:field="*{inputDateEnd}" ></p>
     <button type="submit">
         <i>Confirm</i>
     </button>
+    <button type="reset">
+        <i>Reset</i>
+    </button>
 </form>
 <br/><br/>
-
-<div th:if="${userInfo != null}" th:utext="${userInfo}"></div>
 
 </body>
 

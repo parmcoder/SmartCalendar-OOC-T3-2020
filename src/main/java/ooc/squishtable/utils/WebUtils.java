@@ -1,8 +1,11 @@
 package ooc.squishtable.utils;
 
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Collection;
 
 public class WebUtils {
@@ -26,5 +29,14 @@ public class WebUtils {
             sb.append(")");
         }
         return sb.toString();
+    }
+    public static boolean isValidDateRange(Date startDate, Date endDate) {
+        // false if either value is null
+        if (startDate == null || endDate == null) { return false; }
+
+        // true if endDate after startDate
+        if (endDate.after(startDate)) { return true; }
+
+        return false;
     }
 }
