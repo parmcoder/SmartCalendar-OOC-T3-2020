@@ -81,7 +81,7 @@ public class TaskDao extends JdbcDaoSupport {
             Object[] params = new Object[]{ task.getTitle(),task.getDescription(),
                     task.getDateStart(), task.getDateEnd() };
             getJdbcTemplate().update(sqlForUpdate, params);
-//            getJdbcTemplate().update(sqlForRemove1, params);
+//          getJdbcTemplate().update(sqlForRemove1, params);
         }catch(EmptyResultDataAccessException e){
             System.out.println("Null!");
         }

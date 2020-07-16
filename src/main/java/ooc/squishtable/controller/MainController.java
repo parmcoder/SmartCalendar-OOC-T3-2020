@@ -1,7 +1,6 @@
 package ooc.squishtable.controller;
 
 import lombok.var;
-import ooc.squishtable.model.AppTask;
 import ooc.squishtable.model.AppUser;
 import ooc.squishtable.service.IAdminService;
 import ooc.squishtable.service.IUserService;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class MainController  {
@@ -54,7 +52,7 @@ public class MainController  {
             if(loggedinUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:admin";
             else return "redirect:user";
         }
-        return "loginPage";
+        return "newLoginPage";
     }
 
     @RequestMapping(value = "/registration")
@@ -205,18 +203,18 @@ public class MainController  {
 
         return "addingInfoPage";
     }
+
     @RequestMapping(value = {"/calendar/remove"}, method = RequestMethod.GET)
     public String showRemoveTask(Model model, Principal principal) {
 
         return "calendarpage";
     }
+
     @RequestMapping(value = {"/calendar/edit"}, method = RequestMethod.GET)
     public String showEditTask(Model model, Principal principal) {
 
         return "calendarpage";
     }
-
-
 
     /*
      ? We need to make about page (Optional)

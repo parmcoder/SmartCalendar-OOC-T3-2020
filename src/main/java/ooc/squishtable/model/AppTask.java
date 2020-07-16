@@ -1,16 +1,20 @@
 package ooc.squishtable.model;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 
+@Entity
+@Table(name = "APP_TASKS")
 public class AppTask {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    long tid;
+    long uid;
     String title;
     String description;
     Timestamp dateStart;
     Timestamp dateEnd;
-    long uid;
-    long tid;
 
     public AppTask() {
 
