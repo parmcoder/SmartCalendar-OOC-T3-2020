@@ -1,8 +1,9 @@
 package ooc.squishtable.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name = "APP_TASKS")
@@ -13,8 +14,12 @@ public class AppTask {
     long uid;
     String title;
     String description;
-    Timestamp dateStart;
-    Timestamp dateEnd;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date dateStart;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    Date dateEnd;
 
     public AppTask() {
 
@@ -22,8 +27,8 @@ public class AppTask {
 
     public AppTask(String title,
                    String description,
-                   Timestamp dateStart,
-                   Timestamp dateEnd,
+                   Date dateStart,
+                   Date dateEnd,
                    long uid,
                    long tid) {
         this.tid = tid;
@@ -74,11 +79,11 @@ public class AppTask {
         return dateEnd;
     }
 
-    public void setDateStart(Timestamp dateStart) {
+    public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
 
-    public void setDateEnd(Timestamp dateEnd) {
+    public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
 }

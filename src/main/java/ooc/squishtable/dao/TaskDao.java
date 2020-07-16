@@ -46,7 +46,7 @@ public class TaskDao extends JdbcDaoSupport {
         ? find total count and then insert to every table
          */
         String sqlForInsert1 = "insert into APP_TASKS(TITLE, DESCRIPTION, START_DATE, END_DATE, UID)\n" +
-                "    value (?,?,?,?, ?);";
+                "    value (?,?,?,?,?);";
         try{
             Object[] params = new Object[]{ task.getTitle(),task.getDescription(),
                     task.getDateStart(), task.getDateEnd(), task.getUid() };

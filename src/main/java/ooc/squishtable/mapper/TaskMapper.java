@@ -22,8 +22,8 @@ public class TaskMapper implements RowMapper<AppTask> {
         /*
         ! Still need to test how this work
         */
-        appTask.setDateStart(rs.getTimestamp("START_DATE"));
-        appTask.setDateEnd(rs.getTimestamp("END_DATE"));
+        appTask.setDateStart(rs.getDate("START_DATE"));
+        appTask.setDateEnd(rs.getDate("END_DATE"));
 
         return appTask;
     }
