@@ -86,4 +86,14 @@ public class AppTask {
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
+
+    public void setDateStart(String dateStart) {
+
+        this.dateStart = dateStart;
+    }
+
+    public void setDateEnd(String dateEnd) {
+
+        this.dateEnd = dateEnd;
+    }
 }
