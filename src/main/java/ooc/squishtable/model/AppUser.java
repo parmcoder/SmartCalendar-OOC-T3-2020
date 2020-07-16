@@ -6,13 +6,14 @@ import java.util.List;
 @Entity
 @Table(name = "APP_USER")
 public class AppUser {
-    String username;
-    String password;
-    String confirmPassword;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
+    String username;
+    String password;
+    String confirmPassword;
+    String name;
+    String surname;
 
     public AppUser() {
 
@@ -27,6 +28,30 @@ public class AppUser {
         this.id = userId;
         this.username = userName;
         this.password = encryptedPassword;
+    }
+
+    public AppUser(String username, String password, String confirmPassword, String name, String surname) {
+        this.username = username;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.name = name;
+        this.surname = surname;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getConfirmPassword() {

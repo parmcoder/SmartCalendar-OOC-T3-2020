@@ -4,6 +4,7 @@ import ooc.squishtable.dao.AppUserDao;
 import ooc.squishtable.model.AppUser;
 import ooc.squishtable.utils.EncryptorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class AdminService implements IAdminService {
 
     @Autowired
     private AppUserDao appUserDao;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<AppUser> findAll() {
@@ -36,7 +40,8 @@ public class AdminService implements IAdminService {
         }
         user.setPassword(EncryptorUtils.encryptPassword(user.getPassword()));
         this.appUserDao.insertUser(user,1);
-        return true;    }
+        return true;
+    }
 
     @Override
     public Boolean updateUserInfo(String userName, AppUser user) {
@@ -47,6 +52,9 @@ public class AdminService implements IAdminService {
         }else{
             result = false;
         }
+        if(!user.getName().isEmpty()) appUser.setName(user.getName());
+        if(!user.getSurname().isEmpty()) appUser.setSurname(user.getSurname());
+        if(passwordEncoder.matches(user.getConfirmPassword(), appUser.getPassword())) this.appUserDao.updateUser(appUser);
         return result;
     }
 
@@ -57,7 +65,7 @@ public class AdminService implements IAdminService {
 
     @Override
     public Boolean checkMatching(AppUser user) {
-        return user.getPassword().contentEquals(user.getConfirmPassword());
+        return passwordEncoder.matches(user.getConfirmPassword(), passwordEncoder.encode(user.getPassword()));
     }
 
     @Override

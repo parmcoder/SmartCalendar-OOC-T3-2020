@@ -51,21 +51,23 @@ public class AppUserDao extends JdbcDaoSupport {
 
     public void insertUser(AppUser user, int authority){
         /*
-        ? find total count and then insert to every table
+        * find total count and then insert to every table
          */
         String sqlForCount = "select max(USER_ID) from APP_USER";
         String sqlForCount2 = "select max(ID) from USER_ROLE";
-        String sqlForInsert1 = "insert into APP_USER (USER_ID, USER_NAME, ENCRYPTED_PASSWORD, ENABLED)\n" +
-                "values (?\n" +
-                "        , ?\n" +
-                "        , ?\n" +
-                "        , 1)";
+        String sqlForInsert1 = "insert into APP_USER (USER_ID, " +
+                "USER_NAME, " +
+                "ENCRYPTED_PASSWORD, ENABLED, " +
+                "USER_REAL_NAME, " +
+                "USER_REAL_SURNAME)\n" +
+                "values (? , ? , ? , 1, ? ,?)";
         String sqlForInsert2 = "insert into USER_ROLE (ID, USER_ID, ROLE_ID)\n" +
                 "values (?, ?, ?)";
         try{
             Long lastId = getJdbcTemplate().queryForObject(sqlForCount, Long.class)+1;
             Long lastRole = getJdbcTemplate().queryForObject(sqlForCount2, Long.class)+1;
-            Object[] params = new Object[]{ lastId, user.getUsername(), user.getPassword() };
+            Object[] params = new Object[]{ lastId, user.getUsername(), user.getPassword(),
+            user.getName(), user.getSurname()};
             getJdbcTemplate().update(sqlForInsert1, params);
 
             if(authority>0){
@@ -82,7 +84,7 @@ public class AppUserDao extends JdbcDaoSupport {
 
     public void removeUser(AppUser user){
         /*
-        ? Remove user from both tables
+        * Remove user from both tables
          */
 
         String sqlForRemove1 = "delete from APP_USER where USER_ID = ?;";
@@ -91,6 +93,22 @@ public class AppUserDao extends JdbcDaoSupport {
             Object[] params = new Object[]{ user.getId() };
             getJdbcTemplate().update(sqlForRemove2, params);
             getJdbcTemplate().update(sqlForRemove1, params);
+        }catch(EmptyResultDataAccessException e){
+            System.out.println("Null!");
+        }
+    }
+
+    public void updateUser(AppUser user){
+        /*
+        * Update user info
+         */
+
+        String sqlForUpdate = "update APP_USER set USER_NAME = ?, USER_REAL_NAME = ?, USER_REAL_SURNAME = ? " +
+                "where USER_ID = ?";
+        try{
+            Object[] params = new Object[]{user.getUsername(),
+                    user.getName(), user.getSurname(), user.getId() };
+            getJdbcTemplate().update(sqlForUpdate, params);
         }catch(EmptyResultDataAccessException e){
             System.out.println("Null!");
         }
