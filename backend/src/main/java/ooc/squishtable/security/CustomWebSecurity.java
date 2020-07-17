@@ -32,20 +32,18 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
         //disable it, for demo :D
         http.csrf().disable();
 
-        http.authorizeRequests().antMatchers("/", "/login", "/logout")
-                .permitAll();
-
-        /*
-        TODO: Manage accesses for each pages according to requests
-         */
-        http.authorizeRequests().antMatchers("/user")
-                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
-
-        http.authorizeRequests().antMatchers("/admin")
-                .access("hasRole('ROLE_ADMIN')");
-
         http.authorizeRequests()
-                .and().exceptionHandling().accessDeniedPage("/403");
+                .antMatchers("api/hello","api/user/**").permitAll()
+                .antMatchers("/api/secured").authenticated();
+
+//        http.authorizeRequests().antMatchers("/api/secured")
+//                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+
+//        http.authorizeRequests().antMatchers("/admin")
+//                .access("hasRole('ROLE_ADMIN')");
+
+//        http.authorizeRequests()
+//                .and().exceptionHandling().accessDeniedPage("/403");
 
         http.authorizeRequests().and().formLogin()//
                 // Submit URL of login page.
