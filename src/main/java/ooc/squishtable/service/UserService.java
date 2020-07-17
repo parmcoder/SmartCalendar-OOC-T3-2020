@@ -52,12 +52,18 @@ public class UserService implements IUserService {
 
     @Override
     public Boolean removeTask(AppTask task) {
-        taskDao.removeTask(task);
+        if(taskDao.findTask(task.getTid()) != null) taskDao.removeTask(task);
+        else return false;
         return true;
     }
 
+    /*
+    ? Must observe how user will edit the task
+     */
     @Override
-    public Boolean updateTask(AppTask task) {
+    public Boolean updateTask(AppTask task, long tid) {
+        AppTask old = taskDao.findTask(tid);
+
         taskDao.updateTask(task);
         return true;
     }

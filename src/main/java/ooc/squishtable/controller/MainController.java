@@ -218,8 +218,7 @@ public class MainController {
     @PostMapping(value = "/calendar/add")
     public String addingTask(@ModelAttribute("newTaskData") AppTask newTask, Principal principal){
         User loggedInUser = (User) ((Authentication) principal).getPrincipal();
-        System.out.println(newTask.getInputDateStart());
-        System.out.println(newTask.getInputDateEnd());
+
         success = userService.addTask(newTask, loggedInUser.getUsername());
         if(success){
             return "redirect:";
@@ -228,16 +227,42 @@ public class MainController {
         }
     }
 
-    @RequestMapping(value = {"/calendar/remove"}, method = RequestMethod.GET)
-    public String showRemoveTask(Model model, Principal principal) {
+    /*
+     TODO: I will make a task manager(table) page to handle task table for simple system
+     */
 
-        return "removeTask";
+    @RequestMapping(value = {"/calendar/manage"}, method = RequestMethod.GET)
+    public String manageTasks(Model model, Principal principal) {
+
+        return "tasksTable";
     }
 
-    @RequestMapping(value = {"/calendar/edit"}, method = RequestMethod.GET)
+    /*
+     TODO: Confirmation system needed for remove
+     */
+    @RequestMapping(value = "/calendar/manage/remove", method = RequestMethod.GET)
+    public String showRemoveTask(Model model, Principal principal) {
+
+        return "tasksTable";
+    }
+    @PostMapping(value = "/calendar/manage/remove")
+    public String confirmRemoveTask(Model model, Principal principal) {
+
+        return "tasksTable";
+    }
+
+    /*
+     TODO: Just edit
+     */
+    @RequestMapping(value = "/calendar/manage/edit", method = RequestMethod.GET)
     public String showEditTask(Model model, Principal principal) {
 
-        return "editTask";
+        return "tasksTable";
+    }
+    @PostMapping(value = "/calendar/manage/edit")
+    public String editTask(Model model, Principal principal) {
+
+        return "tasksTable";
     }
 
     /*

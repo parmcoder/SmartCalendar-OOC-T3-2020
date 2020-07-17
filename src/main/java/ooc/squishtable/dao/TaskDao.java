@@ -28,10 +28,6 @@ public class TaskDao extends JdbcDaoSupport implements ITaskDao{
         setDataSource(dataSource);
     }
 
-    /*
-    ! Make sure this method can retrieve all tasks
-     */
-
     @Override
     public List<AppTask> findAllUserTasks(long uid) {
         String sql = TaskMapper.BASE_SQL + " where u.UID = ? ";
@@ -40,6 +36,19 @@ public class TaskDao extends JdbcDaoSupport implements ITaskDao{
         try {
             List<AppTask> tasks = getJdbcTemplate().query(sql, params, mapper);
             return tasks;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public AppTask findTask(long tid) {
+        String sql = TaskMapper.BASE_SQL + " where u.TID = ? ";
+
+        Object[] params = new Object[] { tid };
+        try {
+            AppTask task = getJdbcTemplate().queryForObject(sql, params, mapper);
+            return task;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

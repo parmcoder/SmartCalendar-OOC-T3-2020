@@ -11,6 +11,8 @@ public interface ITaskDao {
 
     List<AppTask> findAllUserTasks(long uid);
 
+    AppTask findTask(long tid);
+
     void insertTask(AppTask task);
 
     void removeTask(AppTask task);

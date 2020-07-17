@@ -8,6 +8,7 @@ import java.util.List;
 public interface IUserService {
     Boolean addTask(AppTask task, String username);
     Boolean removeTask(AppTask task);
-    Boolean updateTask(AppTask task);
+    Boolean updateTask(AppTask task, long tid);
+
     List<AppTask> getAllTasks(String username);
 }
