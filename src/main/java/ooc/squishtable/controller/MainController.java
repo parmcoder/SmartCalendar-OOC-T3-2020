@@ -39,7 +39,8 @@ public class MainController {
     private ErrorType error = ErrorType.NO_ERROR;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String showFirstPage(Principal principal) {
+    public String showFirstPage(Model model, Principal principal) {
+        model.addAttribute("title", "Welcome ma man!");
         if (principal != null) {
             return "redirect:login";
         }
