@@ -5,7 +5,9 @@ const AXIOS = axios.create({
   timeout: 1000
 });
 
-
+/*
+* Providing you guys good stuffs hehe
+ */
 export default {
     hello() {
         return AXIOS.get(`/hello`);
@@ -23,6 +25,11 @@ export default {
                 password: password
             }});
     }
+    /*
+    TODO:
+     */
+
+
 }
 
 

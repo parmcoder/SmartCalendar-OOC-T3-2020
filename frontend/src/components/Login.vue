@@ -16,10 +16,10 @@
                                 <h4 class="display-2 font-weight-bold">Login</h4>
                                 <hr>
                                 <br>
-                                <v-form>
+                                <v-form @submit.prevent="callLogin()">
                                     <v-text-field
                                             clearable
-                                            v-model="username"
+                                            v-model="user"
                                             label="Username"
                                             prepend-icon="face"
                                             type="text"
@@ -35,9 +35,9 @@
                                             color="white"
                                     >
                                     </v-text-field>
+                                    <br>
+                                    <v-btn variant="success" type="submit" color="grey darken-2" large>Enter</v-btn>
                                 </v-form>
-                                <br>
-                                <v-btn color="grey darken-2" large>Enter</v-btn>
                             </v-card-text>
                         </v-card>
                     </v-flex>
@@ -46,3 +46,33 @@
         </v-app>
     </div>
 </template>
+
+<script>
+    export default {
+        name: 'login',
+
+        data () {
+            return {
+                loginError: false,
+                user: '',
+                password: '',
+                error: false,
+                errors: []
+            }
+        },
+        methods: {
+            callLogin() {
+                this.errors = [];
+                this.$store.dispatch("login", { user: this.user, password: this.password})
+                    .then(() => {
+                        this.$router.push('/Protected')
+                    })
+                    .catch(error => {
+                        this.loginError = true;
+                        this.errors.push(error);
+                        this.error = true
+                    })
+            }
+        }
+    }
+</script>
