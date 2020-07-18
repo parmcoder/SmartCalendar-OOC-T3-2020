@@ -1,8 +1,7 @@
 package ooc.squishtable.main.controller;
 
-import ooc.squishtable.main.domain.User;
 import ooc.squishtable.main.exception.UserNotFoundException;
-import ooc.squishtable.main.repository.UserRepository;
+import ooc.squishtable.main.dao.AppUserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class BackendController {
     public static final String SECURED_TEXT = "Hello from the secured resource!";
 
     @Autowired
-    private UserRepository userRepository;
+    private AppUserDao userRepository;
 
     @RequestMapping(path = "/hello")
     public String sayHello() {
