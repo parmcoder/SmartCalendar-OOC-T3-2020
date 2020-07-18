@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <img src="./../assets/spring-boot-vuejs-logo.png">
+    <img src="src/assets/spring-boot-vuejs-logo.png">
     <h1>{{ hellomsg }}</h1>
     <h2>See the sources here: </h2>
     <ul>
