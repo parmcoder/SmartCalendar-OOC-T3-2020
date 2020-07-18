@@ -1,6 +1,6 @@
-package ooc.squishtable.main.repository;
+package ooc.squishtable.main.dao;
 
-import ooc.squishtable.main.domain.User;
+import ooc.squishtable.main.model.AppUser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,16 +16,16 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class UserRepositoryTest {
+public class AppUserDaoTest {
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private UserRepository users;
+    private AppUserDao users;
 
-    private User norbertSiegmund = new User("Norbert", "Siegmund");
-    private User jonasHecht = new User("Jonas", "Hecht");
+    private AppUser norbertSiegmund = new AppUser("Norbert", "Siegmund");
+    private AppUser jonasHecht = new AppUser("Jonas", "Hecht");
 
     @Before
     public void fillSomeDataIntoOurDb() {
@@ -37,7 +37,7 @@ public class UserRepositoryTest {
     @Test
     public void testFindByLastName() throws Exception {
         // Search for specific User in Database according to lastname
-        List<User> usersWithLastNameSiegmund = users.findByLastName("Siegmund");
+        List<AppUser> usersWithLastNameSiegmund = users.findByLastName("Siegmund");
 
         assertThat(usersWithLastNameSiegmund, contains(norbertSiegmund));
     }
@@ -46,7 +46,7 @@ public class UserRepositoryTest {
     @Test
     public void testFindByFirstName() throws Exception {
         // Search for specific User in Database according to firstname
-        List<User> usersWithFirstNameJonas = users.findByFirstName("Jonas");
+        List<AppUser> usersWithFirstNameJonas = users.findByFirstName("Jonas");
 
         assertThat(usersWithFirstNameJonas, contains(jonasHecht));
     }

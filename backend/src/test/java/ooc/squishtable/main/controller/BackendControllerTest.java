@@ -1,7 +1,6 @@
 package ooc.squishtable.main.controller;
 
 import ooc.squishtable.main.SpringBootVuejsApplication;
-import ooc.squishtable.main.domain.User;
 import io.restassured.RestAssured;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
