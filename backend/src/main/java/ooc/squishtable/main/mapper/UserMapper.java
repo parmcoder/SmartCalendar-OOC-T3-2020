@@ -1,8 +1,8 @@
 package ooc.squishtable.main.mapper;
 
 import ooc.squishtable.main.model.AppUser;
+import org.springframework.jdbc.core.RowMapper;
 
-import javax.swing.tree.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

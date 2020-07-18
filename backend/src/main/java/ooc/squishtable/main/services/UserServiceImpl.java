@@ -1,8 +1,11 @@
 package ooc.squishtable.main.services;
 
+import ooc.squishtable.main.dao.AppTaskDao;
 import ooc.squishtable.main.dao.AppUserDao;
 import ooc.squishtable.main.model.AppTask;
 import ooc.squishtable.main.model.AppUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +15,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private TaskDao taskDao;
+    private AppTaskDao taskDao;
 
     @Autowired
     private AppUserDao userDao;

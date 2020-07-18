@@ -1,5 +1,7 @@
 package ooc.squishtable.main.model;
 
+import javax.persistence.*;
+
 @Entity
 @Table(name = "APP_USER")
 public class AppUser {
@@ -15,6 +17,11 @@ public class AppUser {
 
     public AppUser() {
 
+    }
+
+    public AppUser(String name, String surname) {
+        this.name = name;
+        this.surname = surname;
     }
 
     public AppUser(Long userId, String userName) {

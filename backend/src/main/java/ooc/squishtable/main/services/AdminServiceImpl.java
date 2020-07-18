@@ -3,6 +3,9 @@ package ooc.squishtable.main.services;
 import ooc.squishtable.main.dao.AppUserDao;
 import ooc.squishtable.main.model.AppUser;
 import ooc.squishtable.main.utilities.EncryptorUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

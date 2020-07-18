@@ -1,13 +1,20 @@
 package ooc.squishtable.main.dao;
 
-import javax.activation.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
 @Transactional
 public class AppRoleDaoImpl extends JdbcDaoSupport implements AppRoleDao {
+
     @Autowired
-    public RoleDao(DataSource dataSource) {
+    public AppRoleDaoImpl(DataSource dataSource) {
+
         this.setDataSource(dataSource);
     }
 

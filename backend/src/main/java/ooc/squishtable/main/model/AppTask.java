@@ -1,5 +1,8 @@
 package ooc.squishtable.main.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -87,6 +90,7 @@ public class AppTask {
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
+
     public String getInputDateStart() {
         return inputDateStart;
     }

@@ -2,9 +2,14 @@ package ooc.squishtable.main.dao;
 
 import ooc.squishtable.main.mapper.TaskMapper;
 import ooc.squishtable.main.model.AppTask;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.activation.DataSource;
 import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
