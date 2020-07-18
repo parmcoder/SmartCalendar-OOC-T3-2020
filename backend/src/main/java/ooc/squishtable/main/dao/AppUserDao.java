@@ -1,16 +1,21 @@
 package ooc.squishtable.main.dao;
 
-
 import ooc.squishtable.main.model.AppUser;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
-public interface AppUserDao extends CrudRepository<AppUser, Long> {
+public interface AppUserDao {
+    @PostConstruct
+    void init();
 
-    List<AppUser> findByLastName(@Param("lastname") String lastname);
+    AppUser findUserAccount(String userName);
 
-    List<AppUser> findByFirstName(@Param("firstname") String firstname);
+    List<AppUser> getAllUsers();
 
+    void insertUser(AppUser user, int authority);
+
+    void removeUser(AppUser user);
+
+    void updateUser(AppUser user);
 }

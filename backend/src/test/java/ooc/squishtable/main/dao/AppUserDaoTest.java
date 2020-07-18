@@ -22,7 +22,7 @@ public class AppUserDaoTest {
     private TestEntityManager entityManager;
 
     @Autowired
-    private AppUserDao users;
+    private AppUserRepository users;
 
     private AppUser norbertSiegmund = new AppUser("Norbert", "Siegmund");
     private AppUser jonasHecht = new AppUser("Jonas", "Hecht");
