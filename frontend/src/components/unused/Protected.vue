@@ -17,8 +17,8 @@
 </template>
 
 <script>
-  import api from './backend-api'
-  import store from './../store'
+  import api from '../backend-api'
+  import store from '../../store'
 
 export default {
   name: 'protected',
