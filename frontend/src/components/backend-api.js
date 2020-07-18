@@ -15,6 +15,9 @@ export default {
     getUser(userId) {
         return AXIOS.get(`/user/` + userId);
     },
+    /*
+    ! This method should be changed soon
+     */
     createUser(firstName, lastName) {
         return AXIOS.post(`/user/` + firstName + '/' + lastName);
     },
@@ -25,8 +28,13 @@ export default {
                 password: password
             }});
     }
+
     /*
-    TODO:
+    TODO: adding users
+     */
+
+    /*
+    TODO: calendar stuffs
      */
 
 
