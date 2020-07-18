@@ -3,6 +3,7 @@ package ooc.squishtable.main.dao;
 import ooc.squishtable.main.mapper.TaskMapper;
 import ooc.squishtable.main.model.AppTask;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -21,7 +22,6 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
     @Autowired
     public DataSource dataSource;
 
-    @Override
     @PostConstruct
     public void init(){
         setDataSource(dataSource);

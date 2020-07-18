@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface AppUserRepository extends CrudRepository<AppUser, Long> {
 
-    List<AppUser> findByLastName(@Param("lastname") String lastname);
+    List<AppUser> findAppUserBySurname(@Param("surname") String lastname);
 
-    List<AppUser> findByFirstName(@Param("firstname") String firstname);
+    List<AppUser> findAppUserByName(@Param("name") String firstname);
 
 }

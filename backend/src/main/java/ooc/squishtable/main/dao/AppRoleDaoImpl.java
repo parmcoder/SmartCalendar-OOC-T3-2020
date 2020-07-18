@@ -1,10 +1,12 @@
 package ooc.squishtable.main.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.List;
 
@@ -13,9 +15,11 @@ import java.util.List;
 public class AppRoleDaoImpl extends JdbcDaoSupport implements AppRoleDao {
 
     @Autowired
-    public AppRoleDaoImpl(DataSource dataSource) {
+    public DataSource dataSource;
 
-        this.setDataSource(dataSource);
+    @PostConstruct
+    public void init(){
+        setDataSource(dataSource);
     }
 
     @Override

@@ -34,21 +34,21 @@ public class AppUserDaoTest {
         entityManager.persist(jonasHecht);
     }
 
-    @Test
-    public void testFindByLastName() throws Exception {
-        // Search for specific User in Database according to lastname
-        List<AppUser> usersWithLastNameSiegmund = users.findByLastName("Siegmund");
-
-        assertThat(usersWithLastNameSiegmund, contains(norbertSiegmund));
-    }
-
-
-    @Test
-    public void testFindByFirstName() throws Exception {
-        // Search for specific User in Database according to firstname
-        List<AppUser> usersWithFirstNameJonas = users.findByFirstName("Jonas");
-
-        assertThat(usersWithFirstNameJonas, contains(jonasHecht));
-    }
+//    @Test
+//    public void testFindByLastName() throws Exception {
+//        // Search for specific User in Database according to lastname
+//        List<AppUser> usersWithLastNameSiegmund = users.findByLastName("Siegmund");
+//
+//        assertThat(usersWithLastNameSiegmund, contains(norbertSiegmund));
+//    }
+//
+//
+//    @Test
+//    public void testFindByFirstName() throws Exception {
+//        // Search for specific User in Database according to firstname
+//        List<AppUser> usersWithFirstNameJonas = users.findByFirstName("Jonas");
+//
+//        assertThat(usersWithFirstNameJonas, contains(jonasHecht));
+//    }
 
 }

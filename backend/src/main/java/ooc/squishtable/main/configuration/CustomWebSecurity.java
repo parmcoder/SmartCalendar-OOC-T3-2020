@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -31,6 +31,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        http.authorizeRequests().antMatchers("/api/admin/**")
+                .access("hasRole('ROLE_ADMIN')");
+
         http
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 // No session will be created or used by spring security
@@ -38,23 +41,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .httpBasic()
         .and()
             .authorizeRequests()
+                .antMatchers("/api/logout").permitAll()
                 .antMatchers("/api/hello").permitAll()
                 .antMatchers("/api/user/**").permitAll()
                 // allow every URI, that begins with '/api/user/'
                 .antMatchers("/api/secured").authenticated()
                 .anyRequest().authenticated()
-                // protect all other requests
-        .and()
+//                .antMatchers("/api/admin/**")
+//                .access("hasRole('ROLE_ADMIN')")// protect all other requests
+                .and().logout().logoutUrl("/api/logout").logoutSuccessUrl("/")
+                .and()
             .csrf().disable(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
 
-        http.authorizeRequests().antMatchers("/api/admin/**")
-                .access("hasRole('ROLE_ADMIN')");
+
 
     }
 
-    //@Override
-    //protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    //    auth.inMemoryAuthentication()
-    //            .withUser("foo").password("{noop}bar").roles("USER");
-    //}
 }

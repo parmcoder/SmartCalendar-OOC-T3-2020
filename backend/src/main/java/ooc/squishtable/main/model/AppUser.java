@@ -9,6 +9,7 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
+
     String username;
     String password;
     String confirmPassword;

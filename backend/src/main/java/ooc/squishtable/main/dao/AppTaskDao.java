@@ -6,8 +6,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 public interface AppTaskDao {
-    @PostConstruct
-    void init();
 
     List<AppTask> findAllUserTasks(long uid);
 
