@@ -2,6 +2,7 @@ package ooc.squishtable.main.controller;
 
 import ooc.squishtable.main.exception.UserNotFoundException;
 import ooc.squishtable.main.dao.AppUserRepository;
+import ooc.squishtable.main.model.AppUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class BackendController {
     @RequestMapping(path = "/user/{lastName}/{firstName}", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public long addNewUser (@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName) {
-        User savedUser = userRepository.save(new User(firstName, lastName));
+        AppUser savedUser = userRepository.save(new AppUser(firstName, lastName));
 
         LOG.info(savedUser.toString() + " successfully saved into DB");
 
@@ -37,7 +38,7 @@ public class BackendController {
     }
 
     @GetMapping(path = "/user/{id}")
-    public User getUserById(@PathVariable("id") long id) {
+    public AppUser getUserById(@PathVariable("id") long id) {
 
         return userRepository.findById(id).map(user -> {
             LOG.info("Reading user with id " + id + " from database.");

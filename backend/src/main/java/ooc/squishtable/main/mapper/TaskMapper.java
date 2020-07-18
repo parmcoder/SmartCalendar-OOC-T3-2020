@@ -1,8 +1,8 @@
 package ooc.squishtable.main.mapper;
 
 import ooc.squishtable.main.model.AppTask;
+import org.springframework.jdbc.core.RowMapper;
 
-import javax.swing.tree.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,7 +11,6 @@ public class TaskMapper implements RowMapper<AppTask> {
     public static final String BASE_SQL
             = "SELECT * From APP_TASKS u ";
 
-    @SneakyThrows
     @Override
     public AppTask mapRow(ResultSet rs, int rowNum) throws SQLException {
         AppTask appTask = new AppTask();
