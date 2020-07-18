@@ -31,8 +31,8 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers("/api/admin/**")
-                .access("hasRole('ROLE_ADMIN')");
+//        http.authorizeRequests().antMatchers("/api/admin/**")
+//                .access("hasRole('ROLE_ADMIN')");
 
         http
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -41,7 +41,8 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
             .httpBasic()
         .and()
             .authorizeRequests()
-                .antMatchers("/api/logout").permitAll()
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/api/logout").permitAll()
                 .antMatchers("/api/hello").permitAll()
                 .antMatchers("/api/user/**").permitAll()
                 // allow every URI, that begins with '/api/user/'
@@ -49,7 +50,7 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
 //                .antMatchers("/api/admin/**")
 //                .access("hasRole('ROLE_ADMIN')")// protect all other requests
-                .and().logout().logoutUrl("/api/logout").logoutSuccessUrl("/")
+//                .and().logout().logoutUrl("/api/logout").logoutSuccessUrl("/")
                 .and()
             .csrf().disable(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
 
