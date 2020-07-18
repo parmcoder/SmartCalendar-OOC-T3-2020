@@ -31,27 +31,30 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers("/api/admin/**")
-                .access("hasRole('ROLE_ADMIN')");
+//        http.authorizeRequests().antMatchers("/api/admin/**")
+//                .access("hasRole('ROLE_ADMIN')");
 
         http
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 // No session will be created or used by spring security
-        .and()
-            .httpBasic()
+//        .and()
+//            .httpBasic()
         .and()
             .authorizeRequests()
+                // allow every URI, that begins with '/api/'
                 .antMatchers("/api/logout").permitAll()
                 .antMatchers("/api/hello").permitAll()
                 .antMatchers("/api/user/**").permitAll()
-                // allow every URI, that begins with '/api/user/'
-                .antMatchers("/api/secured").authenticated()
-                .anyRequest().authenticated()
-//                .antMatchers("/api/admin/**")
-//                .access("hasRole('ROLE_ADMIN')")// protect all other requests
+                // allow every URI with authentication, that begins with '/api/'
+                .antMatchers("/api/secured")
+                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+                .antMatchers("/api/admin/**")
+                .access("hasRole('ROLE_ADMIN')")// protect all other requests
                 .and().logout().logoutUrl("/api/logout").logoutSuccessUrl("/")
                 .and()
-            .csrf().disable(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
+                //                .anyRequest().authenticated()
+
+                .csrf().disable(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
 
 
 
