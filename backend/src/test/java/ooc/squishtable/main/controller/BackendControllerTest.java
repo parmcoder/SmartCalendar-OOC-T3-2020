@@ -42,35 +42,35 @@ public class BackendControllerTest {
 				.body(is(equalTo(BackendController.HELLO_TEXT)));
 	}
 
-	@Test
-    public void addNewUserAndRetrieveItBack() {
-        User norbertSiegmund = new User("Norbert", "Siegmund");
-
-        Long userId =
-            given()
-                .pathParam("firstName", "Norbert")
-                .pathParam("lastName", "Siegmund")
-            .when()
-                .post("/api/user/{lastName}/{firstName}")
-            .then()
-                .statusCode(is(HttpStatus.SC_CREATED))
-                .extract()
-                    .body().as(Long.class);
-
-	    User responseUser =
-            given()
-                    .pathParam("id", userId)
-                .when()
-                    .get("/api/user/{id}")
-                .then()
-                    .statusCode(HttpStatus.SC_OK)
-                    .assertThat()
-                        .extract().as(User.class);
-
-	    // Did Norbert came back?
-        assertThat(responseUser.getFirstName(), is("Norbert"));
-        assertThat(responseUser.getLastName(), is("Siegmund"));
-    }
+//	@Test
+//    public void addNewUserAndRetrieveItBack() {
+//        User norbertSiegmund = new User("Norbert", "Siegmund");
+//
+//        Long userId =
+//            given()
+//                .pathParam("firstName", "Norbert")
+//                .pathParam("lastName", "Siegmund")
+//            .when()
+//                .post("/api/user/{lastName}/{firstName}")
+//            .then()
+//                .statusCode(is(HttpStatus.SC_CREATED))
+//                .extract()
+//                    .body().as(Long.class);
+//
+//	    User responseUser =
+//            given()
+//                    .pathParam("id", userId)
+//                .when()
+//                    .get("/api/user/{id}")
+//                .then()
+//                    .statusCode(HttpStatus.SC_OK)
+//                    .assertThat()
+//                        .extract().as(User.class);
+//
+//	    // Did Norbert came back?
+//        assertThat(responseUser.getFirstName(), is("Norbert"));
+//        assertThat(responseUser.getLastName(), is("Siegmund"));
+//    }
 
 	@Test
 	public void user_api_should_give_http_404_not_found_when_user_not_present_in_db() {

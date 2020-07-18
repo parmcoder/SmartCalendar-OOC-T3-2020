@@ -6,8 +6,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 public interface AppUserDao {
-    @PostConstruct
-    void init();
 
     AppUser findUserAccount(String userName);
 
