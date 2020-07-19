@@ -7,6 +7,7 @@ import Login from "@/components/Login";
 import Protected from '@/components/unused/Protected'
 import Index from "./components/Index";
 import Register from "./components/Registration"
+import Calendar from "./components/Calendar"
 
 import store from './stores/store'
 import Admin from "./components/Admin";
@@ -16,6 +17,21 @@ Vue.use(Router);
 const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
+<<<<<<< HEAD
+        { path: '/', component: Index},
+        { path: '/hello', component: Hello },
+        { path: '/callservice', component: Service },
+        { path: '/bootstrap', component: Bootstrap },
+        { path: '/user', component: User },
+<<<<<<< HEAD
+        { path: '/login', component: Login },
+        { path: '/register', component: Register },
+        { path: '/calendar', component: Calendar },
+
+
+=======
+        { path: '/login', component: Login,
+=======
         {path: '/', component: Index},
         {path: '/hello', component: Hello},
         {
@@ -29,6 +45,7 @@ const router = new Router({
         {path: '/user', component: User},
         {
             path: '/login', component: Login,
+>>>>>>> master
             meta: {
                 hideForAuth: true
             }
@@ -37,8 +54,13 @@ const router = new Router({
             path: '/register', component: Register,
             meta: {
                 hideForAuth: true
+<<<<<<< HEAD
+            } },
+>>>>>>> master
+=======
             }
         },
+>>>>>>> master
         {
             path: '/protected',
             component: Protected,
