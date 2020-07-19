@@ -11,39 +11,34 @@ const AXIOS = axios.create({
 export default {
     hello() {
         return AXIOS.get(`/hello`);
-
+    },
         /*
         TODO: adding users
          */
 
-        /*
-        TODO: calendar stuffs
-         */
-
-
-    /*
-    ! This method should be changed soon
-     */
-    },
-    getUser(userId) {
-        return AXIOS.get(`/user/` + userId);
-    },
 
     /*
     * A function for creating user
      */
     createUser(username, password, firstName, lastName) {
-        return AXIOS.post(`/user/create/`+ '/' + username + '/' + password + firstName + '/' + lastName);
+        return AXIOS.post(`/auth/signup/`,{
+            username: username,
+            password: password,
+            name: firstName,
+            surname: lastName
+        });
     },
-    getSecured(user, password) {
-        return AXIOS.get(`/secured/`,{
-            auth: {
-                username: user,
-                password: password
-            }});
+    loginUser(user, password) {
+        return AXIOS.post(`/auth/signin/`,{
+            username: username,
+            password: password
+        });
     }
 
 
+        /*
+        TODO: calendar stuffs
+         */
 
 }
 

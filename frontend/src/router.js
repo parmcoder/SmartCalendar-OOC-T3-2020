@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/unused/Hello'
-import Service from '@/components/unused/Service'
 import Bootstrap from '@/components/unused/Bootstrap'
 import User from '@/components/unused/User'
 import Login from "@/components/Login";
@@ -9,27 +8,37 @@ import Protected from '@/components/unused/Protected'
 import Index from "./components/Index";
 import Register from "./components/Registration"
 
-import store from './store'
+import store from './stores/store'
+import Admin from "./components/Admin";
 
 Vue.use(Router);
 
 const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
-        { path: '/', component: Index},
-        { path: '/hello', component: Hello },
-        { path: '/callservice', component: Service },
-        { path: '/bootstrap', component: Bootstrap },
-        { path: '/user', component: User },
-        { path: '/login', component: Login,
+        {path: '/', component: Index},
+        {path: '/hello', component: Hello},
+        {
+            path: '/admin',
+            component: Admin,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {path: '/bootstrap', component: Bootstrap},
+        {path: '/user', component: User},
+        {
+            path: '/login', component: Login,
             meta: {
                 hideForAuth: true
             }
         },
-        { path: '/register', component: Register,
+        {
+            path: '/register', component: Register,
             meta: {
                 hideForAuth: true
-            } },
+            }
+        },
         {
             path: '/protected',
             component: Protected,
@@ -39,7 +48,7 @@ const router = new Router({
         },
 
         // otherwise redirect to home
-        { path: '*', redirect: '/' }
+        {path: '*', redirect: '/'}
     ]
 });
 
@@ -60,7 +69,7 @@ router.beforeEach((to, from, next) => {
     }
     if (to.matched.some(record => record.meta.hideForAuth)) {
         if (store.getters.isLoggedIn) {
-            next({ path: '/' });
+            next({path: '/'});
         } else {
             next();
         }

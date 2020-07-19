@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import api from './components/backend-api'
+import api from '../components/backend-api'
 
 Vue.use(Vuex);
 
@@ -8,14 +8,14 @@ export default new Vuex.Store({
     state: {
         loginSuccess: false,
         loginError: false,
+        token: null,
         userName: null,
-        userPass: null
     },
     mutations: {
         login_success(state, payload){
             state.loginSuccess = true;
             state.userName = payload.userName;
-            state.userPass = payload.userPass;
+            state.token = payload.token;
         },
         login_error(state, payload){
             state.loginError = true;
@@ -26,7 +26,7 @@ export default new Vuex.Store({
         login({commit}, {user, password}) {
             return new Promise((resolve, reject) => {
                 console.log("Accessing backend with user: '" + user);
-                api.getSecured(user, password)
+                api.loginUser(user, password)
                     .then(response => {
                         console.log("Response: '" + response.data + "' with Statuscode " + response.status);
                         if(response.status == 200) {
@@ -34,7 +34,7 @@ export default new Vuex.Store({
                             // place the loginSuccess state into our vuex store
                             commit('login_success', {
                                 userName: user,
-                                userPass: password
+                                token: response.data.token
                             });
                         }
                         resolve(response)
@@ -54,6 +54,6 @@ export default new Vuex.Store({
         isLoggedIn: state => state.loginSuccess,
         hasLoginErrored: state => state.loginError,
         getUserName: state => state.userName,
-        getUserPass: state => state.userPass
+        getUserToken: state => state.token
     }
 })
