@@ -8,6 +8,7 @@ import Login from "@/components/Login";
 import Protected from '@/components/unused/Protected'
 import Index from "./components/Index";
 import Register from "./components/Registration"
+import Calendar from "./components/Calendar"
 
 import store from './store'
 
@@ -23,6 +24,8 @@ const router = new Router({
         { path: '/user', component: User },
         { path: '/login', component: Login },
         { path: '/register', component: Register },
+        { path: '/calendar', component: Calendar },
+
 
         {
             path: '/protected',
