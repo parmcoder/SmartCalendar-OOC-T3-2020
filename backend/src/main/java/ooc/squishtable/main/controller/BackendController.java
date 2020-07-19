@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class BackendController {
     private UserService userService;
 
     @RequestMapping(path = "/hello")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public String sayHello() {
         LOG.info("GET called on /hello resource");
         return HELLO_TEXT;
@@ -72,7 +74,7 @@ public class BackendController {
     /*
     TODO: Update task on task id
     */
-    @PostMapping(path = "api/user/{title}/edit/{title}/{description}/{dateStart}/{dateEnd}")
+    @PostMapping(path = "api/user/edit/{title}/{description}/{dateStart}/{dateEnd}")
     public ResponseEntity updateTask(@PathVariable("title") String title, @PathVariable("description") String description,
                                      @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
                                      Principal principal){
@@ -142,8 +144,8 @@ public class BackendController {
     }
 
     @RequestMapping(path = "/admin/hello", method = RequestMethod.GET)
-    public @ResponseBody
-    String getAdminHello() {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public @ResponseBody String getAdminHello() {
         LOG.info("Admin?");
         return "Admin: " + SECURED_TEXT;
     }
