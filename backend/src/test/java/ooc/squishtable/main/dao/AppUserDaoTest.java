@@ -21,8 +21,8 @@ public class AppUserDaoTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    @Autowired
-    private AppUserRepository users;
+//    @Autow/ired
+//    private AppUserRepository users;
 
     private AppUser norbertSiegmund = new AppUser("Norbert", "Siegmund");
     private AppUser jonasHecht = new AppUser("Jonas", "Hecht");

@@ -1,13 +1,19 @@
 package ooc.squishtable.main.controller;
 
-import ooc.squishtable.main.exception.UserNotFoundException;
-import ooc.squishtable.main.dao.AppUserRepository;
+import ooc.squishtable.main.model.AppTask;
 import ooc.squishtable.main.model.AppUser;
+import ooc.squishtable.main.services.AdminService;
+import ooc.squishtable.main.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController()
 @RequestMapping("/api")
@@ -19,7 +25,10 @@ public class BackendController {
     public static final String SECURED_TEXT = "Hello from the secured resource!";
 
     @Autowired
-    private AppUserRepository userRepository;
+    private AdminService adminService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(path = "/hello")
     public String sayHello() {
@@ -27,43 +36,86 @@ public class BackendController {
         return HELLO_TEXT;
     }
 
-    @RequestMapping(path = "/user/{lastName}/{firstName}", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public long addNewUser (@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName) {
-        AppUser savedUser = userRepository.save(new AppUser(firstName, lastName));
+    @GetMapping(path = "/user/{username}")
+    public AppUser getUserByUsername(@PathVariable("username") String username) {
 
-        LOG.info(savedUser.toString() + " successfully saved into DB");
-
-        return savedUser.getId();
+        return adminService.getUser(username);
     }
 
-    @GetMapping(path = "/user/{id}")
-    public AppUser getUserById(@PathVariable("id") long id) {
-
-        return userRepository.findById(id).map(user -> {
-            LOG.info("Reading user with id " + id + " from database.");
-            return user;
-        }).orElseThrow(() -> new UserNotFoundException("The user with the id " + id + " couldn't be found in the database."));
+    @PostMapping(path = "/user/{username}/{password}/{name}/{surname}")
+    public ResponseEntity registerNewUser(@PathVariable("username") String username, @PathVariable("password") String password,
+                                          @PathVariable("name") String name, @PathVariable("surname") String surname) {
+        AppUser creating = new AppUser(username, password, name, surname);
+        if (adminService.addNewUser(creating)) return ResponseEntity.status(HttpStatus.CREATED).body(adminService.getUser(creating.getUsername()));
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
-    @RequestMapping(path="/secured", method = RequestMethod.GET)
+    @PostMapping(path = "/user/{title}/{description}/{dateStart}/{dateEnd}")
+    public ResponseEntity addTask(@PathVariable("title") String title, @PathVariable("description") String description,
+                                          @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
+                                  Principal principal) {
+        User loggedInUser = (User) ((Authentication) principal).getPrincipal();
+        AppTask creating = new AppTask(title, description, dateStart, dateEnd);
+        if (userService.addTask(creating,loggedInUser.getUsername()))
+            return ResponseEntity.status(HttpStatus.CREATED).body(creating);
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    /*
+    TODO: Get a good task list to display from username
+    */
+
+    /*
+    TODO: Update task on task id
+    */
+
+    /*
+    TODO: Remove task on task id
+    */
+
+    /*
+    TODO: Edit user info
+    */
+
+    /*
+    TODO: Get a good user list to display (ADMIN & optional)
+    */
+
+    /*
+    TODO: Remove user using username or id (ADMIN & optional)
+    */
+
+
+
+    /*
+    ? The security part needed to be configured by frontend (vuex)
+     */
+    @GetMapping(path = "/secured")
     public @ResponseBody String getSecured() {
         LOG.info("GET successfully called on /secured resource");
         return SECURED_TEXT;
     }
 
-    @RequestMapping(path="/admin/hello", method = RequestMethod.GET)
-    public @ResponseBody String getAdminHello() {
+    @RequestMapping(path = "/admin/hello", method = RequestMethod.GET)
+    public @ResponseBody
+    String getAdminHello() {
         LOG.info("Admin?");
-        return "Admin: "+SECURED_TEXT;
+        return "Admin: " + SECURED_TEXT;
     }
 
-    // Forwards all routes to FrontEnd except: '/', '/index.html', '/api', '/api/**'
-    // Required because of 'mode: history' usage in frontend routing, see README for further details
-    @RequestMapping(value = "{_:^(?!index\\.html|api).*$}")
-    public String redirectApi() {
-        LOG.info("URL entered directly into the Browser, so we need to redirect...");
-        return "forward:/";
-    }
+
+
+    /*
+    ! These are not what we are working on
+     */
+//    @RequestMapping(path = "/user/{lastName}/{firstName}", method = RequestMethod.POST)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public long addNewUser (@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName) {
+//        AppUser savedUser = userRepository.save(new AppUser(firstName, lastName));
+//
+//        LOG.info(savedUser.toString() + " successfully saved into DB");
+//
+//        return savedUser.getId();
+//    }
+
 
 }

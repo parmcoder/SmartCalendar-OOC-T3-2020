@@ -24,6 +24,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public AppUser getUser(String username) {
+        return this.appUserDao.findUserAccount(username);
+    }
+
+    @Override
     public Boolean addNewUser(AppUser user) {
         if(checkExistedUser(user)){
             return false;
