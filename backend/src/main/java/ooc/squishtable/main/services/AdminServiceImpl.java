@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
 
+    // Access user's data from database
     @Autowired
     private AppUserDao appUserDao;
 
@@ -30,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Boolean addNewUser(AppUser user) {
-        if(checkExistedUser(user)){
+        if(checkExistedUser(user)){    // Check whether user already exists or not
             return false;
         }
         user.setPassword(EncryptorUtils.encryptPassword(user.getPassword()));
@@ -52,9 +53,10 @@ public class AdminServiceImpl implements AdminService {
     public Boolean updateUserInfo(String userName, AppUser user) {
         Boolean result = true;
         AppUser appUser = this.appUserDao.findUserAccount(userName);
-        if(!user.getUsername().isEmpty() && !checkExistedUser(user)){
+        if(!user.getUsername().isEmpty() && !checkExistedUser(user)){    // Check the existence of user
             appUser.setUsername(user.getUsername());
-        }else{
+        }
+        else{           // User does not exist
             result = false;
         }
         if(!user.getName().isEmpty()) appUser.setName(user.getName());
@@ -68,6 +70,9 @@ public class AdminServiceImpl implements AdminService {
         return this.appUserDao.findUserAccount(username);
     }
 
+    /**
+     * Check whether password and confirm password are equal or not
+     */
     @Override
     public Boolean checkMatching(AppUser user) {
         return passwordEncoder.matches(user.getConfirmPassword(), passwordEncoder.encode(user.getPassword()));
@@ -77,11 +82,11 @@ public class AdminServiceImpl implements AdminService {
     public Boolean removeUser(AppUser user) {
         System.out.println(user);
 
-        if(checkExistedUser(user)){
+        if(checkExistedUser(user)){     // If user exists, delete user
             this.appUserDao.removeUser(user);
             return true;
         }
-        return false;
+        return false;           // Otherwise, do nothing
     }
 
     @Override

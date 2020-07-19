@@ -29,10 +29,11 @@ public class UserServiceImpl implements UserService {
         java.util.Date utilDateStart, utilDateEnd;
         try {
             utilDateStart = format.parse(task.getInputDateStart());
-            task.setDateStart(new java.sql.Date(utilDateStart.getTime()));
+            task.setDateStart(new java.sql.Date(utilDateStart.getTime()));     // Set start date
             utilDateEnd = format.parse(task.getInputDateEnd());
-            task.setDateEnd(new java.sql.Date(utilDateEnd.getTime()));
+            task.setDateEnd(new java.sql.Date(utilDateEnd.getTime()));         // Set end date
 
+            // End date need to be before start date
             if(utilDateEnd.after(utilDateStart)){
                 success = true;
             }
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         finally {
-            if(success) taskDao.insertTask(task);
+            if(success) taskDao.insertTask(task);       // Insert user's task
         }
 
         return success;

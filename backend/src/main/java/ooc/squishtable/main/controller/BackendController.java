@@ -63,6 +63,11 @@ public class BackendController {
     /*
     TODO: Get a good task list to display from username
     */
+    @PostMapping(path = "api/user/{username}")
+    public ResponseEntity displayAllTasks(@PathVariable("username") String username){
+        System.out.println(userService.getAllTasks(username));
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
 
     /*
     TODO: Update task on task id
@@ -108,6 +113,12 @@ public class BackendController {
     /*
     TODO: Get a good user list to display (ADMIN & optional)
     */
+    @PostMapping(path = "api/user")
+    public ResponseEntity displayAllUsers(){
+        System.out.println(adminService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
 
     /*
     TODO: Remove user using username or id (ADMIN & optional)
