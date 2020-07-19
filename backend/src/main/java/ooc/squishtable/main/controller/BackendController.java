@@ -32,7 +32,7 @@ public class BackendController {
     private UserService userService;
 
     @RequestMapping(path = "/hello")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public String sayHello() {
         LOG.info("GET called on /hello resource");
         return HELLO_TEXT;
