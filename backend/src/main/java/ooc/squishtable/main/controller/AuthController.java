@@ -1,10 +1,7 @@
 package ooc.squishtable.main.controller;
 
-import ooc.squishtable.main.dao.AppRoleDao;
-import ooc.squishtable.main.dao.AppRoleDaoImpl;
 import ooc.squishtable.main.jwt.JwtUtils;
 import ooc.squishtable.main.model.AppJwt;
-import ooc.squishtable.main.model.AppRole;
 import ooc.squishtable.main.model.AppText;
 import ooc.squishtable.main.model.AppUser;
 import ooc.squishtable.main.services.AdminService;
@@ -22,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
