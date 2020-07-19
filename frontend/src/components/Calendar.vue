@@ -16,34 +16,14 @@
                     >
                         <v-icon>mdi-chevron-left</v-icon>
                     </v-btn>
-                    <v-select
-                            v-model="type"
-                            :items="types"
-                            dense
-                            outlined
-                            hide-details
-                            class="ma-2"
-                            label="type"
-                    ></v-select>
-                    <v-select
-                            v-model="mode"
-                            :items="modes"
-                            dense
-                            outlined
-                            hide-details
-                            label="event-overlap-mode"
-                            class="ma-2"
-                    ></v-select>
-                    <v-select
-                            v-model="weekday"
-                            :items="weekdays"
-                            dense
-                            outlined
-                            hide-details
-                            label="weekdays"
-                            class="ma-2"
-                    ></v-select>
-                    <v-spacer></v-spacer>
+
+                    <v-img
+                            :src="require('../assets/calendar_5-512.png')"
+                            contain
+                            sizes="10"
+                    >
+                    </v-img>
+
                     <v-btn
                             icon
                             class="ma-2"
@@ -51,20 +31,55 @@
                     >
                         <v-icon>mdi-chevron-right</v-icon>
                     </v-btn>
+
+
+<!--                    <v-select-->
+<!--                            v-model="type"-->
+<!--                            :items="types"-->
+<!--                            dense-->
+<!--                            outlined-->
+<!--                            hide-details-->
+<!--                            class="ma-2"-->
+<!--                            label="type"-->
+<!--                    ></v-select>-->
+<!--                    <v-select-->
+<!--                            v-model="mode"-->
+<!--                            :items="modes"-->
+<!--                            dense-->
+<!--                            outlined-->
+<!--                            hide-details-->
+<!--                            label="event-overlap-mode"-->
+<!--                            class="ma-2"-->
+<!--                    ></v-select>-->
+<!--                    <v-select-->
+<!--                            v-model="weekday"-->
+<!--                            :items="weekdays"-->
+<!--                            dense-->
+<!--                            outlined-->
+<!--                            hide-details-->
+<!--                            label="weekdays"-->
+<!--                            class="ma-2"-->
+<!--                    ></v-select>-->
+<!--                    <v-spacer></v-spacer>-->
+
                 </v-sheet>
                 <v-sheet height="770" color="orange accent-3">
                     <v-calendar
                             ref="calendar"
                             v-model="value"
-                            :weekdays="weekday"
-                            :type="type"
-                            :events="events"
-                            :event-overlap-mode="mode"
-                            :event-overlap-threshold="30"
-                            :event-color="getEventColor"
-                            @change="getEvents"
                             dark
-                    ></v-calendar>
+                    >
+<!--                            ref="calendar"-->
+<!--                            v-model="value"-->
+<!--                            :weekdays="weekday"-->
+<!--                            :type="type"-->
+<!--                            :events="events"-->
+<!--                            :event-overlap-mode="mode"-->
+<!--                            :event-overlap-threshold="30"-->
+<!--                            :event-color="getEventColor"-->
+<!--                            @change="getEvents"-->
+<!--                            dark-->
+                    </v-calendar>
                 </v-sheet>
             </div>
         </v-app>
@@ -82,10 +97,10 @@
         modes: ['stack', 'column'],
         weekday: [0, 1, 2, 3, 4, 5, 6],
         weekdays: [
-            { text: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
+            // { text: 'Sun - Sat', value: [0, 1, 2, 3, 4, 5, 6] },
             { text: 'Mon - Sun', value: [1, 2, 3, 4, 5, 6, 0] },
-            { text: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
-            { text: 'Mon, Wed, Fri', value: [1, 3, 5] },
+            // { text: 'Mon - Fri', value: [1, 2, 3, 4, 5] },
+            // { text: 'Mon, Wed, Fri', value: [1, 3, 5] },
         ],
         value: '',
         events: [],
