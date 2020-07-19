@@ -36,13 +36,13 @@ public class BackendController {
         return HELLO_TEXT;
     }
 
-    @GetMapping(path = "/user/{username}")
+    @GetMapping(path = "api/user/{username}")
     public AppUser getUserByUsername(@PathVariable("username") String username) {
 
         return adminService.getUser(username);
     }
 
-    @PostMapping(path = "/user/{username}/{password}/{name}/{surname}")
+    @PostMapping(path = "api/user/create/{username}/{password}/{name}/{surname}")
     public ResponseEntity registerNewUser(@PathVariable("username") String username, @PathVariable("password") String password,
                                           @PathVariable("name") String name, @PathVariable("surname") String surname) {
         AppUser creating = new AppUser(username, password, name, surname);
@@ -50,7 +50,7 @@ public class BackendController {
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
-    @PostMapping(path = "/user/{title}/{description}/{dateStart}/{dateEnd}")
+    @PostMapping(path = "api/user/create/{title}/{description}/{dateStart}/{dateEnd}")
     public ResponseEntity addTask(@PathVariable("title") String title, @PathVariable("description") String description,
                                           @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
                                   Principal principal) {
@@ -67,14 +67,43 @@ public class BackendController {
     /*
     TODO: Update task on task id
     */
+    @PostMapping(path = "api/user/{title}/edit/{title}/{description}/{dateStart}/{dateEnd}")
+    public ResponseEntity updateTask(@PathVariable("title") String title, @PathVariable("description") String description,
+                                     @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
+                                     Principal principal){
+        User loggedInUser = (User) ((Authentication) principal).getPrincipal();
+        AppTask newTask = new AppTask(title, description, dateStart, dateEnd);
+        if (userService.addTask(newTask,loggedInUser.getUsername()))
+            return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 
     /*
     TODO: Remove task on task id
     */
+    @PostMapping(path = "api/user/remove/{title}/{description}/{dateStart}/{dateEnd}")
+    public ResponseEntity removeTask(@PathVariable("title") String title, @PathVariable("description") String description,
+                                     @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd){
+        AppTask task = new AppTask(title, description, dateStart, dateEnd);
+        userService.removeTask(task);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
 
     /*
     TODO: Edit user info
     */
+    @PostMapping(path = "api/user/edit/{username}/{password}/{name}/{surname}")
+    public ResponseEntity editUser(@PathVariable("username") String username, @PathVariable("password") String password,
+                                   @PathVariable("name") String name, @PathVariable("surname") String surname){
+        AppUser currentUser = adminService.getUser(username);
+        currentUser.setName(name);
+        currentUser.setSurname(surname);
+        currentUser.setUsername(username);
+        currentUser.setPassword(password);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
 
     /*
     TODO: Get a good user list to display (ADMIN & optional)
@@ -83,6 +112,12 @@ public class BackendController {
     /*
     TODO: Remove user using username or id (ADMIN & optional)
     */
+    @PostMapping(path = "api/user/remove/{username}")
+    public ResponseEntity removeUser(@PathVariable("username") String username){
+        AppUser userToRemove = adminService.getUser(username);
+        adminService.removeUser(userToRemove);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
 
 
 
