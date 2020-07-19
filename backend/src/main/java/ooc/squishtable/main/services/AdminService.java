@@ -8,6 +8,8 @@ public interface AdminService {
 
     List<AppUser> findAll();
 
+    AppUser getUser(String username);
+
     Boolean removeUser(AppUser user);
 
     Boolean checkExistedUser(AppUser user);

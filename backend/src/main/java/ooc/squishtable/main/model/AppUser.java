@@ -2,14 +2,9 @@ package ooc.squishtable.main.model;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "APP_USER")
 public class AppUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
-
     String username;
     String password;
     String confirmPassword;
@@ -34,6 +29,13 @@ public class AppUser {
         this.id = userId;
         this.username = userName;
         this.password = encryptedPassword;
+    }
+
+    public AppUser(String username, String password, String name, String surname) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
     }
 
     public AppUser(String username, String password, String confirmPassword, String name, String surname) {

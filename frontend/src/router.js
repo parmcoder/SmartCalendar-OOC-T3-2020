@@ -22,11 +22,23 @@ const router = new Router({
         { path: '/callservice', component: Service },
         { path: '/bootstrap', component: Bootstrap },
         { path: '/user', component: User },
+<<<<<<< HEAD
         { path: '/login', component: Login },
         { path: '/register', component: Register },
         { path: '/calendar', component: Calendar },
 
 
+=======
+        { path: '/login', component: Login,
+            meta: {
+                hideForAuth: true
+            }
+        },
+        { path: '/register', component: Register,
+            meta: {
+                hideForAuth: true
+            } },
+>>>>>>> master
         {
             path: '/protected',
             component: Protected,
@@ -51,8 +63,18 @@ router.beforeEach((to, from, next) => {
         } else {
             next();
         }
+
     } else {
         next(); // make sure to always call next()!
+    }
+    if (to.matched.some(record => record.meta.hideForAuth)) {
+        if (store.getters.isLoggedIn) {
+            next({ path: '/' });
+        } else {
+            next();
+        }
+    } else {
+        next();
     }
 });
 

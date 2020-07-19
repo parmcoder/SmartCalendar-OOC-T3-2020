@@ -21,19 +21,26 @@ public class AppUserDaoTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    @Autowired
-    private AppUserRepository users;
+//    @Autow/ired
+//    private AppUserRepository users;
 
     private AppUser norbertSiegmund = new AppUser("Norbert", "Siegmund");
     private AppUser jonasHecht = new AppUser("Jonas", "Hecht");
 
-    @Before
-    public void fillSomeDataIntoOurDb() {
-        // Add new Users to Database
-        entityManager.persist(norbertSiegmund);
-        entityManager.persist(jonasHecht);
-    }
+//    @Before
+//    public void fillSomeDataIntoOurDb() {
+//        // Add new Users to Database
+//        entityManager.persist(norbertSiegmund);
+//        entityManager.persist(jonasHecht);
+//    }
 
+    @Test
+    public void eztest() throws Exception {
+        // Search for specific User in Database according to lastname
+//        List<AppUser> usersWithLastNameSiegmund = users.fin("Siegmund");
+//
+//        assertThat("parm", contains("parm"));
+    }
 //    @Test
 //    public void testFindByLastName() throws Exception {
 //        // Search for specific User in Database according to lastname
