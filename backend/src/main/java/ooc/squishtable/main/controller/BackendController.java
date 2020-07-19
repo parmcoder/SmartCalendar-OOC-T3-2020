@@ -96,8 +96,7 @@ public class BackendController {
     }
 
     @RequestMapping(path = "/admin/hello", method = RequestMethod.GET)
-    public @ResponseBody
-    String getAdminHello() {
+    public @ResponseBody String getAdminHello() {
         LOG.info("Admin?");
         return "Admin: " + SECURED_TEXT;
     }

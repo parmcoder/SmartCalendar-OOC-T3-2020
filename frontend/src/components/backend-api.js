@@ -11,13 +11,23 @@ const AXIOS = axios.create({
 export default {
     hello() {
         return AXIOS.get(`/hello`);
+
+        /*
+        TODO: adding users
+         */
+
+        /*
+        TODO: calendar stuffs
+         */
+
+
+    /*
+    ! This method should be changed soon
+     */
     },
     getUser(userId) {
         return AXIOS.get(`/user/` + userId);
     },
-    /*
-    ! This method should be changed soon
-     */
     createUser(firstName, lastName) {
         return AXIOS.post(`/user/` + firstName + '/' + lastName);
     },
@@ -29,13 +39,6 @@ export default {
             }});
     }
 
-    /*
-    TODO: adding users
-     */
-
-    /*
-    TODO: calendar stuffs
-     */
 
 
 }
