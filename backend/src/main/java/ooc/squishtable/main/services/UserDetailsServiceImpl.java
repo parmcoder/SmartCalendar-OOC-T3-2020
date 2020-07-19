@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+// Connect with bean to check user who try to login to server
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -25,6 +26,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private AppRoleDao roleDao;
 
+    /**
+     * Load the user from the database
+     * @param userName
+     * @return the user detail if user exists
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         AppUser appUser = this.appUserDAO.findUserAccount(userName);

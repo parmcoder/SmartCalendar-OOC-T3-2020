@@ -12,31 +12,33 @@ export default {
     hello() {
         return AXIOS.get(`/hello`);
     },
-    getUser(userId) {
-        return AXIOS.get(`/user/` + userId);
-    },
+        /*
+        TODO: adding users
+         */
+
+
     /*
-    ! This method should be changed soon
+    * A function for creating user
      */
-    createUser(firstName, lastName) {
-        return AXIOS.post(`/user/` + firstName + '/' + lastName);
+    createUser(username, password, firstName, lastName) {
+        return AXIOS.post(`/auth/signup/`,{
+            username: username,
+            password: password,
+            name: firstName,
+            surname: lastName
+        });
     },
-    getSecured(user, password) {
-        return AXIOS.get(`/secured/`,{
-            auth: {
-                username: user,
-                password: password
-            }});
+    loginUser(user, password) {
+        return AXIOS.post(`/auth/signin/`,{
+            username: username,
+            password: password
+        });
     }
 
-    /*
-    TODO: adding users
-     */
 
-    /*
-    TODO: calendar stuffs
-     */
-
+        /*
+        TODO: calendar stuffs
+         */
 
 }
 

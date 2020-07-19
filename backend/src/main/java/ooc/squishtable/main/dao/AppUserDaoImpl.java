@@ -54,11 +54,11 @@ public class AppUserDaoImpl extends JdbcDaoSupport implements AppUserDao  {
         return resultList;
     }
 
+    /*
+     * find total count and then insert to every table
+     */
     @Override
     public void insertUser(AppUser user, int authority){
-        /*
-         * find total count and then insert to every table
-         */
         String sqlForCount = "select max(USER_ID) from APP_USER";
         String sqlForCount2 = "select max(ID) from USER_ROLE";
         String sqlForInsert1 = "insert into APP_USER (USER_ID, " +
@@ -88,11 +88,11 @@ public class AppUserDaoImpl extends JdbcDaoSupport implements AppUserDao  {
         }
     }
 
+    /*
+     * Remove user from both tables
+     */
     @Override
     public void removeUser(AppUser user){
-        /*
-         * Remove user from both tables
-         */
 
         String sqlForRemove1 = "delete from APP_USER where USER_ID = ?;";
         String sqlForRemove2 = "delete from USER_ROLE where USER_ID = ?;";
@@ -105,11 +105,11 @@ public class AppUserDaoImpl extends JdbcDaoSupport implements AppUserDao  {
         }
     }
 
+    /*
+     * Update user info
+     */
     @Override
     public void updateUser(AppUser user){
-        /*
-         * Update user info
-         */
 
         String sqlForUpdate = "update APP_USER set USER_NAME = ?, USER_REAL_NAME = ?, USER_REAL_SURNAME = ? " +
                 "where USER_ID = ?";

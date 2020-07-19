@@ -20,6 +20,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AppUserDao userDao;
 
+    /**
+     * Add user's task
+     * @param task
+     * @param username
+     * @return true if adding task successfully, otherwise false
+     */
     @Override
     public Boolean addTask(AppTask task, String username) {
         Boolean success = false;
@@ -33,6 +39,7 @@ public class UserServiceImpl implements UserService {
             utilDateEnd = format.parse(task.getInputDateEnd());
             task.setDateEnd(new java.sql.Date(utilDateEnd.getTime()));
 
+            // End date need to be before start date
             if(utilDateEnd.after(utilDateStart)){
                 success = true;
             }
@@ -49,6 +56,11 @@ public class UserServiceImpl implements UserService {
         return success;
     }
 
+    /**
+     * Remove user's task
+     * @param task
+     * @return true if task is removed successfully, otherwise false
+     */
     @Override
     public Boolean removeTask(AppTask task) {
         if(taskDao.findTask(task.getTid()) != null) taskDao.removeTask(task);
@@ -67,6 +79,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     * Get all user's tasks
+     * @param username
+     * @return All user's tasks
+     */
     @Override
     public List<AppTask> getAllTasks(String username) {
         AppUser user = userDao.findUserAccount(username);

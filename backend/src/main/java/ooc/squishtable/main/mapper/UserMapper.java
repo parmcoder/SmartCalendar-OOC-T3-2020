@@ -11,6 +11,13 @@ public class UserMapper implements RowMapper<AppUser> {
     public static final String BASE_SQL
             = "SELECT * From APP_USER u ";
 
+    /**
+     * Mapping string into object
+     * @param rs
+     * @param rowNum
+     * @return
+     * @throws SQLException
+     */
     @Override
     public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
         AppUser appUser = new AppUser();

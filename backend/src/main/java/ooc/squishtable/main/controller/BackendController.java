@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
@@ -30,44 +31,42 @@ public class BackendController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(path = "/hello")
+    @RequestMapping(path = "/user/hello")
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public String sayHello() {
         LOG.info("GET called on /hello resource");
         return HELLO_TEXT;
     }
 
-    @GetMapping(path = "api/user/{username}")
+    @GetMapping(path = "/user/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public AppUser getUserByUsername(@PathVariable("username") String username) {
-
         return adminService.getUser(username);
     }
 
-    @PostMapping(path = "api/user/create/{username}/{password}/{name}/{surname}")
-    public ResponseEntity registerNewUser(@PathVariable("username") String username, @PathVariable("password") String password,
-                                          @PathVariable("name") String name, @PathVariable("surname") String surname) {
-        AppUser creating = new AppUser(username, password, name, surname);
-        if (adminService.addNewUser(creating)) return ResponseEntity.status(HttpStatus.CREATED).body(adminService.getUser(creating.getUsername()));
-        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-    }
-
-    @PostMapping(path = "api/user/create/{title}/{description}/{dateStart}/{dateEnd}")
+    @PostMapping(path = "/user/create/{username}/{title}/{description}/{dateStart}/{dateEnd}")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity addTask(@PathVariable("title") String title, @PathVariable("description") String description,
                                           @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
-                                  Principal principal) {
-        User loggedInUser = (User) ((Authentication) principal).getPrincipal();
+                                  @PathVariable("username") String username) {
         AppTask creating = new AppTask(title, description, dateStart, dateEnd);
-        if (userService.addTask(creating,loggedInUser.getUsername()))
+        if (userService.addTask(creating,username))
             return ResponseEntity.status(HttpStatus.CREATED).body(creating);
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
+
     /*
     TODO: Get a good task list to display from username
     */
+    @PostMapping(path = "/user/tasklist/{username}")
+    public ResponseEntity displayAllTasks(@PathVariable("username") String username){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllTasks(username));
+    }
 
     /*
     TODO: Update task on task id
     */
-    @PostMapping(path = "api/user/{title}/edit/{title}/{description}/{dateStart}/{dateEnd}")
+    @PostMapping(path = "/user/edit/{title}/{description}/{dateStart}/{dateEnd}")
     public ResponseEntity updateTask(@PathVariable("title") String title, @PathVariable("description") String description,
                                      @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
                                      Principal principal){
@@ -83,7 +82,7 @@ public class BackendController {
     /*
     TODO: Remove task on task id
     */
-    @PostMapping(path = "api/user/remove/{title}/{description}/{dateStart}/{dateEnd}")
+    @PostMapping(path = "/user/remove/{title}/{description}/{dateStart}/{dateEnd}")
     public ResponseEntity removeTask(@PathVariable("title") String title, @PathVariable("description") String description,
                                      @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd){
         AppTask task = new AppTask(title, description, dateStart, dateEnd);
@@ -94,7 +93,7 @@ public class BackendController {
     /*
     TODO: Edit user info
     */
-    @PostMapping(path = "api/user/edit/{username}/{password}/{name}/{surname}")
+    @PostMapping(path = "/user/edit/{username}/{password}/{name}/{surname}")
     public ResponseEntity editUser(@PathVariable("username") String username, @PathVariable("password") String password,
                                    @PathVariable("name") String name, @PathVariable("surname") String surname){
         AppUser currentUser = adminService.getUser(username);
@@ -108,11 +107,17 @@ public class BackendController {
     /*
     TODO: Get a good user list to display (ADMIN & optional)
     */
+    @PostMapping(path = "/user")
+    public ResponseEntity displayAllUsers(){
+        System.out.println(adminService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
 
     /*
     TODO: Remove user using username or id (ADMIN & optional)
     */
-    @PostMapping(path = "api/user/remove/{username}")
+    @PostMapping(path = "/user/remove/{username}")
     public ResponseEntity removeUser(@PathVariable("username") String username){
         AppUser userToRemove = adminService.getUser(username);
         adminService.removeUser(userToRemove);
@@ -131,8 +136,8 @@ public class BackendController {
     }
 
     @RequestMapping(path = "/admin/hello", method = RequestMethod.GET)
-    public @ResponseBody
-    String getAdminHello() {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody String getAdminHello() {
         LOG.info("Admin?");
         return "Admin: " + SECURED_TEXT;
     }
@@ -142,6 +147,13 @@ public class BackendController {
     /*
     ! These are not what we are working on
      */
+    @PostMapping(path = "api/user/create/{username}/{password}/{name}/{surname}")
+    public ResponseEntity registerNewUser(@PathVariable("username") String username, @PathVariable("password") String password,
+                                          @PathVariable("name") String name, @PathVariable("surname") String surname) {
+        AppUser creating = new AppUser(username, password, name, surname);
+        if (adminService.addNewUser(creating)) return ResponseEntity.status(HttpStatus.CREATED).body(adminService.getUser(creating.getUsername()));
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
 //    @RequestMapping(path = "/user/{lastName}/{firstName}", method = RequestMethod.POST)
 //    @ResponseStatus(HttpStatus.CREATED)
 //    public long addNewUser (@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName) {

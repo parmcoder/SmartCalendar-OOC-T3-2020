@@ -40,6 +40,11 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
         }
     }
 
+    /**
+     * Find task
+     * @param tid
+     * @return
+     */
     @Override
     public AppTask findTask(long tid) {
         String sql = TaskMapper.BASE_SQL + " where u.TID = ? ";
@@ -53,11 +58,11 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
         }
     }
 
-    @Override
-    public void insertTask(AppTask task){
-        /*
+    /*
         ? find total count and then insert to every table
          */
+    @Override
+    public void insertTask(AppTask task){
         String sqlForInsert1 = "insert into APP_TASKS(TITLE, DESCRIPTION, START_DATE, END_DATE, UID)\n" +
                 "    value (?,?,?,?,?);";
         try{
@@ -69,11 +74,11 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
         }
     }
 
-    @Override
-    public void removeTask(AppTask task){
-        /*
+    /*
         ? find total count and then insert to every table
          */
+    @Override
+    public void removeTask(AppTask task){
         String sqlForInsert1 = "delete from APP_TASKS where TID = ?";
         try{
             Object[] params = new Object[]{ task.getTid() };
@@ -83,11 +88,11 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
         }
     }
 
-    @Override
-    public void updateTask(AppTask task){
-        /*
+    /*
         ? Update
         */
+    @Override
+    public void updateTask(AppTask task){
 
         String sqlForUpdate = "update APP_TASKS" +
                 "set TITLE = ?, DESCRIPTION = ?, START_DATE = ?, END_DATE = ? " +
