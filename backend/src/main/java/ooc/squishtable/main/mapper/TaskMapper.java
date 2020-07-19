@@ -11,6 +11,13 @@ public class TaskMapper implements RowMapper<AppTask> {
     public static final String BASE_SQL
             = "SELECT * From APP_TASKS u ";
 
+    /**
+     * Mapping string into object
+     * @param rs
+     * @param rowNum
+     * @return
+     * @throws SQLException
+     */
     @Override
     public AppTask mapRow(ResultSet rs, int rowNum) throws SQLException {
         AppTask appTask = new AppTask();

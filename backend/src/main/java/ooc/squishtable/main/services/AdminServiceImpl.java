@@ -12,8 +12,6 @@ import java.util.List;
 
 @Service
 public class AdminServiceImpl implements AdminService {
-
-    // Access user's data from database
     @Autowired
     private AppUserDao appUserDao;
 
@@ -33,9 +31,15 @@ public class AdminServiceImpl implements AdminService {
         return this.appUserDao.findUserAccount(username);
     }
 
+    /**
+     * Add new user to database
+     */
     @Override
     public Boolean addNewUser(AppUser user) {
-        if(checkExistedUser(user)){    // Check whether user already exists or not
+        /**
+         * Check whether user already exists or not
+         */
+        if(checkExistedUser(user)){
             return false;
         }
         user.setPassword(EncryptorUtils.encryptPassword(user.getPassword()));
@@ -43,6 +47,11 @@ public class AdminServiceImpl implements AdminService {
         return true;
     }
 
+    /**
+     * Add new admin
+     * @param user
+     * @return true if success, else otherwise
+     */
     @Override
     public Boolean addNewAdmin(AppUser user) {
         if(checkExistedUser(user)){
@@ -53,6 +62,12 @@ public class AdminServiceImpl implements AdminService {
         return true;
     }
 
+    /**
+     * Update user information
+     * @param userName
+     * @param user
+     * @return true if update successfully, false otherwise
+     */
     @Override
     public Boolean updateUserInfo(String userName, AppUser user) {
         Boolean result = true;
@@ -69,6 +84,11 @@ public class AdminServiceImpl implements AdminService {
         return result;
     }
 
+    /**
+     * Get username information
+     * @param username
+     * @return the information of this user
+     */
     @Override
     public AppUser getCurrentInfo(String username) {
         return this.appUserDao.findUserAccount(username);
@@ -76,23 +96,35 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * Check whether password and confirm password are equal or not
+     * @param user
+     * @return true if password is matched
      */
     @Override
     public Boolean checkMatching(AppUser user) {
         return passwordEncoder.matches(user.getConfirmPassword(), passwordEncoder.encode(user.getPassword()));
     }
 
+    /**
+     * Remove user from the database
+     * @param user
+     * @return true if user exists, and delete. Otherwise, false
+     */
     @Override
     public Boolean removeUser(AppUser user) {
         System.out.println(user);
 
-        if(checkExistedUser(user)){     // If user exists, delete user
+        if(checkExistedUser(user)){
             this.appUserDao.removeUser(user);
             return true;
         }
-        return false;           // Otherwise, do nothing
+        return false;
     }
 
+    /**
+     * Check the existence of this user
+     * @param user
+     * @return true if user exists, false otherwise
+     */
     @Override
     public Boolean checkExistedUser(AppUser user){
         if(this.appUserDao.findUserAccount(user.getUsername()) != null){
