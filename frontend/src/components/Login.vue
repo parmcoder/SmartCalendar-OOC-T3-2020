@@ -38,13 +38,8 @@
                                     <br>
                                     <v-btn variant="success" type="submit" color="grey darken-2" large>Enter</v-btn>
                                 </v-form>
-<<<<<<< HEAD
+
                                 <br>
-                                <div class="text-xl-center">
-                                    <v-btn color="grey darken-2" large>Enter</v-btn>
-                                </div>
-=======
->>>>>>> master
                             </v-card-text>
                         </v-card>
                     </v-flex>
