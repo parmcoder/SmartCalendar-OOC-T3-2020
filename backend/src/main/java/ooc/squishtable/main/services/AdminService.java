@@ -23,4 +23,6 @@ public interface AdminService {
     AppUser getCurrentInfo(String username);
 
     Boolean checkMatching(AppUser user);
+
+    List<String> getRoles(AppUser user);
 }

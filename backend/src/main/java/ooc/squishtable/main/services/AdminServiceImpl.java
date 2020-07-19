@@ -1,5 +1,6 @@
 package ooc.squishtable.main.services;
 
+import ooc.squishtable.main.dao.AppRoleDao;
 import ooc.squishtable.main.dao.AppUserDao;
 import ooc.squishtable.main.model.AppUser;
 import ooc.squishtable.main.utilities.EncryptorUtils;
@@ -14,6 +15,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AppUserDao appUserDao;
+
+    @Autowired
+    AppRoleDao appRoleDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -90,5 +94,10 @@ public class AdminServiceImpl implements AdminService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<String> getRoles(AppUser user){
+        return this.appRoleDao.getRoleNames(this.appUserDao.findUserAccount(user.getUsername()).getId());
     }
 }

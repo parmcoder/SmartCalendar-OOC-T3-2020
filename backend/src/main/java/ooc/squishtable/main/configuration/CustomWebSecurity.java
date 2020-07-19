@@ -57,30 +57,17 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
         TODO: Manage the session so that it can memorize login logout
          */
         http.cors().and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 // No session will be created or used by spring security
-        .and()
-            .httpBasic()
-        .and()
+                .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
-            .authorizeRequests()
-//                .anyRequest().permitAll()
-                // allow every URI, that begins with '/api/'
-                .antMatchers("/api/logout","/api/hello","/api/register/**").permitAll()
-                // allow every URI with authentication, that begins with '/api/'
-                .antMatchers("/api/secured","/api/user/**")
-                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-                .antMatchers("/api/admin/**")
-                .access("hasRole('ROLE_ADMIN')")// protect all other requests
-                .antMatchers("/api/test/**").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
-                .and().logout().logoutUrl("/api/logout").logoutSuccessUrl("/")
                 .and()
 //                .anyRequest().authenticated()
 
                 .csrf().disable(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
-
 
 
     }

@@ -28,8 +28,12 @@ export default {
     getUser(userId) {
         return AXIOS.get(`/user/` + userId);
     },
-    createUser(firstName, lastName) {
-        return AXIOS.post(`/user/` + firstName + '/' + lastName);
+
+    /*
+    * A function for creating user
+     */
+    createUser(username, password, firstName, lastName) {
+        return AXIOS.post(`/user/create/`+ '/' + username + '/' + password + firstName + '/' + lastName);
     },
     getSecured(user, password) {
         return AXIOS.get(`/secured/`,{
