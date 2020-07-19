@@ -73,12 +73,24 @@ public class BackendController {
     */
 
     /*
-    TODO: Get a good user list to display (ADMIN)
+    TODO: Edit user info
+    */
+
+    /*
+    TODO: Get a good user list to display (ADMIN & optional)
+    */
+
+    /*
+    TODO: Remove user using username or id (ADMIN & optional)
     */
 
 
+
+    /*
+    ? The security part needed to be configured by frontend (vuex)
+     */
     @GetMapping(path = "/secured")
-    public @ResponseBody String getSecured(Principal principal) {
+    public @ResponseBody String getSecured() {
         LOG.info("GET successfully called on /secured resource");
         return SECURED_TEXT;
     }
@@ -90,13 +102,7 @@ public class BackendController {
         return "Admin: " + SECURED_TEXT;
     }
 
-    // Forwards all routes to FrontEnd except: '/', '/index.html', '/api', '/api/**'
-    // Required because of 'mode: history' usage in frontend routing
-    @RequestMapping(value = "{_:^(?!index\\.html|api).*$}")
-    public String redirectApi() {
-        LOG.info("URL entered directly into the Browser, so we need to redirect...");
-        return "forward:/";
-    }
+
 
     /*
     ! These are not what we are working on

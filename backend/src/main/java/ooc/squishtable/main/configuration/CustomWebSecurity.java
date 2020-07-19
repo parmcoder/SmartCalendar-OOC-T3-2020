@@ -44,12 +44,12 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
 //            .httpBasic()
         .and()
             .authorizeRequests()
-                .anyRequest().permitAll()
+//                .anyRequest().permitAll()
                 // allow every URI, that begins with '/api/'
 //                .antMatchers("/api/logout","/api/hello","/api/register/**").permitAll()
                 // allow every URI with authentication, that begins with '/api/'
-//                .antMatchers("/api/secured","/api/user/**")
-//                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+                .antMatchers("/api/secured","/api/user/**")
+                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 //                .antMatchers("/api/admin/**")
 //                .access("hasRole('ROLE_ADMIN')")// protect all other requests
                 .and().logout().logoutUrl("/api/logout").logoutSuccessUrl("/")
