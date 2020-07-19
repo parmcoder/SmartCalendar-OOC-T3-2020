@@ -5,21 +5,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "APP_TASKS")
+
 public class AppTask {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     long tid;
     long uid;
     String title;
     String description;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date dateStart;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date dateEnd;
 
     String inputDateStart;
@@ -27,6 +21,16 @@ public class AppTask {
 
     public AppTask() {
 
+    }
+
+    public AppTask(String title,
+                   String description,
+                   String inputDateStart,
+                   String inputDateEnd) {
+        this.inputDateStart = inputDateStart;
+        this.inputDateEnd = inputDateEnd;
+        this.title = title;
+        this.description = description;
     }
 
     public AppTask(String title,

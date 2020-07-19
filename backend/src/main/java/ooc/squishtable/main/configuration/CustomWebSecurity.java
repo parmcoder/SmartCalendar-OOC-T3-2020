@@ -34,6 +34,9 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
 //        http.authorizeRequests().antMatchers("/api/admin/**")
 //                .access("hasRole('ROLE_ADMIN')");
 
+        /*
+        TODO: Manage the session so that it can memorize login logout
+         */
         http
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 // No session will be created or used by spring security
@@ -41,15 +44,14 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
 //            .httpBasic()
         .and()
             .authorizeRequests()
+                .anyRequest().permitAll()
                 // allow every URI, that begins with '/api/'
-                .antMatchers("/api/logout").permitAll()
-                .antMatchers("/api/hello").permitAll()
-                .antMatchers("/api/user/**").permitAll()
+//                .antMatchers("/api/logout","/api/hello","/api/register/**").permitAll()
                 // allow every URI with authentication, that begins with '/api/'
-                .antMatchers("/api/secured")
-                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-                .antMatchers("/api/admin/**")
-                .access("hasRole('ROLE_ADMIN')")// protect all other requests
+//                .antMatchers("/api/secured","/api/user/**")
+//                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+//                .antMatchers("/api/admin/**")
+//                .access("hasRole('ROLE_ADMIN')")// protect all other requests
                 .and().logout().logoutUrl("/api/logout").logoutSuccessUrl("/")
                 .and()
                 //                .anyRequest().authenticated()
