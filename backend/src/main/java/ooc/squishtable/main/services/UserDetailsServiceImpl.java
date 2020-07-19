@@ -26,6 +26,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private AppRoleDao roleDao;
 
+    /**
+     * Load the user from the database
+     * @param userName
+     * @return the user detail if user exists
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         AppUser appUser = this.appUserDAO.findUserAccount(userName);

@@ -22,6 +22,11 @@ public class AppRoleDaoImpl extends JdbcDaoSupport implements AppRoleDao {
         setDataSource(dataSource);
     }
 
+    /**
+     * Get the role name
+     * @param userId
+     * @return role
+     */
     @Override
     public List<String> getRoleNames(Long userId) {
         String sql = "Select r.Role_Name " //
