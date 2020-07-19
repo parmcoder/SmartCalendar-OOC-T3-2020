@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+// Connect with bean to check user who try to login to server
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
