@@ -30,14 +30,15 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
     /*
-    TODO: Get a good user list to display (ADMIN & optional)
+        TODO: Parm needs to test these methods and what the responses are sent back to frontend
     */
-    @PostMapping(path = "/userlist")
+    @GetMapping(path = "/userlist")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity displayAllUsers(){
-        System.out.println(adminService.findAll());
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+//        System.out.println(adminService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.findAll());
     }
 
     /*
@@ -48,7 +49,7 @@ public class AdminController {
     public ResponseEntity removeUser(@PathVariable("username") String username){
         AppUser userToRemove = adminService.getUser(username);
         adminService.removeUser(userToRemove);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.FOUND).body("User has been removed.");
     }
 
 

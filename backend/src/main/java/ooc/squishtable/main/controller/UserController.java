@@ -31,7 +31,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(path = "/user/hello")
+    @RequestMapping(path = "/hello")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public String sayHello() {
         LOG.info("GET called on /hello resource");
@@ -44,13 +44,16 @@ public class UserController {
         return adminService.getUser(username);
     }
 
-    @PostMapping(path = "/user/create/{username}/{title}/{description}/{dateStart}/{dateEnd}")
+    /*
+        TODO: Parm needs to test these methods and what the responses are sent back to frontend
+    */
+    @PostMapping(path = "create/{username}/{title}/{description}/{dateStart}/{dateEnd}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity addTask(@PathVariable("title") String title, @PathVariable("description") String description,
-                                          @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
+                                  @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
                                   @PathVariable("username") String username) {
         AppTask creating = new AppTask(title, description, dateStart, dateEnd);
-        if (userService.addTask(creating,username))
+        if (userService.addTask(creating, username))
             return ResponseEntity.status(HttpStatus.CREATED).body(creating);
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
@@ -58,50 +61,55 @@ public class UserController {
     /*
     TODO: Get a good task list to display from username
     */
-    @PostMapping(path = "/user/tasklist/{username}")
-    public ResponseEntity displayAllTasks(@PathVariable("username") String username){
+    @GetMapping(path = "tasklist/{username}")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity displayAllTasks(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllTasks(username));
     }
 
     /*
     TODO: Update task on task id
     */
-    @PostMapping(path = "/user/edit/{title}/{description}/{dateStart}/{dateEnd}")
-    public ResponseEntity updateTask(@PathVariable("title") String title, @PathVariable("description") String description,
-                                     @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
-                                     Principal principal){
-        User loggedInUser = (User) ((Authentication) principal).getPrincipal();
+    @PostMapping(path = "edit/{tid}/{title}/{description}/{dateStart}/{dateEnd}")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity updateTask(@PathVariable("tid") String tid,
+                                     @PathVariable("title") String title, @PathVariable("description") String description,
+                                     @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd
+                                     ) {
         AppTask newTask = new AppTask(title, description, dateStart, dateEnd);
-        if (userService.addTask(newTask,loggedInUser.getUsername()))
+        newTask.setTid(Long.parseLong(tid));
+        if (userService.updateTask(newTask, Long.parseLong(tid)))
             return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
         else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Updated task info successfully");
         }
     }
 
     /*
     TODO: Remove task on task id
     */
-    @PostMapping(path = "/user/remove/{title}/{description}/{dateStart}/{dateEnd}")
-    public ResponseEntity removeTask(@PathVariable("title") String title, @PathVariable("description") String description,
-                                     @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd){
-        AppTask task = new AppTask(title, description, dateStart, dateEnd);
+    @PostMapping(path = "remove/{tid}")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity removeTask(@PathVariable("tid") String tid) {
+        AppTask task = new AppTask();
+        task.setTid(Long.parseLong(tid));
         userService.removeTask(task);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.FOUND).body("Removed task successfully");
     }
 
     /*
     TODO: Edit user info
     */
-    @PostMapping(path = "/user/edit/{username}/{password}/{name}/{surname}")
+    @PostMapping(path = "edit/{username}/{password}/{name}/{surname}")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity editUser(@PathVariable("username") String username, @PathVariable("password") String password,
-                                   @PathVariable("name") String name, @PathVariable("surname") String surname){
+                                   @PathVariable("name") String name, @PathVariable("surname") String surname) {
         AppUser currentUser = adminService.getUser(username);
         currentUser.setName(name);
         currentUser.setSurname(surname);
         currentUser.setUsername(username);
         currentUser.setPassword(password);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body("Updated user info successfully");
     }
 
 
