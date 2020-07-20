@@ -18,44 +18,54 @@ const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
         {path: '/', component: Index},
-        {path: '/hello', component: Hello},
-        {path: '/callservice', component: Service},
-        {path: '/bootstrap', component: Bootstrap},
-        {path: '/user', component: User},
         {path: '/calendar', component: Calendar},
+        // {path: '/hello', component: Hello},
+        // {path: '/callservice', component: Service},
+        // {path: '/bootstrap', component: Bootstrap},
+        // {path: '/user', component: User},
+        // {path: '/login', component: Login},
+        // {path: '/register', component: Register},
+        // {path: '/calendar', component: Calendar},
+        //
+        //
+        // {path: '/login', component: Login},
+        // {path: '/', component: Index},
+        {path: '/hello', component: Hello},
+        /*
+        ! Testing admin page here
+         */
+        {
+            path: '/admin',
+            component: Admin,
+            // meta: {
+            //     requiresAuth: true
+            // }
+        },
+        {path: '/user', component: User},
+        {
+            path: '/login', component: Login,
+            // meta: {
+            //     hideForAuth: true
+            // }
+        },
+        {
+            path: '/register', component: Register,
+            // meta: {
+            //     hideForAuth: true
+            // }
+        },
+        {
+            path: '/protected',
+            component: Protected,
+            // meta: {
+            //     requiresAuth: true
+            // }
+        },
 
-    });
-//         {
-//             path: '/admin',
-//             component: Admin,
-//             meta: {
-//                 requiresAuth: true
-//             }
-//         },
-//         {
-//             path: '/login', component: Login,
-//             meta: {
-//                 hideForAuth: true
-//             }
-//         },
-//         {
-//             path: '/register', component: Register,
-//             meta: {
-//                 hideForAuth: true
-//             }
-//         },
-//         {
-//             path: '/protected',
-//             component: Protected,
-//             meta: {
-//                 requiresAuth: true
-//             }
-//         },
-//
-//         // otherwise redirect to home
-//         {path: '*', redirect: '/'}
-//     ]
-// })
+        // otherwise redirect to home
+        {path: '*', redirect: '/'}
+    ]
+})
 
 
 router.beforeEach((to, from, next) => {
