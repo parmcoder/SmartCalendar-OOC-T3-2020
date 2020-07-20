@@ -40,7 +40,6 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-
     /*
     TODO: Remove user using username or id (ADMIN & optional)
     */
