@@ -94,12 +94,12 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
     @Override
     public void updateTask(AppTask task){
 
-        String sqlForUpdate = "update APP_TASKS" +
+        String sqlForUpdate = " update APP_TASKS " +
                 "set TITLE = ?, DESCRIPTION = ?, START_DATE = ?, END_DATE = ? " +
                 "where tid = ?";
         try{
             Object[] params = new Object[]{ task.getTitle(),task.getDescription(),
-                    task.getDateStart(), task.getDateEnd() };
+                    task.getDateStart(), task.getDateEnd(), task.getTid() };
             getJdbcTemplate().update(sqlForUpdate, params);
 //          getJdbcTemplate().update(sqlForRemove1, params);
         }catch(EmptyResultDataAccessException e){
