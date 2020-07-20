@@ -22,47 +22,40 @@ const router = new Router({
         {path: '/callservice', component: Service},
         {path: '/bootstrap', component: Bootstrap},
         {path: '/user', component: User},
-        {path: '/login', component: Login},
-        {path: '/register', component: Register},
         {path: '/calendar', component: Calendar},
 
-
-        {path: '/login', component: Login},
-        {path: '/', component: Index},
-        {path: '/hello', component: Hello},
-        {
-            path: '/admin',
-            component: Admin,
-            meta: {
-                requiresAuth: true
-            }
-        },
-        {path: '/bootstrap', component: Bootstrap},
-        {path: '/user', component: User},
-        {
-            path: '/login', component: Login,
-            meta: {
-                hideForAuth: true
-            }
-        },
-        {
-            path: '/register', component: Register,
-            meta: {
-                hideForAuth: true
-            }
-        },
-        {
-            path: '/protected',
-            component: Protected,
-            meta: {
-                requiresAuth: true
-            }
-        },
-
-        // otherwise redirect to home
-        {path: '*', redirect: '/'}
-    ]
-})
+    });
+//         {
+//             path: '/admin',
+//             component: Admin,
+//             meta: {
+//                 requiresAuth: true
+//             }
+//         },
+//         {
+//             path: '/login', component: Login,
+//             meta: {
+//                 hideForAuth: true
+//             }
+//         },
+//         {
+//             path: '/register', component: Register,
+//             meta: {
+//                 hideForAuth: true
+//             }
+//         },
+//         {
+//             path: '/protected',
+//             component: Protected,
+//             meta: {
+//                 requiresAuth: true
+//             }
+//         },
+//
+//         // otherwise redirect to home
+//         {path: '*', redirect: '/'}
+//     ]
+// })
 
 
 router.beforeEach((to, from, next) => {
