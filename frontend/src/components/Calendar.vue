@@ -37,7 +37,7 @@
             </v-sheet>
 
             <v-dialog v-model="addInfo" max-width="1000">
-                <v-card color="black" dark>
+                <v-card color="grey" dark>
                     <component>
                         <v-form @submit.prevent="addEvent">
                             <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
