@@ -40,8 +40,11 @@ public class UserController {
 
     @GetMapping(path = "{username}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public AppUser getUserByUsername(@PathVariable("username") String username) {
-        return adminService.getUser(username);
+    public ResponseEntity getUserByUsername(@PathVariable("username") String username) {
+        AppUser user = adminService.getUser(username);
+        if (user != null)
+            return ResponseEntity.status(HttpStatus.FOUND).body(user);
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
     /*
@@ -77,11 +80,10 @@ public class UserController {
                                      @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd
                                      ) {
         AppTask newTask = new AppTask(title, description, dateStart, dateEnd);
-        newTask.setTid(Long.parseLong(tid));
         if (userService.updateTask(newTask, Long.parseLong(tid)))
-            return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Updated task info successfully!");
         else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Updated task info successfully");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Update rejected! Invalid date.");
         }
     }
 
@@ -100,15 +102,17 @@ public class UserController {
     /*
     TODO: Edit user info
     */
-    @PostMapping(path = "edit/{username}/{password}/{name}/{surname}")
+    @PostMapping(path = "update/{username}/{newusername}/{name}/{surname}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity editUser(@PathVariable("username") String username, @PathVariable("password") String password,
+    public ResponseEntity editUser(@PathVariable("username") String username,
+                                   @PathVariable("newusername") String newusername,
+                                   @PathVariable("password") String password,
                                    @PathVariable("name") String name, @PathVariable("surname") String surname) {
-        AppUser currentUser = adminService.getUser(username);
-        currentUser.setName(name);
-        currentUser.setSurname(surname);
-        currentUser.setUsername(username);
-        currentUser.setPassword(password);
+        AppUser newInfo = adminService.getUser(username);
+        newInfo.setName(newusername);
+        newInfo.setSurname(surname);
+        newInfo.setUsername(username);
+        adminService.updateUserInfo(username, newInfo);
         return ResponseEntity.status(HttpStatus.OK).body("Updated user info successfully");
     }
 
