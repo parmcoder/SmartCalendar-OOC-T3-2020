@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @RestController()
-@RequestMapping("/api")
-public class BackendController {
+@RequestMapping("/api/user/")
+public class UserController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
     public static final String SECURED_TEXT = "Hello from the secured resource!";
@@ -32,13 +32,13 @@ public class BackendController {
     private UserService userService;
 
     @RequestMapping(path = "/user/hello")
-//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public String sayHello() {
         LOG.info("GET called on /hello resource");
         return HELLO_TEXT;
     }
 
-    @GetMapping(path = "/user/{username}")
+    @GetMapping(path = "{username}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public AppUser getUserByUsername(@PathVariable("username") String username) {
         return adminService.getUser(username);
@@ -103,66 +103,6 @@ public class BackendController {
         currentUser.setPassword(password);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
-
-    /*
-    TODO: Get a good user list to display (ADMIN & optional)
-    */
-    @PostMapping(path = "/user")
-    public ResponseEntity displayAllUsers(){
-        System.out.println(adminService.findAll());
-        return ResponseEntity.status(HttpStatus.OK).body(null);
-    }
-
-
-    /*
-    TODO: Remove user using username or id (ADMIN & optional)
-    */
-    @PostMapping(path = "/user/remove/{username}")
-    public ResponseEntity removeUser(@PathVariable("username") String username){
-        AppUser userToRemove = adminService.getUser(username);
-        adminService.removeUser(userToRemove);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
-    }
-
-
-
-    /*
-    ? The security part needed to be configured by frontend (vuex)
-     */
-    @GetMapping(path = "/secured")
-    public @ResponseBody String getSecured() {
-        LOG.info("GET successfully called on /secured resource");
-        return SECURED_TEXT;
-    }
-
-    @RequestMapping(path = "/admin/hello", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public @ResponseBody String getAdminHello() {
-        LOG.info("Admin?");
-        return "Admin: " + SECURED_TEXT;
-    }
-
-
-
-    /*
-    ! These are not what we are working on
-     */
-    @PostMapping(path = "api/user/create/{username}/{password}/{name}/{surname}")
-    public ResponseEntity registerNewUser(@PathVariable("username") String username, @PathVariable("password") String password,
-                                          @PathVariable("name") String name, @PathVariable("surname") String surname) {
-        AppUser creating = new AppUser(username, password, name, surname);
-        if (adminService.addNewUser(creating)) return ResponseEntity.status(HttpStatus.CREATED).body(adminService.getUser(creating.getUsername()));
-        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-    }
-//    @RequestMapping(path = "/user/{lastName}/{firstName}", method = RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public long addNewUser (@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName) {
-//        AppUser savedUser = userRepository.save(new AppUser(firstName, lastName));
-//
-//        LOG.info(savedUser.toString() + " successfully saved into DB");
-//
-//        return savedUser.getId();
-//    }
 
 
 }

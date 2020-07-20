@@ -68,8 +68,9 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
-                .authorizeRequests().antMatchers("/api/auth/**","/","/login","/register").permitAll()
-                .antMatchers("/api/admin/**","/api/user/**").authenticated()
+                .authorizeRequests()
+//                .antMatchers("/api/auth/**", "/", "/login", "/register").permitAll()
+                .antMatchers("/api/admin/**", "/api/user/**").authenticated()
                 .and()
 //                .anyRequest().authenticated()
 
