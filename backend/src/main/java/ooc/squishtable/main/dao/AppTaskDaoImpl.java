@@ -27,6 +27,11 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
         setDataSource(dataSource);
     }
 
+    /**
+     * Find all user's task
+     * @param uid
+     * @return all tasks
+     */
     @Override
     public List<AppTask> findAllUserTasks(long uid) {
         String sql = TaskMapper.BASE_SQL + " where u.UID = ? ";
@@ -43,7 +48,7 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
     /**
      * Find task
      * @param tid
-     * @return
+     * @return task
      */
     @Override
     public AppTask findTask(long tid) {
