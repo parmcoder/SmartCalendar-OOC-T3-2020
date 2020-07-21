@@ -9,6 +9,15 @@ class AdminService {
      * @param user
      * @returns {Promise<AxiosResponse<T>>}
      */
+    isAdmin() {
+        return axios.get(API_URL + 'secured', {headers: authHeader()});
+    }
+
+    /**
+     * get request function will return a list of users
+     * @param user
+     * @returns {Promise<AxiosResponse<T>>}
+     */
     getUserlist() {
         return axios.get(API_URL + 'userlist', {headers: authHeader()});
     }
