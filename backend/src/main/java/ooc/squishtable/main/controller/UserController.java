@@ -32,6 +32,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * Print message
+     * @return hello message
+     */
     @RequestMapping(path = "/hello")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public String sayHello() {
@@ -39,6 +43,11 @@ public class UserController {
         return HELLO_TEXT;
     }
 
+    /**
+     * Get user by using username
+     * @param username
+     * @return user
+     */
     @GetMapping(path = "{username}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity getUserByUsername(@PathVariable("username") String username) {
@@ -47,7 +56,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FOUND).body(user);
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("User does not exist, try again."));
     }
-    
+
+    /**
+     * Add task
+     * @param title
+     * @param description
+     * @param dateStart
+     * @param dateEnd
+     * @param username
+     * @return Task
+     */
+
     @PostMapping(path = "create/{username}/{title}/{description}/{dateStart}/{dateEnd}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity addTask(@PathVariable("title") String title, @PathVariable("description") String description,
@@ -59,12 +78,27 @@ public class UserController {
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AppText("Bad request, try again."));
     }
 
+    /**
+     * Display all user's tasks
+     * @param username
+     * @return user's tasks
+     */
+
     @GetMapping(path = "tasklist/{username}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity displayAllTasks(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllTasks(username));
     }
 
+    /**
+     * Update user's task
+     * @param tid
+     * @param title
+     * @param description
+     * @param dateStart
+     * @param dateEnd
+     * @return Update task
+     */
     @PostMapping(path = "edit/{tid}/{title}/{description}/{dateStart}/{dateEnd}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity updateTask(@PathVariable("tid") String tid,
@@ -79,9 +113,11 @@ public class UserController {
         }
     }
 
-    /*
-    TODO: Remove task on task id
-    */
+    /**
+     * Remove user's task
+     * @param tid
+     * @return Message to tell user that we successfully remove task
+     */
     @PostMapping(path = "remove/{tid}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity removeTask(@PathVariable("tid") String tid) {
@@ -91,9 +127,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body("Removed task successfully");
     }
 
-    /*
-    TODO: Edit user info
-    */
+    /**
+     * Update user information
+     * @param username
+     * @param newusername
+     * @param name
+     * @param surname
+     * @return Message to user
+     */
     @PostMapping(path = "update/{username}/{newusername}/{name}/{surname}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity editUser(@PathVariable("username") String username,

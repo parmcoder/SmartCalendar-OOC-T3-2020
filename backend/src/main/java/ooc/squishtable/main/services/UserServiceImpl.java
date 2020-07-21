@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Add user's task
-     *
      * @param task
      * @param username
      * @return true if adding task successfully, otherwise false

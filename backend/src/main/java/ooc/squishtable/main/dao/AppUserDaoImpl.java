@@ -27,6 +27,11 @@ public class AppUserDaoImpl extends JdbcDaoSupport implements AppUserDao  {
         setDataSource(dataSource);
     }
 
+    /**
+     * Find user account
+     * @param userName
+     * @return user information
+     */
     @Override
     public AppUser findUserAccount(String userName) {
         String sql = UserMapper.BASE_SQL + " where u.User_Name = ? ";
@@ -40,6 +45,10 @@ public class AppUserDaoImpl extends JdbcDaoSupport implements AppUserDao  {
         }
     }
 
+    /**
+     * Get all users
+     * @return list of user
+     */
     @Override
     public List<AppUser> getAllUsers() {
         String sql = UserMapper.BASE_SQL;
