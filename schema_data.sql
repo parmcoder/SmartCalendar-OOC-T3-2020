@@ -67,7 +67,7 @@ values (1, 'ROLE_USER'), (2, 'ROLE_ADMIN');
 insert into USER_ROLE(ID, USER_ID, ROLE_ID)
 values (1, 1, 1);
 insert into USER_ROLE(ID, USER_ID, ROLE_ID)
-values (1, 1, 2);
+values (2, 1, 2);
 
 insert into APP_USER(USER_ID, USER_NAME, ENCRYPTED_PASSWORD, ENABLED,
 USER_REAL_NAME, USER_REAL_SURNAME)
