@@ -56,7 +56,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FOUND).body(user);
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("User does not exist, try again."));
     }
-    
+
     /**
      * Add task
      * @param title
