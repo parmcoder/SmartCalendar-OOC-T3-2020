@@ -47,10 +47,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FOUND).body(user);
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("User does not exist, try again."));
     }
-
-    /*
-        TODO: Parm needs to test these methods and what the responses are sent back to frontend
-    */
+    
     @PostMapping(path = "create/{username}/{title}/{description}/{dateStart}/{dateEnd}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity addTask(@PathVariable("title") String title, @PathVariable("description") String description,
@@ -62,18 +59,12 @@ public class UserController {
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AppText("Bad request, try again."));
     }
 
-    /*
-    TODO: Get a good task list to display from username
-    */
     @GetMapping(path = "tasklist/{username}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity displayAllTasks(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllTasks(username));
     }
 
-    /*
-    TODO: Update task on task id
-    */
     @PostMapping(path = "edit/{tid}/{title}/{description}/{dateStart}/{dateEnd}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity updateTask(@PathVariable("tid") String tid,
