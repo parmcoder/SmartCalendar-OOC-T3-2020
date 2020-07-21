@@ -36,10 +36,12 @@
                                     >
                                     </v-text-field>
                                     <br>
-                                    <v-btn variant="success" type="submit" color="grey darken-2" large>Enter</v-btn>
                                 </v-form>
-
-                                <br>
+                                
+                                <div class="text-xl-center">
+                                    <v-btn color="grey darken-2" large>Enter</v-btn>
+                                </div>
+                                
                             </v-card-text>
                         </v-card>
                     </v-flex>
