@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const API_URL = 'http://localhost:8080/api/auth/';
 
 class AuthService {
@@ -23,8 +25,9 @@ class AuthService {
     register(user) {
         return axios.post(API_URL + 'signup', {
             username: user.username,
-            email: user.email,
-            password: user.password
+            password: user.password,
+            name: user.name,
+            surname: user.surname
         });
     }
 }

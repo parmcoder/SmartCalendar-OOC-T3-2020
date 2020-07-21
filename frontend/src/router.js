@@ -9,12 +9,11 @@ import Index from "./components/Index";
 import Register from "./components/Registration"
 import Calendar from "./components/Calendar"
 
-import store from './stores/store'
 import Admin from "./components/Admin";
 
 Vue.use(Router);
 
-const router = new Router({
+export const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
         {path: '/', component: Index},
@@ -93,5 +92,3 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
-
-export default router;

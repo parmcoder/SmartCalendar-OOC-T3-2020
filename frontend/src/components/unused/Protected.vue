@@ -18,7 +18,6 @@
 
 <script>
   import api from './backend-api'
-  import store from '../../stores/store'
 
 export default {
   name: 'protected',
