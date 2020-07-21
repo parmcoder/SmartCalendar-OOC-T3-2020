@@ -28,16 +28,12 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @Autowired
-    private UserService userService;
-
     /*
         TODO: Parm needs to test these methods and what the responses are sent back to frontend
     */
     @GetMapping(path = "/userlist")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity displayAllUsers(){
-//        System.out.println(adminService.findAll());
         return ResponseEntity.status(HttpStatus.OK).body(adminService.findAll());
     }
 
@@ -48,11 +44,9 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity removeUser(@PathVariable("username") String username){
         AppUser userToRemove = adminService.getUser(username);
-        adminService.removeUser(userToRemove);
-        return ResponseEntity.status(HttpStatus.FOUND).body("User has been removed.");
+        if(adminService.removeUser(userToRemove)) return ResponseEntity.status(HttpStatus.FOUND).body("User has been removed.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User has been found.");
     }
-
-
 
     /*
     ? The security part needed to be configured by frontend (vuex)
@@ -70,6 +64,5 @@ public class AdminController {
         LOG.info("Admin?");
         return "Admin: " + SECURED_TEXT;
     }
-
 
 }
