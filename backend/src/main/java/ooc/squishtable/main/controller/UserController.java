@@ -57,10 +57,6 @@ public class UserController {
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("User does not exist, try again."));
     }
 
-    /*
-        TODO: Parm needs to test these methods and what the responses are sent back to frontend
-    */
-
     /**
      * Add task
      * @param title
@@ -70,6 +66,7 @@ public class UserController {
      * @param username
      * @return Task
      */
+
     @PostMapping(path = "create/{username}/{title}/{description}/{dateStart}/{dateEnd}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity addTask(@PathVariable("title") String title, @PathVariable("description") String description,
@@ -81,24 +78,17 @@ public class UserController {
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AppText("Bad request, try again."));
     }
 
-    /*
-    TODO: Get a good task list to display from username
-    */
-
     /**
      * Display all user's tasks
      * @param username
      * @return user's tasks
      */
+
     @GetMapping(path = "tasklist/{username}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity displayAllTasks(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllTasks(username));
     }
-
-    /*
-    TODO: Update task on task id
-    */
 
     /**
      * Update user's task
@@ -123,10 +113,6 @@ public class UserController {
         }
     }
 
-    /*
-    TODO: Remove task on task id
-    */
-
     /**
      * Remove user's task
      * @param tid
@@ -140,10 +126,6 @@ public class UserController {
         userService.removeTask(task);
         return ResponseEntity.status(HttpStatus.FOUND).body("Removed task successfully");
     }
-
-    /*
-    TODO: Edit user info
-    */
 
     /**
      * Update user information

@@ -42,6 +42,7 @@
                         <v-form @submit.prevent="addEvent">
                             <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
                             <v-text-field v-model="details" type="text" label="detail"></v-text-field>
+<!--                            I want to filter date string, let me choose the v-model -->
                             <v-datetime-picker v-model="start" type="datetime" label="start (required)"></v-datetime-picker>
                             <v-datetime-picker v-model="end" type="datetime" label="end (required)"></v-datetime-picker>
                             <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
