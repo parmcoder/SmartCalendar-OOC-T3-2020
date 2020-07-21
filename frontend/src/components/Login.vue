@@ -16,50 +16,37 @@
                                 <h4 class="display-2 font-weight-bold">Log in</h4>
                                 <hr>
                                 <br>
-                                <form name="form" @submit.prevent="handleLogin">
-                                    <div class="form-group">
-                                        <label for="username">Username</label>
-                                        <input
+                                <v-form v-model="isValid">
+                                        <v-text-field
+                                                label="Username"
                                                 v-model="user.username"
-                                                v-validate="'required'"
+                                                :rules="inputRules"
+                                                required
+                                                prepend-icon="face"
                                                 type="text"
-                                                class="form-control"
                                                 name="username"
                                                 color="white"
                                         />
-                                        <div
-                                                v-if="errors.has('username')"
-                                                class="alert alert-danger"
-                                                role="alert"
-                                        >Username is required!</div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="password">Password</label>
-                                        <input
+                                        <v-text-field
+                                                label="Password"
                                                 v-model="user.password"
-                                                v-validate="'required'"
+                                                :rules="inputRules"
+                                                required
+                                                prepend-icon="lock"
                                                 type="password"
-                                                class="form-control"
                                                 name="password"
                                                 color="white"
                                         />
-                                        <div
-                                                v-if="errors.has('password')"
-                                                class="alert alert-danger"
-                                                role="alert"
-                                        >Password is required!</div>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-primary btn-block" color="grey darken-2" :disabled="loading">
-                                            <span v-show="loading" class="spinner-border spinner-border-sm"></span>
-                                            <span>Login</span>
-                                        </button>
-                                    </div>
-                                    <div class="form-group">
-                                        <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
-                                    </div>
-                                </form>
+                                    <br>
 
+                                        <div class="text-xl-center">
+                                        <v-btn @click="handleLogin" color="grey darken-2" :disabled="!isValid" :loading="loading">
+                                            Login
+                                        </v-btn>
+                                        </div>
+                                    <br>
+                                        <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
+                                </v-form>
                                 <br>
                             </v-card-text>
                         </v-card>
@@ -79,7 +66,9 @@
             return {
                 user: new User('', '', '', ''),
                 loading: false,
-                message: ''
+                message: '',
+                inputRules: [v => !!v || 'This field is required'],
+                isValid: true
             };
         },
         computed: {
@@ -95,27 +84,19 @@
         methods: {
             handleLogin() {
                 this.loading = true;
-                this.$validator.validateAll().then(isValid => {
-                    if (!isValid) {
-                        this.loading = false;
-                        return;
-                    }
-
-                    if (this.user.username && this.user.password) {
-                        this.$store.dispatch('auth/login', this.user).then(
-                            () => {
-                                this.$router.push('/calendar');
-                            },
-                            error => {
-                                this.loading = false;
-                                this.message =
-                                    (error.response && error.response.data) ||
-                                    error.message ||
-                                    error.toString();
+                if (this.user.username && this.user.password) {
+                    this.$store.dispatch('auth/login', this.user).then(
+                        () => {
+                            this.$router.push('/calendar');
+                        },
+                        error => {
+                            this.loading = false;
+                            if (error.response.status === 401) {
+                                this.message = "Wrong username or password";
                             }
-                        );
-                    }
-                });
+                        }
+                    );
+                }
             }
         }
     };

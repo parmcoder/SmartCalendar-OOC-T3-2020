@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/unused/Hello'
-import Bootstrap from '@/components/unused/Bootstrap'
-import User from '@/components/unused/User'
-import Login from "@/components/Login";
-import Protected from '@/components/unused/Protected'
+import User from './components/unused/User'
+import Login from "./components/Login";
+import Protected from './components/unused/Protected'
 import Index from "./components/Index";
 import Register from "./components/Registration"
 import Calendar from "./components/Calendar"
@@ -16,49 +14,36 @@ Vue.use(Router);
 export const router = new Router({
     mode: 'history', // uris without hashes #, see https://router.vuejs.org/guide/essentials/history-mode.html#html5-history-mode
     routes: [
-        {path: '/', component: Index},
-        {path: '/calendar', component: Calendar},
-        // {path: '/hello', component: Hello},
-        // {path: '/callservice', component: Service},
-        // {path: '/bootstrap', component: Bootstrap},
-        // {path: '/user', component: User},
-        // {path: '/login', component: Login},
-        // {path: '/register', component: Register},
-        // {path: '/calendar', component: Calendar},
-        //
-        //
-        // {path: '/login', component: Login},
-        // {path: '/', component: Index},
-        {path: '/hello', component: Hello},
-        /*
-        ! Testing admin page here
-         */
+        {
+            path: '/',
+            component: Index,
+            meta: {title: 'Home Page - Squish Table'}
+            },
+        {
+            path: '/calendar',
+            component: Calendar,
+            meta: {title: 'Calendar Page - Squish Table'}
+            },
         {
             path: '/admin',
             component: Admin,
-            // meta: {
-            //     requiresAuth: true
-            // }
+            meta: {title: 'Admin Page - Squish Table'}
         },
         {path: '/user', component: User},
         {
-            path: '/login', component: Login,
-            // meta: {
-            //     hideForAuth: true
-            // }
+            path: '/login',
+            component: Login,
+            meta: {title: 'Login Page - Squish Table'}
         },
         {
-            path: '/register', component: Register,
-            // meta: {
-            //     hideForAuth: true
-            // }
+            path: '/register',
+            component: Register,
+            meta: {title: 'Register Page - Squish Table'}
         },
         {
             path: '/protected',
             component: Protected,
-            // meta: {
-            //     requiresAuth: true
-            // }
+            meta: {title: 'Protected Page - Squish Table'}
         },
 
         // otherwise redirect to home
@@ -68,6 +53,16 @@ export const router = new Router({
 
 
 router.beforeEach((to, from, next) => {
+
+    // This goes through the matched routes from last to first, finding the closest route with a title.
+    // eg. if we have /some/deep/nested/route and /some, /deep, and /nested have titles, nested's will be chosen.
+    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+
+
+    // If a route with a title was found, set the document (page) title to that value.
+    if(nearestWithTitle) document.title = nearestWithTitle.meta.title;
+
+
     if (to.matched.some(record => record.meta.requiresAuth)) {
         // this route requires auth, check if logged in
         // if not, redirect to login page.
@@ -91,4 +86,6 @@ router.beforeEach((to, from, next) => {
     } else {
         next();
     }
+
+
 });
