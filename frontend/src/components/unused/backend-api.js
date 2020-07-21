@@ -1,5 +1,7 @@
 import axios from 'axios'
-
+/*
+! Move to services
+ */
 const AXIOS = axios.create({
   baseURL: `/api`,
   timeout: 1000
@@ -12,10 +14,6 @@ export default {
     hello() {
         return AXIOS.get(`/hello`);
     },
-        /*
-        TODO: adding users
-         */
-
 
     /*
     * A function for creating user
@@ -33,12 +31,30 @@ export default {
             username: username,
             password: password
         });
+    },
+
+    /*
+    TODO: calendar stuffs
+     */
+    createTask(user, title, description, dateStart, dateEnd) {
+        return AXIOS.post(`/user/create/`,{
+            headers: {
+                'Authorization': 'test-value'
+            }
+        })
+    },
+    removeTask(user, password) {
+    },
+    editTask(user, password) {
+    },
+    getTaskList(user, password) {
+        return AXIOS.get(`/user/tasklist/`+user,{
+            headers: {
+                'Authorization': 'test-value'
+            }
+        })
     }
 
-
-        /*
-        TODO: calendar stuffs
-         */
 
 }
 

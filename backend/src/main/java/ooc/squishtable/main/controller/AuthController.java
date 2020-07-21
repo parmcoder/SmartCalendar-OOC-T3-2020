@@ -6,6 +6,7 @@ import ooc.squishtable.main.model.AppText;
 import ooc.squishtable.main.model.AppUser;
 import ooc.squishtable.main.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,8 +60,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody AppUser signUpRequest) {
 
-        adminService.addNewUser(signUpRequest);
-
-        return ResponseEntity.ok(new AppText("User registered successfully!"));
+        if(adminService.addNewUser(signUpRequest)) return ResponseEntity.ok(new AppText("User registered successfully!"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("Registration not allowed."));
     }
 }
