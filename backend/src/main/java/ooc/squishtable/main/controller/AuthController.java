@@ -37,6 +37,11 @@ public class AuthController {
     @Autowired
     AdminService adminService;
 
+    /**
+     * Sing in
+     * @param loginRequest
+     * @return token
+     */
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody AppUser loginRequest) {
 
@@ -56,6 +61,11 @@ public class AuthController {
                 roles));
     }
 
+    /**
+     * Register
+     * @param signUpRequest
+     * @return Message to tell that user register successfully
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody AppUser signUpRequest) {
 
