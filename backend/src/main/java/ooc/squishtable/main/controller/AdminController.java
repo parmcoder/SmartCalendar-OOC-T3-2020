@@ -28,18 +28,21 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    /*
-        TODO: Parm needs to test these methods and what the responses are sent back to frontend
-    */
+    /**
+     * Display all user
+     * @return A table of user
+     */
     @GetMapping(path = "/userlist")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity displayAllUsers(){
         return ResponseEntity.status(HttpStatus.OK).body(adminService.findAll());
     }
 
-    /*
-    TODO: Remove user using username or id (ADMIN & optional)
-    */
+    /**
+     * Remove user
+     * @param username
+     * @return Message to user
+     */
     @PostMapping(path = "/remove/{username}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity removeUser(@PathVariable("username") String username){
@@ -58,6 +61,10 @@ public class AdminController {
         return SECURED_TEXT;
     }
 
+    /**
+     * Get hello message
+     * @return message
+     */
     @RequestMapping(path = "/hello", method = RequestMethod.GET)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody String getAdminHello() {
