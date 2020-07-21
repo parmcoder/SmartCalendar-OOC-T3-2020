@@ -47,7 +47,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FOUND).body(user);
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("User does not exist, try again."));
     }
-    
+
     @PostMapping(path = "create/{username}/{title}/{description}/{dateStart}/{dateEnd}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity addTask(@PathVariable("title") String title, @PathVariable("description") String description,
