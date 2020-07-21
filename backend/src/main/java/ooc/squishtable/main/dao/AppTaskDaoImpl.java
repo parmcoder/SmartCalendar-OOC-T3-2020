@@ -27,6 +27,11 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
         setDataSource(dataSource);
     }
 
+    /**
+     * Find all user's task
+     * @param uid
+     * @return all tasks
+     */
     @Override
     public List<AppTask> findAllUserTasks(long uid) {
         String sql = TaskMapper.BASE_SQL + " where u.UID = ? ";
@@ -43,7 +48,7 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
     /**
      * Find task
      * @param tid
-     * @return
+     * @return task
      */
     @Override
     public AppTask findTask(long tid) {
@@ -94,12 +99,12 @@ public class AppTaskDaoImpl extends JdbcDaoSupport implements AppTaskDao {
     @Override
     public void updateTask(AppTask task){
 
-        String sqlForUpdate = "update APP_TASKS" +
+        String sqlForUpdate = " update APP_TASKS " +
                 "set TITLE = ?, DESCRIPTION = ?, START_DATE = ?, END_DATE = ? " +
                 "where tid = ?";
         try{
             Object[] params = new Object[]{ task.getTitle(),task.getDescription(),
-                    task.getDateStart(), task.getDateEnd() };
+                    task.getDateStart(), task.getDateEnd(), task.getTid() };
             getJdbcTemplate().update(sqlForUpdate, params);
 //          getJdbcTemplate().update(sqlForRemove1, params);
         }catch(EmptyResultDataAccessException e){

@@ -37,9 +37,11 @@
                                     </v-text-field>
                                     <br>
                                 </v-form>
+                                
                                 <div class="text-xl-center">
                                     <v-btn color="grey darken-2" large>Enter</v-btn>
                                 </div>
+                                
                             </v-card-text>
                         </v-card>
                     </v-flex>

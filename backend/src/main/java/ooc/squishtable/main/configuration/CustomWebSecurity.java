@@ -56,20 +56,15 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-//        http.authorizeRequests().antMatchers("/api/admin/**")
-//                .access("hasRole('ROLE_ADMIN')");
-
-        /*
-        TODO: Manage the session so that it can memorize login logout
-         */
         http.cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 // No session will be created or used by spring security
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
-                .authorizeRequests().antMatchers("/api/auth/**","/","/login","/register").permitAll()
-                .antMatchers("/api/admin/**","/api/user/**").authenticated()
+                .authorizeRequests()
+                    .antMatchers("/api/auth/**").permitAll()
+                    .antMatchers("/api/admin/**", "/api/user/**").authenticated()
                 .and()
 //                .anyRequest().authenticated()
 

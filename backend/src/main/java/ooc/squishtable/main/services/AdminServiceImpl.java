@@ -26,6 +26,11 @@ public class AdminServiceImpl implements AdminService {
         return this.appUserDao.getAllUsers();
     }
 
+    /**
+     * Get user
+     * @param username
+     * @return user
+     */
     @Override
     public AppUser getUser(String username) {
         return this.appUserDao.findUserAccount(username);
@@ -133,6 +138,11 @@ public class AdminServiceImpl implements AdminService {
         return false;
     }
 
+    /**
+     * Get user's role
+     * @param user
+     * @return role
+     */
     @Override
     public List<String> getRoles(AppUser user){
         return this.appRoleDao.getRoleNames(this.appUserDao.findUserAccount(user.getUsername()).getId());
