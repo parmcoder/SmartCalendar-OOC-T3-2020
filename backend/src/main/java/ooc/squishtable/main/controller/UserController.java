@@ -1,6 +1,7 @@
 package ooc.squishtable.main.controller;
 
 import ooc.squishtable.main.model.AppTask;
+import ooc.squishtable.main.model.AppText;
 import ooc.squishtable.main.model.AppUser;
 import ooc.squishtable.main.services.AdminService;
 import ooc.squishtable.main.services.UserService;
@@ -44,7 +45,7 @@ public class UserController {
         AppUser user = adminService.getUser(username);
         if (user != null)
             return ResponseEntity.status(HttpStatus.FOUND).body(user);
-        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("User does not exist, try again."));
     }
 
     /*
@@ -58,7 +59,7 @@ public class UserController {
         AppTask creating = new AppTask(title, description, dateStart, dateEnd);
         if (userService.addTask(creating, username))
             return ResponseEntity.status(HttpStatus.CREATED).body(creating);
-        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AppText("Bad request, try again."));
     }
 
     /*
@@ -106,14 +107,15 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity editUser(@PathVariable("username") String username,
                                    @PathVariable("newusername") String newusername,
-                                   @PathVariable("password") String password,
                                    @PathVariable("name") String name, @PathVariable("surname") String surname) {
         AppUser newInfo = adminService.getUser(username);
-        newInfo.setName(newusername);
+        newInfo.setName(name);
         newInfo.setSurname(surname);
-        newInfo.setUsername(username);
-        adminService.updateUserInfo(username, newInfo);
-        return ResponseEntity.status(HttpStatus.OK).body("Updated user info successfully");
+        newInfo.setUsername(newusername);
+        if(adminService.updateUserInfo(username, newInfo)) return ResponseEntity.status(HttpStatus.OK).body("Updated user info successfully");
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Update rejected! Invalid new username.");
+        }
     }
 
 
