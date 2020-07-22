@@ -11,6 +11,5 @@
                 <fa :icon="['fas', 'check-circle']"></fa>
                 Confirm
             </template>
-        </datetime>
-    </div>
+        </datetime>    </div>
 </template>

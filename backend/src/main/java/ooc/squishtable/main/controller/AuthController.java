@@ -71,6 +71,6 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody AppUser signUpRequest) {
 
         if(adminService.addNewUser(signUpRequest)) return ResponseEntity.ok(new AppText("User registered successfully!"));
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("Registration not allowed."));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("Registration failed. Username is already taken."));
     }
 }

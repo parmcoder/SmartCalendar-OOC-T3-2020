@@ -61,8 +61,6 @@
                                     <v-icon>access_time</v-icon>
                                 </template>
                             </v-datetime-picker>
-                            <!--
-                            <v-datetime-picker v-model="end" type="datetime" label="end (required)"></v-datetime-picker>-->
                             <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
                             <v-btn color="orange accent-3" class="mr-4" @click.stop="addInfo = false">
                                 create event
