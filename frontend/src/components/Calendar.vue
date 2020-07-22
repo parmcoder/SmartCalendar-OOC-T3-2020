@@ -5,6 +5,8 @@
 
                 <v-toolbar flat color="orange accent-3">
                     <!--                    showing image of calendar-->
+                    <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+
                     <!-- today bottom, when you click it will go back to today -->
                     <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
                         Today
@@ -20,42 +22,53 @@
                     </v-btn>
 
 <!--                    showing the month and year from calendar-->
-                    <v-toolbar-title v-if="$refs.calendar">
-                        {{ $refs.calendar.title}}
-                    </v-toolbar-title>
+<!--                    <v-toolbar-title v-if="$refs.calendar">-->
+<!--                        {{ $refs.calendar.title}}-->
+<!--                    </v-toolbar-title>-->
+                    <v-btn class="ml-3" color="grey darken-2" dark @click="addInfo = true"> New Event</v-btn>
+
                     <v-spacer></v-spacer>
-                    <v-btn color="grey darken-2" dark @click="addInfo = true"> New Event</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-img
-                            :src="require('../assets/calendar_5-512.png')"
-                            contain
-                            left
-                            height="50"
-                    >
-                    </v-img>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
+                    <div class="text-xl-center">
+                        <v-img
+                                :src="require('../assets/calendar_5-512.png')"
+                                contain
+                                height="50"
+                                class="mr-5"
+                        >
+                        </v-img>
+                    </div>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
-                    <v-spacer></v-spacer>
+
                     <v-btn color="grey darken-2" dark @click="handleLogout">
                         <span>SIGN OUT</span>
                         <v-icon right>logout</v-icon></v-btn>
                 </v-toolbar>
             </v-sheet>
 
-            <v-dialog v-model="addInfo" max-width="50%">
-                <v-card :class="ma-10" color="grey" dark>
+            <v-navigation-drawer
+                    v-model="drawer"
+                    absolute
+                    temporary
+                    color="grey lighten-2"
+            >
+                <v-toolbar-title v-if="$refs.calendar" class="mt-5 ml-16">
+                    {{ $refs.calendar.title}}
+                </v-toolbar-title>
+            </v-navigation-drawer>
+
+            <v-dialog v-model="addInfo" max-width="70%">
+                <v-card color="grey" dark>
+                    <v-row align="center"
+                           justify="center">
+                        <v-col></v-col>
+                    </v-row>
                     <v-form
                             ref="form"
                             v-model="valid"
                             @submit.prevent="addEvent"
+
                     >
                             <v-text-field v-model="name" type="text" label="event name (required)"
                                           required></v-text-field>
@@ -80,14 +93,17 @@
                                     <v-icon>access_time</v-icon>
                                 </template>
                             </v-datetime-picker>
-                        <v-btn color="orange accent-3" class="mr-4"
+                        <v-btn color="orange accent-3" class="ml-4"
                                @click.stop="addInfo = false">
                             create event
                         </v-btn>
                     </v-form>
+                    <v-row align="center"
+                           justify="center">
+                        <v-col></v-col>
+                    </v-row>
                 </v-card>
             </v-dialog>
-
 
             <v-sheet height="100%">
                 <v-calendar
@@ -158,6 +174,7 @@
         name: 'Calendar',
 
         data: () => ({
+            drawer: false,
             focus: '',
             type: 'month',
             typeToLabel: {
