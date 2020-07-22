@@ -7,6 +7,7 @@ import ooc.squishtable.main.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AppUserDao userDao;
 
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private java.util.Date utilDateStart, utilDateEnd;
 
     /**
@@ -98,10 +99,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void taskDateSetter(AppTask task) throws ParseException {
-        utilDateStart = format.parse(task.getInputDateStart().replace('T', ' ').substring(0, 24));
-        task.setDateStart(new Timestamp(utilDateStart.getTime()));
-        utilDateEnd = format.parse(task.getInputDateEnd().replace('T', ' ').substring(0, 24));
-        task.setDateEnd(new Timestamp(utilDateEnd.getTime()));
+        utilDateStart = format.parse(task.getInputDateStart());
+        task.setDateStart(new Date(utilDateStart.getTime()));
+        utilDateEnd = format.parse(task.getInputDateEnd());
+        task.setDateEnd(new Date(utilDateEnd.getTime()));
     }
 
     /**
