@@ -2,10 +2,7 @@
     <div id="register">
         <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
 
-        <v-toolbar color="orange accent-3" dense dark>
-            <v-icon> face </v-icon>
-            <v-toolbar-title class="ml-3"> Registration page</v-toolbar-title>
-        </v-toolbar>
+        <NavBar></NavBar>
 
         <v-app class="theme--dark" >
             <v-container grid-list-xl text-xs-center>
@@ -66,3 +63,13 @@
         </v-app>
     </div>
 </template>
+
+<script>
+    import NavBar from './NavBarBeforeLogin'
+    export default {
+        name: 'Login',
+        components: {
+            NavBar
+        }
+    };
+</script>
