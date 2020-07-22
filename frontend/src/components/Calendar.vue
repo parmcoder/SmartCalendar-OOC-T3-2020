@@ -49,20 +49,6 @@
                 </v-toolbar>
             </v-sheet>
 
-            <v-dialog v-model="addInfo" max-width="50%">
-                <v-card :class="ma-10" color="grey" dark>
-                    <component>
-                        <v-form ref="form" @submit.prevent="addEvent" v-model="isValid">
-                            <v-text-field
-                                    :rules="inputRules"
-                                    required
-                                    v-model="task.title"
-                                    type="text"
-                                    label=" Event name (Required) "></v-text-field>
-                            <v-text-field
-                                    v-model="task.description"
-                                    type="text"
-                                    label=" Description"></v-text-field>
             <v-navigation-drawer
                     v-model="drawer"
                     absolute
@@ -75,56 +61,83 @@
             </v-navigation-drawer>
 
             <v-dialog v-model="addInfo" max-width="70%">
-                <v-card color="grey" dark>
-                    <v-row align="center"
-                           justify="center">
-                        <v-col></v-col>
-                    </v-row>
-                    <v-form
-                            ref="form"
-                            v-model="valid"
-                            @submit.prevent="addEvent"
-
-                    >
-                            <v-text-field v-model="name" type="text" label="event name (required)"
-                                          required></v-text-field>
-                            <v-text-field v-model="details" type="text" label="detail"
-                                          required></v-text-field>
-<!--                            I want to filter date string, let me choose the v-model -->
-
-<!--                            <datetime type="datetime" v-model="datetime"></datetime>-->
-                            <v-datetime-picker
-                                    :rules="inputRules"
-                                    required
-                                    v-model="task.dateStart"
-                                    label=" Start date (Required) ">
-                                <template slot="dateIcon">
-                                    <v-icon>calendar_today</v-icon>
-                                </template>
-                                <template slot="timeIcon">
-                                    <v-icon>access_time</v-icon>
-                                </template>
-                            </v-datetime-picker>
-                            <v-datetime-picker
-                                    :rules="inputRules"
-                                    required
-                                    v-model="task.dateEnd"
-                                    label=" End date (Required) ">
-                                <template slot="dateIcon">
-                                    <v-icon>calendar_today</v-icon>
-                                </template>
-                                <template slot="timeIcon">
-                                    <v-icon>access_time</v-icon>
-                                </template>
-                            </v-datetime-picker>
+                <v-card class="mt-10" color="grey" dark>
+                    <component>
+                        <v-form v-model="isValid">
                             <v-text-field
                                     :rules="inputRules"
                                     required
-                                    v-model="color"
-                                    type="color"
-                                    label=" Color (click to choose color) "></v-text-field>
+                                    v-model="task.title"
+                                    type="text"
+                                    label=" Event name (Required) "></v-text-field>
+                            <v-text-field
+                                    :rules="inputRules"
+                                    required
+                                    v-model="task.description"
+                                    type="text"
+                                    label=" Description (Required) "></v-text-field>
+                            <v-menu
+                                v-model="fromDateMenu"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                lazy
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                max-width="290px"
+                                min-width="290px"
+                        >
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                        :rules="inputRules"
+                                        required
+                                        label="From Date"
+                                        prepend-icon="event"
+                                        readonly
+                                        :value="task.dateStart"
+                                        v-on="on"
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker
+                                    locale="en-in"
+                                    v-model="task.dateStart"
+                                    no-title
+                                    @input="fromDateMenu = false"
+                            ></v-date-picker>
+                        </v-menu>
+                            <v-menu
+                                    v-model="toDateMenu"
+                                    :close-on-content-click="false"
+                                    :nudge-right="40"
+                                    lazy
+                                    transition="scale-transition"
+                                    offset-y
+                                    full-width
+                                    max-width="290px"
+                                    min-width="290px"
+                            >
+                                <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                            :rules="inputRules"
+                                            required
+                                            label="To Date"
+                                            prepend-icon="event"
+                                            readonly
+                                            :value="task.dateEnd"
+                                            v-on="on"
+                                    ></v-text-field>
+                                </template>
+                                <v-date-picker
+                                        locale="en-in"
+                                        v-model="task.dateEnd"
+                                        no-title
+                                        @input="toDateMenu = false"
+                                ></v-date-picker>
+                            </v-menu>
+
+
                             <div class="text-xl-center">
-                            <v-btn color="orange accent-3" class="mr-4" @click.stop="addInfo = false">
+                            <v-btn color="orange accent-3" class="mr-4" @click="addEvent"  :disabled="!isValid">
                                 create event
                             </v-btn>
                                 <v-btn
@@ -138,11 +151,7 @@
                         </v-form>
                     </component>
 
-                        <v-btn color="orange accent-3" class="ml-4"
-                               @click.stop="addInfo = false">
-                            create event
-                        </v-btn>
-                    </v-form>
+
                     <v-row align="center"
                            justify="center">
                         <v-col></v-col>
@@ -214,7 +223,7 @@
 </template>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment-with-locales.min.js">
+<script>
     import UserService from '../services/user.service'
     import task from '../models/task';
 
@@ -222,7 +231,8 @@
         name: 'Calendar',
 
         data: () => ({
-
+            fromDateMenu: false,
+            toDateMenu: false,
             task: new task('', '', '', '', ''),
 
 
@@ -247,7 +257,7 @@
             names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
 
             inputRules: [v => !!v || 'This field is required'],
-            isValid:true
+            isValid: true
 
         }),
 
@@ -258,7 +268,16 @@
         methods: {
 
             addEvent(){
-                this.$store.dispatch('')
+                this.addInfo = false;
+                console.log(this.task);
+                UserService.postCreateTask(this.$store.state.auth.user, this.task).then(
+                    response =>{
+                      console.log(response.data)
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
 
             },
 
@@ -296,7 +315,7 @@
             },
 
             created () {
-                this.initialize()
+                // this.initialize()
             },
 
             initialize() {
@@ -305,7 +324,7 @@
                 UserService.getTaskList(this.$store.state.auth.user).then(
                     taskList => {
                         const taskArr = taskList.data;
-                        
+
 
                         taskArr.forEach(
                             task => {
@@ -315,8 +334,8 @@
                                     tid: task.tid,
                                     title: task.title,
                                     description: task.description,
-                                    dateStart: moment(task.dateStart).format("YYYY-MM-DD"),
-                                    dateEnd: moment(task.dateEnd).format("YYYY-MM-DD"),
+                                    // dateStart: ,
+                                    // dateEnd: ,
                                     color: this.colors[this.rnd(0, this.colors.length - 1)],
                                 });
                             }
