@@ -39,13 +39,25 @@
             <v-dialog v-model="addInfo" max-width="1000">
                 <v-card color="grey" dark>
                     <component>
-                        <v-form @submit.prevent="addEvent">
-                            <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
-                            <v-text-field v-model="details" type="text" label="detail"></v-text-field>
+                        <v-form @submit.prevent="addEvent" v-model="isValid">
+                            <v-text-field
+                                    :rules="inputRules"
+                                    required
+                                    v-model="task.title"
+                                    type="text"
+                                    label=" Event name (Required) "></v-text-field>
+                            <v-text-field
+                                    v-model="task.description"
+                                    type="text"
+                                    label=" Description"></v-text-field>
 <!--                            I want to filter date string, let me choose the v-model -->
 
 <!--                            <datetime type="datetime" v-model="datetime"></datetime>-->
-                            <v-datetime-picker v-model="start" label="start (required)">
+                            <v-datetime-picker
+                                    :rules="inputRules"
+                                    required
+                                    v-model="task.dateStart"
+                                    label=" Start date (Required) ">
                                 <template slot="dateIcon">
                                     <v-icon>calendar_today</v-icon>
                                 </template>
@@ -53,7 +65,11 @@
                                     <v-icon>access_time</v-icon>
                                 </template>
                             </v-datetime-picker>
-                            <v-datetime-picker v-model="end" label="end (required)">
+                            <v-datetime-picker
+                                    :rules="inputRules"
+                                    required
+                                    v-model="task.dateEnd"
+                                    label=" End date (Required) ">
                                 <template slot="dateIcon">
                                     <v-icon>calendar_today</v-icon>
                                 </template>
@@ -61,10 +77,17 @@
                                     <v-icon>access_time</v-icon>
                                 </template>
                             </v-datetime-picker>
-                            <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
+                            <v-text-field
+                                    :rules="inputRules"
+                                    required
+                                    v-model="color"
+                                    type="color"
+                                    label=" Color (click to choose color) "></v-text-field>
+                            <div class="text-xl-center">
                             <v-btn color="orange accent-3" class="mr-4" @click.stop="addInfo = false">
                                 create event
                             </v-btn>
+                            </div>
                         </v-form>
                     </component>
                 </v-card>
@@ -82,7 +105,7 @@
                         @click:event="showEvent"
                         @click:more="viewDay"
                         @click:date="viewDay"
-                        @change="updateRange"
+                        @change="initialize"
                         dark
                 >
                 </v-calendar>
@@ -110,11 +133,11 @@
                             <v-btn icon>
                                 <v-icon>mdi-pencil</v-icon>
                             </v-btn>
-                            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                            <v-toolbar-title v-html="selectedEvent.title"></v-toolbar-title>
                             <v-spacer></v-spacer>
                         </v-toolbar>
                         <v-card-text>
-                            <span v-html="selectedEvent.details"></span>
+                            <span v-html="selectedEvent.description"></span>
                         </v-card-text>
                         <v-card-actions>
                             <v-btn
@@ -135,23 +158,23 @@
 
 
 <script>
+    import UserService from '../services/user.service'
+    import task from '../models/task';
+
     export default {
         name: 'Calendar',
 
         data: () => ({
+            task: new task('', '', '', '', ''),
+
             focus: '',
             type: 'month',
-            typeToLabel: {
-                month: 'Month',
-                week: 'Week',
-                day: 'Day',
-                '4day': '4 Days',
-            },
 
-            name: null,
-            details: null,
-            start: null,
-            end: null,
+            tid: null,
+            title: null,
+            description: null,
+            dateStart: null,
+            dateEnd: null,
             color: '#1976D2', //default color
             addInfo: false,
 
@@ -161,6 +184,10 @@
             events: [],
             colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
             names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+
+            inputRules: [v => !!v || 'This field is required'],
+            isValid:true
+
         }),
 
         mounted () {
@@ -169,79 +196,75 @@
 
         methods: {
 
-            addEvent({date, event}){
-                const open = () => {
-                    this.selectedEvent = event
-                    this.selectedElement = date.target
-                    setTimeout(() => this.selectedOpen = true, 1)
-                }
-                if (this.selectedOpen) {
-                    this.selectedOpen = false
-                    setTimeout(open, 1)
-                } else {
-                    open()
-                }
+            addEvent(){
+                this.$store.dispatch('')
 
-                date.stopPropagation()
             },
 
             viewDay ({ date }) {
-                this.focus = date
-                this.type = ''
+                this.focus = date;
+                this.type = '';
             },
 
             getEventColor (event) {
-                return event.color
+                return event.color;
             },
             setToday () {
-                this.focus = ''
+                this.focus = '';
             },
             prev () {
-                this.$refs.calendar.prev()
+                this.$refs.calendar.prev();
             },
             next () {
-                this.$refs.calendar.next()
+                this.$refs.calendar.next();
             },
 
             showEvent ({ nativeEvent, event }) {
                 const open = () => {
-                    this.selectedEvent = event
-                    this.selectedElement = nativeEvent.target
-                    setTimeout(() => this.selectedOpen = true, 10)
-                }
+                    this.selectedEvent = event;
+                    this.selectedElement = nativeEvent.target;
+                    setTimeout(() => this.selectedOpen = true, 10);
+                };
                 if (this.selectedOpen) {
-                    this.selectedOpen = false
-                    setTimeout(open, 10)
+                    this.selectedOpen = false;
+                    setTimeout(open, 10);
                 } else {
-                    open()
+                    open();
                 }
-                nativeEvent.stopPropagation()
+                nativeEvent.stopPropagation();
             },
 
-            updateRange ({ start, end }) {
-                const events = []
-                const min = new Date(`${start.date}T00:00:00`)
-                const max = new Date(`${end.date}T23:59:59`)
-                const days = (max.getTime() - min.getTime()) / 86400000
-                const eventCount = this.rnd(days, days + 20)
-                for (let i = 0; i < eventCount; i++) {
-                    const allDay = this.rnd(0, 3) === 0
-                    const firstTimestamp = this.rnd(min.getTime(), max.getTime())
-                    const first = new Date(firstTimestamp - (firstTimestamp % 900000))
-                    const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000
-                    const second = new Date(first.getTime() + secondTimestamp)
-                    events.push({
-                        name: this.names[this.rnd(0, this.names.length - 1)],
-                        start: first,
-                        end: second,
-                        color: this.colors[this.rnd(0, this.colors.length - 1)],
-                        timed: !allDay,
-                    })
-                }
-                this.events = events
+            created () {
+                this.initialize()
+            },
+
+            initialize() {
+                const events = [];
+                console.log(this.$store.state.auth.user);
+                console.log(UserService.getTaskList());
+                // this.$store.dispatch('user/getTaskList').then(
+                //     taskList => {
+                //         console.log(taskList);
+                //         const taskArr = object.keys(taskList);
+                //
+                //         taskArr.forEach(
+                //             task => {
+                //                 events.push({
+                //                     tid: task.tid,
+                //                     title: task.title,
+                //                     description: task.description,
+                //                     dateStart: task.dateStart,
+                //                     dateEnd: task.dateEnd,
+                //                     color: this.colors[this.rnd(0, this.colors.length - 1)],
+                //                 });
+                //             }
+                //         )
+                //     }
+                // );
+                this.events = events;
             },
             rnd (a, b) {
-                return Math.floor((b - a + 1) * Math.random()) + a
+                return Math.floor((b - a + 1) * Math.random()) + a;
             },
         },
     }

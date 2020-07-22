@@ -56,13 +56,13 @@
 </template>
 
 <script>
-    import User from '../models/user';
+    import user from '../models/user';
 
     export default {
         name: 'Login',
         data() {
             return {
-                user: new User('', '', '', ''),
+                user: new user('', '', '', ''),
                 loading: false,
                 message: '',
                 inputRules: [v => !!v || 'This field is required'],
