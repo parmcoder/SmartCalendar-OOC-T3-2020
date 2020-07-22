@@ -303,8 +303,8 @@
                     task => {
                         console.log(task);
                         console.log(task.dateStart.toString().substring(0, 19));
-                        const start = new Date(task.dateStart.substring(0, 19))
-                        const end = new Date(task.dateEnd.substring(0, 19))
+                        const start = new Date(task.dateStart)
+                        const end = new Date(task.dateEnd)
                         events.push({
                             tid: task.tid,
                             title: task.title,
