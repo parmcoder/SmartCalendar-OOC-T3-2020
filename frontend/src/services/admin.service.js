@@ -28,7 +28,7 @@ class AdminService {
      * @returns {Promise<AxiosResponse<T>>}
      */
     postRemoveUser(user) {
-        return axios.get(API_URL + 'remove' + '/' + user, {headers: authHeader()});
+        return axios.post(API_URL + 'remove' + '/' + user, {headers: authHeader()});
     }
 }
 

@@ -36,7 +36,7 @@ public class AdminController {
     }
 
     @PostMapping(path = "/remove/{username}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity removeUser(@PathVariable("username") String username){
         AppUser userToRemove = adminService.getUser(username);
         if(adminService.removeUser(userToRemove)) return ResponseEntity.status(HttpStatus.FOUND).body("User has been removed.");
