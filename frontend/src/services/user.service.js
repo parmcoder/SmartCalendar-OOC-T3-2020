@@ -2,8 +2,6 @@ import axios from 'axios';
 import authHeader from './auth-header';
 
 const API_URL = 'http://localhost:8080/api/user/';
-const currentUser = JSON.parse(localStorage.getItem('user'));
-
 
 class UserService {
     /**
@@ -11,9 +9,9 @@ class UserService {
      * @param user
      * @returns {Promise<AxiosResponse<T>>}
      */
-    getTaskList() {
+    getTaskList(user) {
         return axios
-            .get(API_URL + 'tasklist/' + currentUser, {headers: authHeader()});
+            .get(API_URL + 'tasklist/' + user, {headers: authHeader()});
     }
 
     /**
@@ -22,9 +20,9 @@ class UserService {
      * @param task
      * @returns {Promise<AxiosResponse<T>>}
      */
-    postCreateTask(task) {
+    postCreateTask(user, task) {
         return axios
-            .post(API_URL + currentUser + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
+            .post(API_URL + user + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
     }
 
     /**

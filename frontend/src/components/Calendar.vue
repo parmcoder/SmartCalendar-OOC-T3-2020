@@ -263,39 +263,39 @@
             initialize() {
                 const events = [];
                 console.log(this.$store.state.auth.user);
-                console.log(UserService.getTaskList());
-                // this.$store.dispatch('user/getTaskList').then(
-                //     taskList => {
-                //         console.log(taskList);
-                //         const taskArr = object.keys(taskList);
-                //
-                //         taskArr.forEach(
-                //             task => {
-                //                 events.push({
-                //                     tid: task.tid,
-                //                     title: task.title,
-                //                     description: task.description,
-                //                     dateStart: task.dateStart,
-                //                     dateEnd: task.dateEnd,
-                //                     color: this.colors[this.rnd(0, this.colors.length - 1)],
-                //                 });
-                //             }
-                //         )
-                //     }
-                // );
+                UserService.getTaskList(this.$store.state.auth.user).then(
+                    taskList => {
+                        const taskArr = taskList.data;
+
+                        taskArr.forEach(
+                            task => {
+                                console.log(task);
+                                events.push({
+                                    tid: task.tid,
+                                    title: task.title,
+                                    description: task.description,
+                                    dateStart: task.dateStart,
+                                    dateEnd: task.dateEnd,
+                                    color: this.colors[this.rnd(0, this.colors.length - 1)],
+                                });
+                            }
+                        )
+                        
+                    },error => {
+                        console.log(error);
+                    }
+                );
                 this.events = events;
             },
             rnd (a, b) {
                 return Math.floor((b - a + 1) * Math.random()) + a;
             },
             handleLogout() {
-                if (this.user.username && this.user.password) {
-                    this.$store.dispatch('auth/logout', this.user).then(
-                        () => {
-                            this.$router.push('/');
-                        }
-                    );
-                }
+                this.$store.dispatch('auth/logout').then(
+                    () => {
+                        this.$router.push('/');
+                    }
+                );
             }
         },
     }

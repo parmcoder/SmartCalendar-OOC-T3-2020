@@ -65,8 +65,9 @@ public class CustomWebSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/api/auth/**").permitAll()
                     .antMatchers("/api/admin/**", "/api/user/**").authenticated()
+                    .anyRequest().permitAll()
                 .and()
-//                .anyRequest().authenticated()
+
 
                 .csrf().disable(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
 
