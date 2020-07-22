@@ -21,10 +21,10 @@
                         <v-icon small>mdi-chevron-right</v-icon>
                     </v-btn>
 
-<!--                    showing the month and year from calendar-->
-<!--                    <v-toolbar-title v-if="$refs.calendar">-->
-<!--                        {{ $refs.calendar.title}}-->
-<!--                    </v-toolbar-title>-->
+                    <!--                    showing the month and year from calendar-->
+                    <!--                    <v-toolbar-title v-if="$refs.calendar">-->
+                    <!--                        {{ $refs.calendar.title}}-->
+                    <!--                    </v-toolbar-title>-->
                     <v-btn class="ml-3" color="grey darken-2" dark @click="addInfo = true"> New Event</v-btn>
 
                     <v-spacer></v-spacer>
@@ -43,24 +43,11 @@
 
                     <v-btn color="grey darken-2" dark @click="handleLogout">
                         <span>SIGN OUT</span>
-                        <v-icon right>logout</v-icon></v-btn>
+                        <v-icon right>logout</v-icon>
+                    </v-btn>
                 </v-toolbar>
             </v-sheet>
 
-            <v-dialog v-model="addInfo" max-width="50%">
-                <v-card :class="ma-10" color="grey" dark>
-                    <component>
-                        <v-form ref="form" @submit.prevent="addEvent" v-model="isValid">
-                            <v-text-field
-                                    :rules="inputRules"
-                                    required
-                                    v-model="task.title"
-                                    type="text"
-                                    label=" Event name (Required) "></v-text-field>
-                            <v-text-field
-                                    v-model="task.description"
-                                    type="text"
-                                    label=" Description"></v-text-field>
             <v-navigation-drawer
                     v-model="drawer"
                     absolute
@@ -73,24 +60,23 @@
             </v-navigation-drawer>
 
             <v-dialog v-model="addInfo" max-width="70%">
-                <v-card color="grey" dark>
-                    <v-row align="center"
-                           justify="center">
-                        <v-col></v-col>
-                    </v-row>
-                    <v-form
-                            ref="form"
-                            v-model="valid"
-                            @submit.prevent="addEvent"
-
-                    >
-                            <v-text-field v-model="name" type="text" label="event name (required)"
-                                          required></v-text-field>
-                            <v-text-field v-model="details" type="text" label="detail"
-                                          required></v-text-field>
-<!--                            I want to filter date string, let me choose the v-model -->
-
-<!--                            <datetime type="datetime" v-model="datetime"></datetime>-->
+                <component>
+                    <v-card color="grey" dark>
+                        <v-row align="center"
+                               justify="center">
+                            <v-col></v-col>
+                        </v-row>
+                        <v-form ref="form" @submit.prevent="addEvent" v-model="isValid">
+                            <v-text-field
+                                    :rules="inputRules"
+                                    required
+                                    v-model="task.title"
+                                    type="text"
+                                    label=" Event name (Required) "></v-text-field>
+                            <v-text-field
+                                    v-model="task.description"
+                                    type="text"
+                                    label=" Description"></v-text-field>
                             <v-datetime-picker
                                     :rules="inputRules"
                                     required
@@ -122,9 +108,9 @@
                                     type="color"
                                     label=" Color (click to choose color) "></v-text-field>
                             <div class="text-xl-center">
-                            <v-btn color="orange accent-3" class="mr-4" @click.stop="addInfo = false">
-                                create event
-                            </v-btn>
+                                <v-btn color="orange accent-3" class="mr-4" @click.stop="addInfo = false">
+                                    create event
+                                </v-btn>
                                 <v-btn
                                         color="error"
                                         class="mr-4"
@@ -134,18 +120,17 @@
                                 </v-btn>
                             </div>
                         </v-form>
-                    </component>
+                    </v-card>
+                </component>
 
-                        <v-btn color="orange accent-3" class="ml-4"
-                               @click.stop="addInfo = false">
-                            create event
-                        </v-btn>
-                    </v-form>
-                    <v-row align="center"
-                           justify="center">
-                        <v-col></v-col>
-                    </v-row>
-                </v-card>
+<!--                <v-btn color="orange accent-3" class="ml-4"-->
+<!--                       @click.stop="addInfo = false">-->
+<!--                    create event-->
+<!--                </v-btn>-->
+<!--                <v-row align="center"-->
+<!--                       justify="center">-->
+<!--                    <v-col></v-col>-->
+<!--                </v-row>-->
             </v-dialog>
 
             <v-sheet height="100%">
@@ -164,47 +149,47 @@
                 >
                 </v-calendar>
                 <v-menu
-                 v-model="selectedOpen"
-                 :close-on-content-click="false"
-                 :activator="selectedElement"
-                 offset-x
-                >
-                <v-menu
                         v-model="selectedOpen"
                         :close-on-content-click="false"
                         :activator="selectedElement"
                         offset-x
-
                 >
-                    <v-card
-                            color="grey lighten-4"
-                            min-width="350px"
-                            flat
+                    <v-menu
+                            v-model="selectedOpen"
+                            :close-on-content-click="false"
+                            :activator="selectedElement"
+                            offset-x
+
                     >
-                        <v-toolbar
-                                :color="selectedEvent.color"
-                                dark
+                        <v-card
+                                color="grey lighten-4"
+                                min-width="350px"
+                                flat
                         >
-                            <v-btn icon>
-                                <v-icon>mdi-pencil</v-icon>
-                            </v-btn>
-                            <v-toolbar-title v-html="selectedEvent.title"></v-toolbar-title>
-                            <v-spacer></v-spacer>
-                        </v-toolbar>
-                        <v-card-text>
-                            <span v-html="selectedEvent.description"></span>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-btn
-                                    text
-                                    color="secondary"
-                                    @click="selectedOpen = false"
+                            <v-toolbar
+                                    :color="selectedEvent.color"
+                                    dark
                             >
-                                Cancel
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-menu>
+                                <v-btn icon>
+                                    <v-icon>mdi-pencil</v-icon>
+                                </v-btn>
+                                <v-toolbar-title v-html="selectedEvent.title"></v-toolbar-title>
+                                <v-spacer></v-spacer>
+                            </v-toolbar>
+                            <v-card-text>
+                                <span v-html="selectedEvent.description"></span>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn
+                                        text
+                                        color="secondary"
+                                        @click="selectedOpen = false"
+                                >
+                                    Cancel
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-menu>
                 </v-menu>
             </v-sheet>
         </v-app>
@@ -245,40 +230,40 @@
             names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
 
             inputRules: [v => !!v || 'This field is required'],
-            isValid:true
+            isValid: true
 
         }),
 
-        mounted () {
+        mounted() {
             this.$refs.calendar.checkChange()
         },
 
         methods: {
 
-            addEvent(){
+            addEvent() {
                 this.$store.dispatch('')
 
             },
 
-            viewDay ({ date }) {
+            viewDay({date}) {
                 this.focus = date;
                 this.type = '';
             },
 
-            getEventColor (event) {
+            getEventColor(event) {
                 return event.color;
             },
-            setToday () {
+            setToday() {
                 this.focus = '';
             },
-            prev () {
+            prev() {
                 this.$refs.calendar.prev();
             },
-            next () {
+            next() {
                 this.$refs.calendar.next();
             },
 
-            showEvent ({ nativeEvent, event }) {
+            showEvent({nativeEvent, event}) {
                 const open = () => {
                     this.selectedEvent = event;
                     this.selectedElement = nativeEvent.target;
@@ -293,14 +278,14 @@
                 nativeEvent.stopPropagation();
             },
 
-            created () {
+            created() {
                 this.initialize()
             },
 
             initialize() {
                 const events = [];
                 console.log(this.$store.state.auth.user);
-                UserService.getTaskList(this.$store.state.auth.user).then(
+                UserService.getTaskList(this.$store.state.auth.user.userInfo.username).then(
                     taskList => {
                         const taskArr = taskList.data;
 
@@ -311,29 +296,29 @@
                                     tid: task.tid,
                                     title: task.title,
                                     description: task.description,
-                                    dateStart: (task.dateStart).substring(0,19),
-                                    dateEnd: (task.dateEnd).substring(0,19),
+                                    dateStart: new Date(task.dateStart.substring(0, 17)),
+                                    dateEnd: new Date(task.dateEnd.substring(0, 17)),
                                     color: this.colors[this.rnd(0, this.colors.length - 1)],
                                 });
                             }
                         )
 
-                    },error => {
+                    }, error => {
                         console.log(error);
                     }
                 );
                 this.events = events;
             },
-            rnd (a, b) {
+            rnd(a, b) {
                 return Math.floor((b - a + 1) * Math.random()) + a;
             },
             handleLogout() {
 
                 this.$store.dispatch('auth/logout', this.user).then(
-                        () => {
-                            this.$router.push('/');
-                        }
-                    );
+                    () => {
+                        this.$router.push('/');
+                    }
+                );
             }
         },
     }
