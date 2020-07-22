@@ -89,7 +89,8 @@
             initialize() {
                 AdminService.getUserlist().then(
                     response => {
-                        this.userList = JSON.stringify(response.data);
+                        this.userList = response.data;
+                        console.log(this.userList);
                     },
                     error => {
                         this.$router.push('/');
@@ -101,7 +102,14 @@
             deleteUser (item) {
                 const index = this.userList.indexOf(item)
                 confirm('Are you sure you want to delete this item?') && this.userList.splice(index, 1)
-                // AdminService.postRemoveUser(item).then(
+                AdminService.postRemoveUser(item.username).then(
+                    response => {
+                        console.log(response.data);
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                )
             },
         },
     }
