@@ -24,7 +24,6 @@ public class UserController {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
     public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
-    public static final String SECURED_TEXT = "Hello from the secured resource!";
 
     @Autowired
     private AdminService adminService;
@@ -107,9 +106,9 @@ public class UserController {
                                      ) {
         AppTask newTask = new AppTask(title, description, dateStart, dateEnd);
         if (userService.updateTask(newTask, Long.parseLong(tid)))
-            return ResponseEntity.status(HttpStatus.CREATED).body("Updated task info successfully!");
+            return ResponseEntity.status(HttpStatus.CREATED).body(new AppText("Updated task info successfully!"));
         else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Update rejected! Invalid date.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AppText("Update rejected! Invalid date."));
         }
     }
 
@@ -124,7 +123,7 @@ public class UserController {
         AppTask task = new AppTask();
         task.setTid(Long.parseLong(tid));
         userService.removeTask(task);
-        return ResponseEntity.status(HttpStatus.FOUND).body("Removed task successfully");
+        return ResponseEntity.status(HttpStatus.FOUND).body(new AppText("Removed task successfully"));
     }
 
     /**
@@ -144,9 +143,9 @@ public class UserController {
         newInfo.setName(name);
         newInfo.setSurname(surname);
         newInfo.setUsername(newusername);
-        if(adminService.updateUserInfo(username, newInfo)) return ResponseEntity.status(HttpStatus.OK).body("Updated user info successfully");
+        if(adminService.updateUserInfo(username, newInfo)) return ResponseEntity.status(HttpStatus.OK).body(new AppText("Updated user info successfully"));
         else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Update rejected! Invalid new username.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AppText("Update rejected! Invalid new username."));
         }
     }
 

@@ -6,6 +6,7 @@ import Protected from './components/unused/Protected'
 import Index from "./components/Index";
 import Register from "./components/Registration"
 import Calendar from "./components/Calendar"
+import BasicDatetime from "./components/unused/BasicDatetime"
 
 import Admin from "./components/Admin";
 
@@ -17,6 +18,11 @@ export const router = new Router({
         {
             path: '/',
             component: Index,
+            meta: {title: 'Home Page - Squish Table'}
+            },
+        {
+            path: '/testdatetime',
+            component: BasicDatetime,
             meta: {title: 'Home Page - Squish Table'}
             },
         {

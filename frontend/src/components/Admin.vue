@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div id="admin">
         <v-app id="inspire">
             <v-data-table
@@ -38,6 +38,8 @@
         </v-app>
     </div>
 </template>
+
+<!--TODO: We need to work on retriving the data from backend using axios method-->
 
 <script>
     export default {
