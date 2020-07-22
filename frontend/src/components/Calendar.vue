@@ -43,8 +43,24 @@
                             <v-text-field v-model="name" type="text" label="event name (required)"></v-text-field>
                             <v-text-field v-model="details" type="text" label="detail"></v-text-field>
 <!--                            I want to filter date string, let me choose the v-model -->
-                            <v-datetime-picker v-model="start" type="datetime" label="start (required)"></v-datetime-picker>
-                            <v-datetime-picker v-model="end" type="datetime" label="end (required)"></v-datetime-picker>
+
+<!--                            <datetime type="datetime" v-model="datetime"></datetime>-->
+                            <v-datetime-picker v-model="start" label="start (required)">
+                                <template slot="dateIcon">
+                                    <v-icon>calendar_today</v-icon>
+                                </template>
+                                <template slot="timeIcon">
+                                    <v-icon>access_time</v-icon>
+                                </template>
+                            </v-datetime-picker>
+                            <v-datetime-picker v-model="end" label="end (required)">
+                                <template slot="dateIcon">
+                                    <v-icon>calendar_today</v-icon>
+                                </template>
+                                <template slot="timeIcon">
+                                    <v-icon>access_time</v-icon>
+                                </template>
+                            </v-datetime-picker>
                             <v-text-field v-model="color" type="color" label="color (click to open color menu)"></v-text-field>
                             <v-btn color="orange accent-3" class="mr-4" @click.stop="addInfo = false">
                                 create event
