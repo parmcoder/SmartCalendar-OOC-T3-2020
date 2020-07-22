@@ -1,3 +1,5 @@
+
+
 <template>
     <div id="calendar">
         <v-app id="inspire">
@@ -197,7 +199,7 @@
 </template>
 
 
-<script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment-with-locales.min.js">
     import UserService from '../services/user.service'
     import task from '../models/task';
 
@@ -288,16 +290,23 @@
                 UserService.getTaskList(this.$store.state.auth.user.userInfo.username).then(
                     taskList => {
                         const taskArr = taskList.data;
+                        
 
                         taskArr.forEach(
                             task => {
                                 console.log(task);
+                                console.log(task.dateStart);
                                 events.push({
                                     tid: task.tid,
                                     title: task.title,
                                     description: task.description,
+// <<<<<<< HEAD
                                     dateStart: new Date(task.dateStart.substring(0, 17)),
                                     dateEnd: new Date(task.dateEnd.substring(0, 17)),
+// =======
+//                                     dateStart: moment(task.dateStart).format("YYYY-MM-DD"),
+//                                     dateEnd: moment(task.dateEnd).format("YYYY-MM-DD"),
+// >>>>>>> master
                                     color: this.colors[this.rnd(0, this.colors.length - 1)],
                                 });
                             }
