@@ -62,57 +62,89 @@
             </v-navigation-drawer>
 
             <v-dialog v-model="addInfo" max-width="70%">
-                <component>
-                    <v-card color="grey" dark>
-                        <v-row align="center"
-                               justify="center">
-                            <v-col></v-col>
-                        </v-row>
-                        <v-form ref="form" @submit.prevent="addEvent" v-model="isValid">
+
+                <v-card class="mt-10" color="grey" dark>
+                    <component>
+                        <v-form v-model="isValid">
                             <v-text-field
+
                                     :rules="inputRules"
                                     required
                                     v-model="task.title"
                                     type="text"
                                     label=" Event name (Required) "></v-text-field>
                             <v-text-field
+                                    :rules="inputRules"
+                                    required
                                     v-model="task.description"
                                     type="text"
-                                    label=" Description"></v-text-field>
-                            <v-datetime-picker
-                                    :rules="inputRules"
-                                    required
+                                    label=" Description (Required) "></v-text-field>
+                            <v-menu
+                                v-model="fromDateMenu"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                lazy
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                max-width="290px"
+                                min-width="290px"
+                        >
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                        :rules="inputRules"
+                                        required
+                                        label="From Date"
+                                        prepend-icon="event"
+                                        readonly
+                                        :value="task.dateStart"
+                                        v-on="on"
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker
+                                    locale="en-in"
                                     v-model="task.dateStart"
-                                    label=" Start date (Required) ">
-                                <template slot="dateIcon">
-                                    <v-icon>calendar_today</v-icon>
+                                    no-title
+                                    @input="fromDateMenu = false"
+                            ></v-date-picker>
+                        </v-menu>
+                            <v-menu
+                                    v-model="toDateMenu"
+                                    :close-on-content-click="false"
+                                    :nudge-right="40"
+                                    lazy
+                                    transition="scale-transition"
+                                    offset-y
+                                    full-width
+                                    max-width="290px"
+                                    min-width="290px"
+                            >
+                                <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                            :rules="inputRules"
+                                            required
+                                            label="To Date"
+                                            prepend-icon="event"
+                                            readonly
+                                            :value="task.dateEnd"
+                                            v-on="on"
+                                    ></v-text-field>
                                 </template>
-                                <template slot="timeIcon">
-                                    <v-icon>access_time</v-icon>
-                                </template>
-                            </v-datetime-picker>
-                            <v-datetime-picker
-                                    :rules="inputRules"
-                                    required
-                                    v-model="task.dateEnd"
-                                    label=" End date (Required) ">
-                                <template slot="dateIcon">
-                                    <v-icon>calendar_today</v-icon>
-                                </template>
-                                <template slot="timeIcon">
-                                    <v-icon>access_time</v-icon>
-                                </template>
-                            </v-datetime-picker>
-                            <v-text-field
-                                    :rules="inputRules"
-                                    required
-                                    v-model="color"
-                                    type="color"
-                                    label=" Color (click to choose color) "></v-text-field>
+                                <v-date-picker
+                                        locale="en-in"
+                                        v-model="task.dateEnd"
+                                        no-title
+                                        @input="toDateMenu = false"
+                                ></v-date-picker>
+                            </v-menu>
+
+
                             <div class="text-xl-center">
-                                <v-btn color="orange accent-3" class="mr-4" @click.stop="addInfo = false">
-                                    create event
-                                </v-btn>
+
+                            <v-btn color="orange accent-3" class="mr-4" @click="addEvent"  :disabled="!isValid">
+                                create event
+                            </v-btn>
+
                                 <v-btn
                                         color="error"
                                         class="mr-4"
@@ -122,17 +154,16 @@
                                 </v-btn>
                             </div>
                         </v-form>
-                    </v-card>
-                </component>
 
-<!--                <v-btn color="orange accent-3" class="ml-4"-->
-<!--                       @click.stop="addInfo = false">-->
-<!--                    create event-->
-<!--                </v-btn>-->
-<!--                <v-row align="center"-->
-<!--                       justify="center">-->
-<!--                    <v-col></v-col>-->
-<!--                </v-row>-->
+                    </component>
+
+
+                    <v-row align="center"
+                           justify="center">
+                        <v-col></v-col>
+                    </v-row>
+                </v-card>
+
             </v-dialog>
 
             <v-sheet height="100%">
@@ -207,7 +238,8 @@
         name: 'Calendar',
 
         data: () => ({
-
+            fromDateMenu: false,
+            toDateMenu: false,
             task: new task('', '', '', '', ''),
 
             drawer: false,
@@ -249,8 +281,18 @@
         },
         methods: {
 
-            addEvent() {
-                this.$store.dispatch('')
+
+            addEvent(){
+                this.addInfo = false;
+                console.log(this.task);
+                UserService.postCreateTask(this.$store.state.auth.user, this.task).then(
+                    response =>{
+                      console.log(response.data)
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
             },
 
             viewDay({date}) {
@@ -286,13 +328,36 @@
                 nativeEvent.stopPropagation();
             },
 
+
+            created () {
+                // this.initialize()
+            },
+
+
             initialize() {
                 console.log(this.username);
                 UserService.getTaskList(this.username).then(
                     taskList => {
-                        this.taskArr = taskList.data;
-                        console.log(this.taskArr);
-                    }, error => {
+                        const taskArr = taskList.data;
+
+
+                        taskArr.forEach(
+                            task => {
+                                console.log(task);
+                                console.log(task.dateStart);
+                                events.push({
+                                    tid: task.tid,
+                                    title: task.title,
+                                    description: task.description,
+                                    // dateStart: ,
+                                    // dateEnd: ,
+                                    color: this.colors[this.rnd(0, this.colors.length - 1)],
+                                });
+                            }
+                        )
+
+                    },error => {
+
                         console.log(error);
                     }
                 )

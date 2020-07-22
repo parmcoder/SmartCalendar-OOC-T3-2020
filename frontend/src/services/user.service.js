@@ -22,7 +22,7 @@ class UserService {
      */
     postCreateTask(user, task) {
         return axios
-            .post(API_URL + user + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
+            .post(API_URL + 'create/' + user + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
 
     }
 
@@ -35,7 +35,7 @@ class UserService {
      */
     postRemoveTask(task) {
         return axios
-            .post(API_URL + task.tid, {headers: authHeader()});
+            .post(API_URL + 'remove/' +task.tid, {headers: authHeader()});
 
     }
 
@@ -46,7 +46,7 @@ class UserService {
      */
     postEditTask(task) {
         return axios
-            .post(API_URL + task.tid + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
+            .post(API_URL + 'update/' + task.tid + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
 
     }
 }
