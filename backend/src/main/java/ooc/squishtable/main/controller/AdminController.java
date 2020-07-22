@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -23,7 +24,6 @@ public class AdminController {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdminController.class);
 
-    public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
     public static final String SECURED_TEXT = "Hello Admin!";
 
     @Autowired
@@ -36,7 +36,6 @@ public class AdminController {
     }
 
     @PostMapping(path = "/remove/{username}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity removeUser(@PathVariable("username") String username){
         AppUser userToRemove = adminService.getUser(username);
         if(adminService.removeUser(userToRemove)) return ResponseEntity.status(HttpStatus.FOUND).body("User has been removed.");

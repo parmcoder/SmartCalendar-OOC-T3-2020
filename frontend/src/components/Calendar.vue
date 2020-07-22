@@ -23,10 +23,10 @@
                         <v-icon small>mdi-chevron-right</v-icon>
                     </v-btn>
 
-<!--                    showing the month and year from calendar-->
-<!--                    <v-toolbar-title v-if="$refs.calendar">-->
-<!--                        {{ $refs.calendar.title}}-->
-<!--                    </v-toolbar-title>-->
+                    <!--                    showing the month and year from calendar-->
+                    <!--                    <v-toolbar-title v-if="$refs.calendar">-->
+                    <!--                        {{ $refs.calendar.title}}-->
+                    <!--                    </v-toolbar-title>-->
                     <v-btn class="ml-3" color="grey darken-2" dark @click="addInfo = true"> New Event</v-btn>
 
                     <v-spacer></v-spacer>
@@ -45,7 +45,8 @@
 
                     <v-btn color="grey darken-2" dark @click="handleLogout">
                         <span>SIGN OUT</span>
-                        <v-icon right>logout</v-icon></v-btn>
+                        <v-icon right>logout</v-icon>
+                    </v-btn>
                 </v-toolbar>
             </v-sheet>
 
@@ -61,10 +62,12 @@
             </v-navigation-drawer>
 
             <v-dialog v-model="addInfo" max-width="70%">
+
                 <v-card class="mt-10" color="grey" dark>
                     <component>
                         <v-form v-model="isValid">
                             <v-text-field
+
                                     :rules="inputRules"
                                     required
                                     v-model="task.title"
@@ -137,9 +140,11 @@
 
 
                             <div class="text-xl-center">
+
                             <v-btn color="orange accent-3" class="mr-4" @click="addEvent"  :disabled="!isValid">
                                 create event
                             </v-btn>
+
                                 <v-btn
                                         color="error"
                                         class="mr-4"
@@ -149,6 +154,7 @@
                                 </v-btn>
                             </div>
                         </v-form>
+
                     </component>
 
 
@@ -157,6 +163,7 @@
                         <v-col></v-col>
                     </v-row>
                 </v-card>
+
             </v-dialog>
 
             <v-sheet height="100%">
@@ -170,52 +177,52 @@
                         @click:event="showEvent"
                         @click:more="viewDay"
                         @click:date="viewDay"
-                        @change="initialize"
+                        @change="updateRange"
                         dark
                 >
                 </v-calendar>
-                <v-menu
-                 v-model="selectedOpen"
-                 :close-on-content-click="false"
-                 :activator="selectedElement"
-                 offset-x
-                >
                 <v-menu
                         v-model="selectedOpen"
                         :close-on-content-click="false"
                         :activator="selectedElement"
                         offset-x
-
                 >
-                    <v-card
-                            color="grey lighten-4"
-                            min-width="350px"
-                            flat
+                    <v-menu
+                            v-model="selectedOpen"
+                            :close-on-content-click="false"
+                            :activator="selectedElement"
+                            offset-x
+
                     >
-                        <v-toolbar
-                                :color="selectedEvent.color"
-                                dark
+                        <v-card
+                                color="grey lighten-4"
+                                min-width="350px"
+                                flat
                         >
-                            <v-btn icon>
-                                <v-icon>mdi-pencil</v-icon>
-                            </v-btn>
-                            <v-toolbar-title v-html="selectedEvent.title"></v-toolbar-title>
-                            <v-spacer></v-spacer>
-                        </v-toolbar>
-                        <v-card-text>
-                            <span v-html="selectedEvent.description"></span>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-btn
-                                    text
-                                    color="secondary"
-                                    @click="selectedOpen = false"
+                            <v-toolbar
+                                    :color="selectedEvent.color"
+                                    dark
                             >
-                                Cancel
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-menu>
+                                <v-btn icon>
+                                    <v-icon>mdi-pencil</v-icon>
+                                </v-btn>
+                                <v-toolbar-title v-html="selectedEvent.title"></v-toolbar-title>
+                                <v-spacer></v-spacer>
+                            </v-toolbar>
+                            <v-card-text>
+                                <span v-html="selectedEvent.description"></span>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn
+                                        text
+                                        color="secondary"
+                                        @click="selectedOpen = false"
+                                >
+                                    Cancel
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-menu>
                 </v-menu>
             </v-sheet>
         </v-app>
@@ -235,12 +242,11 @@
             toDateMenu: false,
             task: new task('', '', '', '', ''),
 
-
             drawer: false,
 
             focus: '',
             type: 'month',
-
+            taskArr: [],
             tid: null,
             title: null,
             description: null,
@@ -261,11 +267,20 @@
 
         }),
 
-        mounted () {
+        mounted() {
             this.$refs.calendar.checkChange()
         },
-
+        created() {
+            this.initialize()
+        }
+        ,
+        computed: {
+            username() {
+                return this.$store.state.auth.user.username;
+            }
+        },
         methods: {
+
 
             addEvent(){
                 this.addInfo = false;
@@ -278,28 +293,27 @@
                         console.log(error);
                     }
                 );
-
             },
 
-            viewDay ({ date }) {
+            viewDay({date}) {
                 this.focus = date;
                 this.type = '';
             },
 
-            getEventColor (event) {
+            getEventColor(event) {
                 return event.color;
             },
-            setToday () {
+            setToday() {
                 this.focus = '';
             },
-            prev () {
+            prev() {
                 this.$refs.calendar.prev();
             },
-            next () {
+            next() {
                 this.$refs.calendar.next();
             },
 
-            showEvent ({ nativeEvent, event }) {
+            showEvent({nativeEvent, event}) {
                 const open = () => {
                     this.selectedEvent = event;
                     this.selectedElement = nativeEvent.target;
@@ -314,14 +328,15 @@
                 nativeEvent.stopPropagation();
             },
 
+
             created () {
                 // this.initialize()
             },
 
+
             initialize() {
-                const events = [];
-                console.log(this.$store.state.auth.user);
-                UserService.getTaskList(this.$store.state.auth.user).then(
+                console.log(this.username);
+                UserService.getTaskList(this.username).then(
                     taskList => {
                         const taskArr = taskList.data;
 
@@ -342,21 +357,44 @@
                         )
 
                     },error => {
+
                         console.log(error);
                     }
-                );
-                this.events = events;
+                )
             },
-            rnd (a, b) {
+            updateRange ({ start, end }) {
+                const events = []
+                this.taskArr.forEach(
+                    task => {
+                        console.log(task);
+                        console.log(task.dateStart.toString().substring(0, 19));
+                        const start = new Date(task.dateStart.substring(0, 19))
+                        const end = new Date(task.dateEnd.substring(0, 19))
+                        events.push({
+                            tid: task.tid,
+                            title: task.title,
+                            description: task.description,
+                            start: start,
+                            end: end,
+                            color: this.colors[this.rnd(0, this.colors.length - 1)],
+                            timed: 0,
+                        })
+                    }
+                )
+
+
+                this.events = events
+            },
+            rnd(a, b) {
                 return Math.floor((b - a + 1) * Math.random()) + a;
             },
             handleLogout() {
 
                 this.$store.dispatch('auth/logout', this.user).then(
-                        () => {
-                            this.$router.push('/');
-                        }
-                    );
+                    () => {
+                        this.$router.push('/');
+                    }
+                );
             }
         },
     }
