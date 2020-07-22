@@ -285,7 +285,7 @@
             addEvent(){
                 this.addInfo = false;
                 console.log(this.task);
-                UserService.postCreateTask(this.$store.state.auth.user, this.task).then(
+                UserService.postCreateTask(this.$store.state.auth.user.username, this.task).then(
                     response =>{
                       console.log(response.data)
                     },
@@ -327,12 +327,6 @@
                 }
                 nativeEvent.stopPropagation();
             },
-
-
-            created () {
-                // this.initialize()
-            },
-
 
             initialize() {
                 console.log(this.username);
