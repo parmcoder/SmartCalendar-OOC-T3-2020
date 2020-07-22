@@ -1,18 +1,16 @@
 <template>
     <nav>
         <v-toolbar flat app color="orange accent-3" dense dark>
-            <v-btn @click="drawer = !drawer" class="grey--text"> <v-icon> home </v-icon></v-btn>
+            <v-btn to="/register" flat color="grey darken-2">
+                <span>SIGN UP</span>
+                <v-icon right>accessibility</v-icon>
+            </v-btn>
             <v-spacer></v-spacer>
-            <v-spacer></v-spacer>
-            <v-btn flat color="grey">
-                <span>Sign Out</span>
-                <v-icon right>exit_to_app</v-icon>
+            <v-btn to="/login" flat color="white--text">
+                <span>SIGN IN</span>
+                <v-icon right>login</v-icon>
             </v-btn>
         </v-toolbar>
-
-        <v-navigation-drawer app v-model="drawer" class="orange">
-            <p>test</p>
-        </v-navigation-drawer>
 
     </nav>
 </template>

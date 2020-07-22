@@ -10,10 +10,6 @@
             </v-btn>
         </v-toolbar>
 
-        <v-navigation-drawer app v-model="drawer" class="orange">
-            <p>test</p>
-        </v-navigation-drawer>
-
     </nav>
 </template>
 
