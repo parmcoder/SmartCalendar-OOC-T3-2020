@@ -177,7 +177,7 @@
                         @click:event="showEvent"
                         @click:more="viewDay"
                         @click:date="viewDay"
-                        @change="updateRange"
+                        @change="refreshCalendar"
                         dark
                 >
                 </v-calendar>
@@ -203,6 +203,14 @@
                                     :color="selectedEvent.color"
                                     dark
                             >
+                                Cancel
+                            </v-btn>
+                            <v-btn color="orange accent-3" class="mr-4" @click="removeEvent">
+                                remove event
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-menu>
                                 <v-btn icon>
                                     <v-icon>mdi-pencil</v-icon>
                                 </v-btn>
@@ -268,24 +276,17 @@
         }),
 
         mounted() {
-            this.$refs.calendar.checkChange()
-        },
-        created() {
-            this.initialize()
-        }
-        ,
-        computed: {
-            username() {
-                return this.$store.state.auth.user.username;
-            }
+            this.$refs.calendar.checkChange();
+            this.refreshCalendar();
         },
         methods: {
 
-
             addEvent(){
                 this.addInfo = false;
+
                 console.log(this.task);
                 UserService.postCreateTask(this.$store.state.auth.user.username, this.task).then(
+
                     response =>{
                       console.log(response.data)
                     },
@@ -295,7 +296,19 @@
                 );
             },
 
-            viewDay({date}) {
+            removeEvent(){
+                this.selectedOpen = false
+                UserService.postRemoveTask(this.task).then(
+                    response => {
+                        console.log(response);
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                )
+            },
+
+            viewDay ({ date }) {
                 this.focus = date;
                 this.type = '';
             },
@@ -328,23 +341,27 @@
                 nativeEvent.stopPropagation();
             },
 
-            initialize() {
-                console.log(this.username);
-                UserService.getTaskList(this.username).then(
+
+            created () {
+                this.refreshCalendar()
+            },
+
+            refreshCalendar() {
+                const events = [];
+                console.log(this.$store.state.auth.user);
+                UserService.getTaskList(this.$store.state.auth.user).then(
+
                     taskList => {
                         const taskArr = taskList.data;
 
-
                         taskArr.forEach(
                             task => {
-                                console.log(task);
-                                console.log(task.dateStart);
                                 events.push({
                                     tid: task.tid,
                                     title: task.title,
                                     description: task.description,
-                                    // dateStart: ,
-                                    // dateEnd: ,
+                                    dateStart: task.dateStart,
+                                    dateEnd: task.dateEnd,
                                     color: this.colors[this.rnd(0, this.colors.length - 1)],
                                 });
                             }
@@ -355,29 +372,7 @@
                         console.log(error);
                     }
                 )
-            },
-            updateRange ({ start, end }) {
-                const events = []
-                this.taskArr.forEach(
-                    task => {
-                        console.log(task);
-                        console.log(task.dateStart.toString().substring(0, 19));
-                        const start = new Date(task.dateStart)
-                        const end = new Date(task.dateEnd)
-                        events.push({
-                            tid: task.tid,
-                            title: task.title,
-                            description: task.description,
-                            start: start,
-                            end: end,
-                            color: this.colors[this.rnd(0, this.colors.length - 1)],
-                            timed: 0,
-                        })
-                    }
-                )
-
-
-                this.events = events
+                this.events = events;
             },
             rnd(a, b) {
                 return Math.floor((b - a + 1) * Math.random()) + a;
