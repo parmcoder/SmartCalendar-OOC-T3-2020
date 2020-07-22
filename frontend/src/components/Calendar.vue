@@ -146,7 +146,7 @@
                         @click:event="showEvent"
                         @click:more="viewDay"
                         @click:date="viewDay"
-                        @change="initialize"
+                        @change="updateRange"
                         dark
                 >
                 </v-calendar>
@@ -199,7 +199,7 @@
 </template>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment-with-locales.min.js">
+<script>
     import UserService from '../services/user.service'
     import task from '../models/task';
 
@@ -210,12 +210,11 @@
 
             task: new task('', '', '', '', ''),
 
-
             drawer: false,
 
             focus: '',
             type: 'month',
-
+            taskArr: [],
             tid: null,
             title: null,
             description: null,
@@ -239,12 +238,19 @@
         mounted() {
             this.$refs.calendar.checkChange()
         },
-
+        created() {
+            this.initialize()
+        }
+        ,
+        computed: {
+            username() {
+                return this.$store.state.auth.user.username;
+            }
+        },
         methods: {
 
             addEvent() {
                 this.$store.dispatch('')
-
             },
 
             viewDay({date}) {
@@ -280,43 +286,39 @@
                 nativeEvent.stopPropagation();
             },
 
-            created() {
-                this.initialize()
-            },
-
             initialize() {
-                const events = [];
-                console.log(this.$store.state.auth.user);
-                UserService.getTaskList(this.$store.state.auth.user.userInfo.username).then(
+                console.log(this.username);
+                UserService.getTaskList(this.username).then(
                     taskList => {
-                        const taskArr = taskList.data;
-                        
-
-                        taskArr.forEach(
-                            task => {
-                                console.log(task);
-                                console.log(task.dateStart);
-                                events.push({
-                                    tid: task.tid,
-                                    title: task.title,
-                                    description: task.description,
-// <<<<<<< HEAD
-                                    dateStart: new Date(task.dateStart.substring(0, 17)),
-                                    dateEnd: new Date(task.dateEnd.substring(0, 17)),
-// =======
-//                                     dateStart: moment(task.dateStart).format("YYYY-MM-DD"),
-//                                     dateEnd: moment(task.dateEnd).format("YYYY-MM-DD"),
-// >>>>>>> master
-                                    color: this.colors[this.rnd(0, this.colors.length - 1)],
-                                });
-                            }
-                        )
-
+                        this.taskArr = taskList.data;
+                        console.log(this.taskArr);
                     }, error => {
                         console.log(error);
                     }
-                );
-                this.events = events;
+                )
+            },
+            updateRange ({ start, end }) {
+                const events = []
+                this.taskArr.forEach(
+                    task => {
+                        console.log(task);
+                        console.log(task.dateStart.toString().substring(0, 19));
+                        const start = new Date(task.dateStart.substring(0, 19))
+                        const end = new Date(task.dateEnd.substring(0, 19))
+                        events.push({
+                            tid: task.tid,
+                            title: task.title,
+                            description: task.description,
+                            start: start,
+                            end: end,
+                            color: this.colors[this.rnd(0, this.colors.length - 1)],
+                            timed: 0,
+                        })
+                    }
+                )
+
+
+                this.events = events
             },
             rnd(a, b) {
                 return Math.floor((b - a + 1) * Math.random()) + a;
