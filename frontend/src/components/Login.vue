@@ -2,10 +2,7 @@
     <div id="login">
         <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
 
-        <v-toolbar color="orange accent-3" dense dark>
-            <v-icon> face </v-icon>
-            <v-toolbar-title class="ml-3"> Log-in page</v-toolbar-title>
-        </v-toolbar>
+        <NavBar></NavBar>
 
         <v-app class="theme--dark" >
             <v-container grid-list-xl text-xs-center>
@@ -57,9 +54,12 @@
 
 <script>
     import user from '../models/user';
-
+    import NavBar from './NavBarBeforeLogin';
     export default {
         name: 'Login',
+    components: {
+            NavBar
+    },
         data() {
             return {
                 user: new user('', '', '', ''),

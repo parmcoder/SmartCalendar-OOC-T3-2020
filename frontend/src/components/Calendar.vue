@@ -2,7 +2,16 @@
     <div id="calendar">
         <v-app id="inspire">
             <v-sheet height="64">
+
                 <v-toolbar flat color="orange accent-3">
+                    <!--                    showing image of calendar-->
+<!--                    <v-img-->
+<!--                            :src="require('../assets/calendar_5-512.png')"-->
+<!--                            contain-->
+<!--                            left-->
+<!--                            height="50"-->
+<!--                    >-->
+<!--                    </v-img>-->
                     <!-- today bottom, when you click it will go back to today -->
                     <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
                         Today
@@ -12,6 +21,7 @@
                     <v-btn fab text small color="grey darken-2" @click="prev">
                         <v-icon small>mdi-chevron-left</v-icon>
                     </v-btn>
+
                     <v-btn fab text small color="grey darken-2" @click="next">
                         <v-icon small>mdi-chevron-right</v-icon>
                     </v-btn>
@@ -20,26 +30,30 @@
                     <v-toolbar-title v-if="$refs.calendar">
                         {{ $refs.calendar.title}}
                     </v-toolbar-title>
-
-
-<!--                    showing image of calendar-->
-                    <v-img
-                            :src="require('../assets/calendar_5-512.png')"
-                            contain
-                            height="70"
-                    >
-                    </v-img>
                     <v-spacer></v-spacer>
-
                     <v-btn color="grey darken-2" dark @click="addInfo = true"> New Event</v-btn>
-
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-spacer></v-spacer>
+                    <v-btn color="grey darken-2" dark @click="handleLogout">
+                        <span>SIGN OUT</span>
+                        <v-icon right>logout</v-icon></v-btn>
                 </v-toolbar>
             </v-sheet>
 
-            <v-dialog v-model="addInfo" max-width="1000">
-                <v-card color="grey" dark>
+            <v-dialog v-model="addInfo" max-width="50%">
+                <v-card :class="ma-10" color="grey" dark>
                     <component>
-                        <v-form @submit.prevent="addEvent" v-model="isValid">
+                        <v-form ref="form" @submit.prevent="addEvent" v-model="isValid">
                             <v-text-field
                                     :rules="inputRules"
                                     required
@@ -87,6 +101,13 @@
                             <v-btn color="orange accent-3" class="mr-4" @click.stop="addInfo = false">
                                 create event
                             </v-btn>
+                                <v-btn
+                                        color="error"
+                                        class="mr-4"
+                                        @click="reset"
+                                >
+                                    Reset Form
+                                </v-btn>
                             </div>
                         </v-form>
                     </component>
@@ -94,7 +115,7 @@
             </v-dialog>
 
 
-            <v-sheet height="760">
+            <v-sheet height="100%">
                 <v-calendar
                         ref="calendar"
                         v-model="focus"
@@ -120,6 +141,7 @@
                         :close-on-content-click="false"
                         :activator="selectedElement"
                         offset-x
+
                 >
                     <v-card
                             color="grey lighten-4"
@@ -266,6 +288,15 @@
             rnd (a, b) {
                 return Math.floor((b - a + 1) * Math.random()) + a;
             },
+            handleLogout() {
+                if (this.user.username && this.user.password) {
+                    this.$store.dispatch('auth/logout', this.user).then(
+                        () => {
+                            this.$router.push('/');
+                        }
+                    );
+                }
+            }
         },
     }
 </script>
