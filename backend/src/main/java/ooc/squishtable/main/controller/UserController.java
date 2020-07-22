@@ -67,7 +67,6 @@ public class UserController {
      */
 
     @PostMapping(path = "create/{username}/{title}/{description}/{dateStart}/{dateEnd}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity addTask(@PathVariable("title") String title, @PathVariable("description") String description,
                                   @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd,
                                   @PathVariable("username") String username) {
@@ -84,7 +83,6 @@ public class UserController {
      */
 
     @GetMapping(path = "tasklist/{username}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity displayAllTasks(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllTasks(username));
     }
@@ -99,7 +97,6 @@ public class UserController {
      * @return Update task
      */
     @PostMapping(path = "edit/{tid}/{title}/{description}/{dateStart}/{dateEnd}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity updateTask(@PathVariable("tid") String tid,
                                      @PathVariable("title") String title, @PathVariable("description") String description,
                                      @PathVariable("dateStart") String dateStart, @PathVariable("dateEnd") String dateEnd
@@ -118,7 +115,6 @@ public class UserController {
      * @return Message to tell user that we successfully remove task
      */
     @PostMapping(path = "remove/{tid}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity removeTask(@PathVariable("tid") String tid) {
         AppTask task = new AppTask();
         task.setTid(Long.parseLong(tid));
@@ -135,7 +131,6 @@ public class UserController {
      * @return Message to user
      */
     @PostMapping(path = "update/{username}/{newusername}/{name}/{surname}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity editUser(@PathVariable("username") String username,
                                    @PathVariable("newusername") String newusername,
                                    @PathVariable("name") String name, @PathVariable("surname") String surname) {
