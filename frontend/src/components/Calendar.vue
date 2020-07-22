@@ -280,13 +280,11 @@
                 return Math.floor((b - a + 1) * Math.random()) + a
             },
             handleLogout() {
-                if (this.user.username && this.user.password) {
-                    this.$store.dispatch('auth/logout', this.user).then(
+                this.$store.dispatch('auth/logout', this.user).then(
                         () => {
                             this.$router.push('/');
                         }
                     );
-                }
             }
         },
     }
