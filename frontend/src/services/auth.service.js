@@ -10,7 +10,7 @@ class AuthService {
             .post(API_URL + 'signin', {
                 username: user.username,
                 password: user.password
-            }).then(res=>console.log(res))
+            })
             .then(response => {
                 if (response.data.token) {
                     localStorage.setItem('user', JSON.stringify(response.data));
@@ -29,7 +29,7 @@ class AuthService {
             password: user.password,
             name: user.name,
             surname: user.surname
-        }).then(res=>console.log(res));
+        })
     }
 }
 
