@@ -5,13 +5,6 @@
 
                 <v-toolbar flat color="orange accent-3">
                     <!--                    showing image of calendar-->
-<!--                    <v-img-->
-<!--                            :src="require('../assets/calendar_5-512.png')"-->
-<!--                            contain-->
-<!--                            left-->
-<!--                            height="50"-->
-<!--                    >-->
-<!--                    </v-img>-->
                     <!-- today bottom, when you click it will go back to today -->
                     <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
                         Today
@@ -34,6 +27,13 @@
                     <v-btn color="grey darken-2" dark @click="addInfo = true"> New Event</v-btn>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
+                    <v-img
+                            :src="require('../assets/calendar_5-512.png')"
+                            contain
+                            left
+                            height="50"
+                    >
+                    </v-img>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
                     <v-spacer></v-spacer>
@@ -83,13 +83,6 @@
                         <v-btn color="orange accent-3" class="mr-4"
                                @click.stop="addInfo = false">
                             create event
-                        </v-btn>
-                        <v-btn
-                                color="error"
-                                class="mr-4"
-                                @click="reset"
-                        >
-                            Reset Form
                         </v-btn>
                     </v-form>
                 </v-card>
