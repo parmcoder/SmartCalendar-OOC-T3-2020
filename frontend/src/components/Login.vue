@@ -85,6 +85,7 @@
                 if (this.user.username && this.user.password) {
                     this.$store.dispatch('auth/login', this.user).then(
                         () => {
+                            // if(this.$store.user.role.has('ROLE_ADMIN')) this.$router.push('/admin');
                             this.$router.push('/calendar');
                         },
                         error => {
