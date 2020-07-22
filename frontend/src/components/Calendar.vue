@@ -274,13 +274,13 @@
                                     tid: task.tid,
                                     title: task.title,
                                     description: task.description,
-                                    dateStart: task.dateStart,
-                                    dateEnd: task.dateEnd,
+                                    dateStart: (task.dateStart).substring(0,19),
+                                    dateEnd: (task.dateEnd).substring(0,19),
                                     color: this.colors[this.rnd(0, this.colors.length - 1)],
                                 });
                             }
                         )
-                        
+
                     },error => {
                         console.log(error);
                     }
