@@ -1,6 +1,7 @@
 package ooc.squishtable.main.controller;
 
 import ooc.squishtable.main.model.AppTask;
+import ooc.squishtable.main.model.AppText;
 import ooc.squishtable.main.model.AppUser;
 import ooc.squishtable.main.services.AdminService;
 import ooc.squishtable.main.services.UserService;
@@ -23,7 +24,7 @@ public class AdminController {
     private static final Logger LOG = LoggerFactory.getLogger(AdminController.class);
 
     public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
-    public static final String SECURED_TEXT = "Hello from the secured resource!";
+    public static final String SECURED_TEXT = "Hello Admin!";
 
     @Autowired
     private AdminService adminService;
@@ -39,18 +40,20 @@ public class AdminController {
     public ResponseEntity removeUser(@PathVariable("username") String username){
         AppUser userToRemove = adminService.getUser(username);
         if(adminService.removeUser(userToRemove)) return ResponseEntity.status(HttpStatus.FOUND).body("User has been removed.");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User has been found.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new AppText("User has been found."));
+    }
+
+
+    @GetMapping(path = "/secured")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody ResponseEntity getSecured() {
+        LOG.info("GET successfully called, so you can go to /admin.");
+        return ResponseEntity.ok(new AppText(SECURED_TEXT));
     }
 
     /*
     ? For testing
      */
-    @GetMapping(path = "/secured")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public @ResponseBody String getSecured() {
-        LOG.info("GET successfully called on /secured resource");
-        return SECURED_TEXT;
-    }
 
     @RequestMapping(path = "/hello", method = RequestMethod.GET)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
