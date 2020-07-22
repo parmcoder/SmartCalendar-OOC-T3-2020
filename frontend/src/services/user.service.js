@@ -19,7 +19,7 @@ class UserService {
      * @returns {Promise<AxiosResponse<T>>}
      */
     postCreateTask(user, title, description, dateStart, dateEnd) {
-        return axios.get(API_URL + user + '/' + title + '/' + description + '/' + dateStart + '/' + dateEnd, {headers: authHeader()});
+        return axios.post(API_URL + user + '/' + title + '/' + description + '/' + dateStart + '/' + dateEnd, {headers: authHeader()});
     }
 
     /**
@@ -29,7 +29,7 @@ class UserService {
      * @returns {Promise<AxiosResponse<T>>}
      */
     postRemoveTask(tid) {
-        return axios.get(API_URL + tid, {headers: authHeader()});
+        return axios.post(API_URL + tid, {headers: authHeader()});
     }
 
     /**
@@ -38,7 +38,7 @@ class UserService {
      * @returns {Promise<AxiosResponse<T>>}
      */
     postEditTask(tid, title, description, dateStart, dateEnd) {
-        return axios.get(API_URL + + tid + '/' + title + '/' + description + '/' + dateStart + '/' + dateEnd, {headers: authHeader()});
+        return axios.post(API_URL + + tid + '/' + title + '/' + description + '/' + dateStart + '/' + dateEnd, {headers: authHeader()});
     }
 }
 
