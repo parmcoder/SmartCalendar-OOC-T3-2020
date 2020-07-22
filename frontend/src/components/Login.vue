@@ -21,7 +21,6 @@
                                                 required
                                                 prepend-icon="face"
                                                 type="text"
-                                                name="username"
                                                 color="white"
                                         />
                                         <v-text-field
@@ -31,7 +30,6 @@
                                                 required
                                                 prepend-icon="lock"
                                                 type="password"
-                                                name="password"
                                                 color="white"
                                         />
                                     <br>

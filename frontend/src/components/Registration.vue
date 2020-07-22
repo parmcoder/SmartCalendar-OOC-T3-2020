@@ -13,48 +13,57 @@
                                 <h4 class="display-2 font-weight-bold">Register</h4>
                                 <hr>
                                 <br>
-                                <v-form>
+                                <v-form v-model="isValid">
                                     <v-text-field
-                                            clearable
-                                            v-model="realname"
+                                            v-model="user.name"
                                             label="Real name"
+                                            :rules="inputRules"
+                                            required
                                             prepend-icon="face"
                                             type="text"
                                             color="white"
                                     >
                                     </v-text-field>
                                     <v-text-field
-                                            clearable
-                                            v-model="surname"
+                                            v-model="user.surname"
                                             label="Surname"
+                                            :rules="inputRules"
+                                            required
                                             prepend-icon="face"
                                             type="text"
                                             color="white"
                                     >
                                     </v-text-field>
                                     <v-text-field
-                                            clearable
-                                            v-model="username"
+                                            v-model="user.username"
                                             label="Username"
+                                            :rules="inputRules"
+                                            required
                                             prepend-icon="face"
                                             type="text"
                                             color="white"
                                     >
                                     </v-text-field>
                                     <v-text-field
-                                            clearable
-                                            v-model="password"
+                                            v-model="user.password"
                                             label="Password"
+                                            :rules="inputRules"
+                                            required
                                             prepend-icon="lock"
                                             type="password"
                                             color="white"
                                     >
                                     </v-text-field>
-                                </v-form>
+
                                 <br>
                                 <div class="text-xl-center">
-                                    <v-btn color="grey darken-2" large>Enter</v-btn>
+                                    <v-btn @click="handleRegister" color="grey darken-2" :disabled="!isValid">
+                                        Register
+                                    </v-btn>
                                 </div>
+                                <br>
+                                <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
+                                </v-form>
                             </v-card-text>
                         </v-card>
                     </v-flex>
@@ -65,11 +74,50 @@
 </template>
 
 <script>
-    import NavBar from './NavBarBeforeLogin'
+
+import User from '../models/user';
+import NavBar from './NavBarBeforeLogin'
+
     export default {
-        name: 'Login',
+        name: 'Register',
         components: {
             NavBar
+        },
+        data() {
+            return {
+                user: new User('', '', '', ''),
+                submitted: false,
+                successful: false,
+                message: '',
+                inputRules: [v => !!v || 'This field is required'],
+                isValid: true
+            };
+        },
+        computed: {
+            loggedIn() {
+                return this.$store.state.auth.status.loggedIn;
+            }
+        },
+        mounted() {
+            if (this.loggedIn) {
+                this.$router.push('/calendar');
+            }
+        },
+        methods: {
+            handleRegister() {
+                this.message = '';
+                this.submitted = true;
+                this.$store.dispatch('auth/register', this.user).then(
+                    data => {
+                        this.message = data.message;
+                        this.successful = true;
+                    },
+                    error => {
+                        this.message = error.message;
+                        this.successful = false;
+                    }
+                );
+            }
         }
     };
 </script>
