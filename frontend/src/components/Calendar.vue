@@ -283,7 +283,10 @@
 
             addEvent(){
                 this.addInfo = false;
-                UserService.postCreateTask(this.$store.state.auth.user, this.task).then(
+
+                console.log(this.task);
+                UserService.postCreateTask(this.$store.state.auth.user.username, this.task).then(
+
                     response =>{
                       console.log(response.data)
                     },
@@ -347,6 +350,7 @@
                 const events = [];
                 console.log(this.$store.state.auth.user);
                 UserService.getTaskList(this.$store.state.auth.user).then(
+
                     taskList => {
                         const taskArr = taskList.data;
 
@@ -368,6 +372,7 @@
                         console.log(error);
                     }
                 )
+                this.events = events;
             },
             rnd(a, b) {
                 return Math.floor((b - a + 1) * Math.random()) + a;
