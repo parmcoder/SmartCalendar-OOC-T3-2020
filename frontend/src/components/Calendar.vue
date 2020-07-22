@@ -170,7 +170,7 @@
                         @click:event="showEvent"
                         @click:more="viewDay"
                         @click:date="viewDay"
-                        @change="initialize"
+                        @change="refreshCalendar"
                         dark
                 >
                 </v-calendar>
@@ -212,6 +212,9 @@
                                     @click="selectedOpen = false"
                             >
                                 Cancel
+                            </v-btn>
+                            <v-btn color="orange accent-3" class="mr-4" @click="removeEvent">
+                                remove event
                             </v-btn>
                         </v-card-actions>
                     </v-card>
@@ -269,7 +272,6 @@
 
             addEvent(){
                 this.addInfo = false;
-                console.log(this.task);
                 UserService.postCreateTask(this.$store.state.auth.user, this.task).then(
                     response =>{
                       console.log(response.data)
@@ -279,6 +281,18 @@
                     }
                 );
 
+            },
+
+            removeEvent(){
+                this.selectedOpen = false
+                UserService.postRemoveTask(this.task).then(
+                    response => {
+                        console.log(response);
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                )
             },
 
             viewDay ({ date }) {
@@ -315,10 +329,10 @@
             },
 
             created () {
-                // this.initialize()
+                this.refreshCalendar()
             },
 
-            initialize() {
+            refreshCalendar() {
                 const events = [];
                 console.log(this.$store.state.auth.user);
                 UserService.getTaskList(this.$store.state.auth.user).then(
@@ -334,8 +348,8 @@
                                     tid: task.tid,
                                     title: task.title,
                                     description: task.description,
-                                    // dateStart: ,
-                                    // dateEnd: ,
+                                    dateStart: task.dateStart,
+                                    dateEnd: task.dateEnd,
                                     color: this.colors[this.rnd(0, this.colors.length - 1)],
                                 });
                             }
