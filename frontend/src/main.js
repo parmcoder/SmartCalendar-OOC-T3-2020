@@ -4,19 +4,17 @@ import { router } from './router';
 import store from './stores';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import VeeValidate from 'vee-validate';
 import vuetify from './plugins/vuetify';
-import datetime from './plugins/vue-datetime';
+import DatetimePicker from "vuetify-datetime-picker";
 
 Vue.config.productionTip = false;
 
-Vue.use(VeeValidate);
+Vue.use(DatetimePicker);
 
 new Vue({
     router,
     store,
     vuetify,
-    datetime,
     render: h => h(App)
 }).$mount('#app');
 

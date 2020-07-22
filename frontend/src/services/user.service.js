@@ -10,26 +10,33 @@ class UserService {
      * @returns {Promise<AxiosResponse<T>>}
      */
     getTaskList(user) {
-        return axios.get(API_URL + 'tasklist/' + user, {headers: authHeader()});
+        return axios
+            .get(API_URL + 'tasklist/' + user, {headers: authHeader()});
     }
 
     /**
      * Post request function will return message if success, use username to track user
      * @param user
+     * @param task
      * @returns {Promise<AxiosResponse<T>>}
      */
-    postCreateTask(user, title, description, dateStart, dateEnd) {
-        return axios.post(API_URL + user + '/' + title + '/' + description + '/' + dateStart + '/' + dateEnd, {headers: authHeader()});
+    postCreateTask(user, task) {
+        return axios
+            .post(API_URL + user + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
+
     }
 
     /**
      * Post request function will return message if success, only need an ID from
      * task to remove task
-     * @param user
+     * @param task
      * @returns {Promise<AxiosResponse<T>>}
+
      */
-    postRemoveTask(tid) {
-        return axios.post(API_URL + tid, {headers: authHeader()});
+    postRemoveTask(task) {
+        return axios
+            .post(API_URL + task.tid, {headers: authHeader()});
+
     }
 
     /**
@@ -37,8 +44,10 @@ class UserService {
      * @param user
      * @returns {Promise<AxiosResponse<T>>}
      */
-    postEditTask(tid, title, description, dateStart, dateEnd) {
-        return axios.post(API_URL + + tid + '/' + title + '/' + description + '/' + dateStart + '/' + dateEnd, {headers: authHeader()});
+    postEditTask(task) {
+        return axios
+            .post(API_URL + task.tid + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
+
     }
 }
 

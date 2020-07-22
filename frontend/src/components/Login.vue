@@ -53,8 +53,8 @@
 </template>
 
 <script>
-    import User from '../models/user';
-    import NavBar from './NavBarBeforeLogin'
+    import user from '../models/user';
+    import NavBar from './NavBarBeforeLogin';
     export default {
         name: 'Login',
     components: {
@@ -62,7 +62,7 @@
     },
         data() {
             return {
-                user: new User('', '', '', ''),
+                user: new user('', '', '', ''),
                 loading: false,
                 message: '',
                 inputRules: [v => !!v || 'This field is required'],
