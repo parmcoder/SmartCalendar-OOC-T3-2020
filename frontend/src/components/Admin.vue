@@ -84,7 +84,11 @@
         created () {
             this.initialize()
         },
-
+        computed: {
+            username() {
+                return this.$store.state.auth.user.username;
+            }
+        },
         methods: {
             initialize() {
                 AdminService.getUserlist().then(
@@ -102,7 +106,7 @@
             deleteUser (item) {
                 const index = this.userList.indexOf(item)
                 confirm('Are you sure you want to delete this item?') && this.userList.splice(index, 1)
-                AdminService.postRemoveUser(item.username).then(
+                if(item.name != this.username) AdminService.postRemoveUser(item.username).then(
                     response => {
                         console.log(response.data);
                     },
