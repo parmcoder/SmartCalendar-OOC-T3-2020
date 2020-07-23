@@ -83,10 +83,8 @@
                                 v-model="fromDateMenu"
                                 :close-on-content-click="false"
                                 :nudge-right="40"
-                                lazy
                                 transition="scale-transition"
                                 offset-y
-                                full-width
                                 max-width="290px"
                                 min-width="290px"
                         >
@@ -112,10 +110,8 @@
                                     v-model="toDateMenu"
                                     :close-on-content-click="false"
                                     :nudge-right="40"
-                                    lazy
                                     transition="scale-transition"
                                     offset-y
-                                    full-width
                                     max-width="290px"
                                     min-width="290px"
                             >
@@ -163,7 +159,6 @@
                         <v-col></v-col>
                     </v-row>
                 </v-card>
-
             </v-dialog>
 
             <v-sheet height="100%">
@@ -187,13 +182,6 @@
                         :activator="selectedElement"
                         offset-x
                 >
-                    <v-menu
-                            v-model="selectedOpen"
-                            :close-on-content-click="false"
-                            :activator="selectedElement"
-                            offset-x
-
-                    >
                         <v-card
                                 color="grey lighten-4"
                                 min-width="350px"
@@ -203,22 +191,14 @@
                                     :color="selectedEvent.color"
                                     dark
                             >
-                                Cancel
-                            </v-btn>
-                            <v-btn color="orange accent-3" class="mr-4" @click="removeEvent">
-                                remove event
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-menu>
                                 <v-btn icon>
                                     <v-icon>mdi-pencil</v-icon>
                                 </v-btn>
-                                <v-toolbar-title v-html="selectedEvent.title"></v-toolbar-title>
+                                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                                 <v-spacer></v-spacer>
                             </v-toolbar>
                             <v-card-text>
-                                <span v-html="selectedEvent.description"></span>
+                                <span v-html="selectedEvent.details"></span>
                             </v-card-text>
                             <v-card-actions>
                                 <v-btn
@@ -228,9 +208,11 @@
                                 >
                                     Cancel
                                 </v-btn>
+                                <v-btn color="orange accent-3" class="mr-4" @click="removeEvent">
+                                    remove event
+                                </v-btn>
                             </v-card-actions>
                         </v-card>
-                    </v-menu>
                 </v-menu>
             </v-sheet>
         </v-app>
@@ -268,7 +250,6 @@
             selectedOpen: false,
             events: [],
             colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-            names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
 
             inputRules: [v => !!v || 'This field is required'],
             isValid: true
@@ -283,29 +264,27 @@
 
             addEvent(){
                 this.addInfo = false;
-
-                console.log(this.task);
-                UserService.postCreateTask(this.$store.state.auth.user.username, this.task).then(
+                UserService.postCreateTask(this.$store.state.auth.user, this.task).then(
 
                     response =>{
-                      console.log(response.data)
+                      console.log(response.data);
+                      this.refreshCalendar();
                     },
                     error => {
                         console.log(error);
                     }
                 );
+
             },
 
             removeEvent(){
-                this.selectedOpen = false
+                this.selectedOpen = false;
                 UserService.postRemoveTask(this.task).then(
-                    response => {
-                        console.log(response);
-                    },
+                    () => {},
                     error => {
-                        console.log(error);
+                        this.refreshCalendar();
                     }
-                )
+                );
             },
 
             viewDay ({ date }) {
@@ -348,20 +327,18 @@
 
             refreshCalendar() {
                 const events = [];
-                console.log(this.$store.state.auth.user);
                 UserService.getTaskList(this.$store.state.auth.user).then(
 
                     taskList => {
-                        const taskArr = taskList.data;
-
-                        taskArr.forEach(
+                        const taskData = taskList.data;
+                        taskData.forEach(
                             task => {
+                                this.task.tid = task.tid;
                                 events.push({
-                                    tid: task.tid,
-                                    title: task.title,
-                                    description: task.description,
-                                    dateStart: task.dateStart,
-                                    dateEnd: task.dateEnd,
+                                    name: task.title,
+                                    details: task.description,
+                                    start: task.dateStart,
+                                    end: task.dateEnd,
                                     color: this.colors[this.rnd(0, this.colors.length - 1)],
                                 });
                             }
