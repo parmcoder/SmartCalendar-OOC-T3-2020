@@ -19,7 +19,10 @@
                                 vertical
                         ></v-divider>
                         <v-spacer></v-spacer>
-
+                        <v-btn color="grey darken-2" dark @click="handleCalendar">
+                            <span>BACK TO CALENDAR</span>
+                            <v-icon right>calendar_today</v-icon>
+                        </v-btn>
                     </v-toolbar>
                 </template>
                 <template v-slot:item.actions="{ item }">
@@ -115,6 +118,9 @@
                     }
                 )
             },
+            handleCalendar() {
+                this.$router.push('/calendar');
+            }
         },
     }
 </script>

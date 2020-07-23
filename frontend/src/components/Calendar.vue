@@ -65,7 +65,7 @@
 
                 <v-card class="mt-10" color="grey" dark>
                     <component>
-                        <v-form v-model="isValid">
+                        <v-form ref="form" v-model="isValid">
                             <v-text-field
 
                                     :rules="inputRules"
@@ -261,7 +261,9 @@
             this.refreshCalendar();
         },
         methods: {
-
+            reset () {
+                this.$refs.form.reset()
+            },
             addEvent(){
                 this.addInfo = false;
                 UserService.postCreateTask(this.$store.state.auth.user, this.task).then(
