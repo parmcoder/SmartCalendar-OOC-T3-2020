@@ -11,7 +11,7 @@ class UserService {
      */
     getTaskList(user) {
         return axios
-            .get(API_URL + 'tasklist/' + user.username, {headers: authHeader()});
+            .get(API_URL + 'tasklist/' + user, {headers: authHeader()});
     }
 
     /**
@@ -22,7 +22,7 @@ class UserService {
      */
     postCreateTask(user, task) {
         return axios
-            .post(API_URL + 'create/' + user.username + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
+            .post(API_URL + 'create/' + user + '/' + task.title + '/' + task.description + '/' + task.dateStart + '/' + task.dateEnd, {headers: authHeader()});
 
     }
 
