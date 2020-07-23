@@ -1,13 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import User from './components/unused/User'
 import Login from "./components/Login";
-import Protected from './components/unused/Protected'
 import Index from "./components/Index";
 import Register from "./components/Registration"
 import Calendar from "./components/Calendar"
-import BasicDatetime from "./components/unused/BasicDatetime"
-
 import Admin from "./components/Admin";
 
 Vue.use(Router);
@@ -21,11 +17,6 @@ export const router = new Router({
             meta: {title: 'Home Page - Squish Table'}
             },
         {
-            path: '/testdatetime',
-            component: BasicDatetime,
-            meta: {title: 'Home Page - Squish Table'}
-            },
-        {
             path: '/calendar',
             component: Calendar,
             meta: {title: 'Calendar Page - Squish Table'}
@@ -35,7 +26,6 @@ export const router = new Router({
             component: Admin,
             meta: {title: 'Admin Page - Squish Table'}
         },
-        {path: '/user', component: User},
         {
             path: '/login',
             component: Login,
@@ -45,11 +35,6 @@ export const router = new Router({
             path: '/register',
             component: Register,
             meta: {title: 'Register Page - Squish Table'}
-        },
-        {
-            path: '/protected',
-            component: Protected,
-            meta: {title: 'Protected Page - Squish Table'}
         },
 
         // otherwise redirect to home
