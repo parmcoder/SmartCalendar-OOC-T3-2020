@@ -83,10 +83,8 @@
                                 v-model="fromDateMenu"
                                 :close-on-content-click="false"
                                 :nudge-right="40"
-                                lazy
                                 transition="scale-transition"
                                 offset-y
-                                full-width
                                 max-width="290px"
                                 min-width="290px"
                         >
@@ -112,10 +110,8 @@
                                     v-model="toDateMenu"
                                     :close-on-content-click="false"
                                     :nudge-right="40"
-                                    lazy
                                     transition="scale-transition"
                                     offset-y
-                                    full-width
                                     max-width="290px"
                                     min-width="290px"
                             >
@@ -254,7 +250,6 @@
             selectedOpen: false,
             events: [],
             colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-            names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
 
             inputRules: [v => !!v || 'This field is required'],
             isValid: true
@@ -269,29 +264,27 @@
 
             addEvent(){
                 this.addInfo = false;
-
-                console.log(this.task);
                 UserService.postCreateTask(this.$store.state.auth.user, this.task).then(
 
                     response =>{
-                      console.log(response.data)
+                      console.log(response.data);
+                      this.refreshCalendar();
                     },
                     error => {
                         console.log(error);
                     }
                 );
+
             },
 
             removeEvent(){
-                this.selectedOpen = false
+                this.selectedOpen = false;
                 UserService.postRemoveTask(this.task).then(
-                    response => {
-                        console.log(response);
-                    },
+                    () => {},
                     error => {
-                        console.log(error);
+                        this.refreshCalendar();
                     }
-                )
+                );
             },
 
             viewDay ({ date }) {
@@ -338,11 +331,9 @@
 
                     taskList => {
                         const taskData = taskList.data;
-                        console.log(taskData);
-
-
                         taskData.forEach(
                             task => {
+                                this.task.tid = task.tid;
                                 events.push({
                                     name: task.title,
                                     details: task.description,
